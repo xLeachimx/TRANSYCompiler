@@ -1,0 +1,14 @@
+/*FILE: validity.hpp
+*Author: Michael Huelsman
+*Description:
+*  Interface for functions which help determine validity of
+*  Symbols and such for the TRANSY compiler
+*Notes:
+*/
+
+#ifndef VALIDITY_HPP
+#define VALIDITY_HPP
+
+bool validSymbol();
+
+#endif

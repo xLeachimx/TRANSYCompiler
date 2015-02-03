@@ -1,0 +1,31 @@
+# This file generates large file on demand that
+# Have different names and the same content
+
+def makeFile filename, message
+  making = File.open(filename, "w")
+  making.puts(message)
+  making.close
+end
+
+def getListOfFilesToMake
+  input = ""
+  files = []
+  print "Name of File:"
+  input = $stdin.readline
+  until input === "end" do
+    files.push(input);
+    print "Next File:"
+    input = $stdin.readline
+  end
+  return files
+end
+
+files = getListOfFilesToMake
+print "Generic Message:"
+messFile = $stdin.readline
+messContent = File.open(messFile, "r")
+mess = messContent.read
+messContent.close
+for f in files
+  makeFile(f,mess)
+end

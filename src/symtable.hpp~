@@ -1,0 +1,9 @@
+/*FILE: symtable.hpp
+ *Author: Michael Huelsman
+ *Description:
+ *  Interface for a symbol table class which inerits from the table class
+ *Notes:
+ */
+
+#include "table.hpp"
+
