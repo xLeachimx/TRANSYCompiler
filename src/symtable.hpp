@@ -2,6 +2,7 @@
  *Author: Michael Huelsman
  *Description:
  *  Interface for a symbol table class which inerits from the table class
+ *  SymTable allows for simple insertion of symbols into the table
  *Notes:
  */
 
@@ -14,7 +15,9 @@
 class SymTable: public Table{
 public:
   SymTable();
-  int nextCoreAddr();//returns the next core memory address
+
+  //override the insert function such that value means the number of core address taken
+  int insert(string symbol, int value);
 protected:
 private:
   int nextAddr;
