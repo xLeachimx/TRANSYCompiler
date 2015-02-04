@@ -8,21 +8,10 @@
 
 //creates an empty useless table
 Table::Table(){
-  entries = 0;
-  size = 0;
-  insertLoc = 0;
-}
-
-//creates a table with the given size
-Table::Table(int s){
-  entries = new TableEntry[size];
-  size = s;
   insertLoc = 0;
 }
 
 Table::~Table(){
-  delete[] entries;
-  size = 0;
   insertLoc = 0;
 }
 
@@ -32,12 +21,12 @@ int Table::retrieve(string symbol){
 }
 
 int Table::insert(string symbol, int value){
-  if(insertLoc >= size)return -1;
+  if(insertLoc >= COREMEMSIZE)return -1;
   TableEntry temp;
   temp.symbol = symbol;
   temp.value = value;
-  entries[insertLoc] = temp;
-  return insertLoc++;
+  entries[insertLoc++] = temp;
+  return value;
 }
 
 int Table::operator[](string symbol){

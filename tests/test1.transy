@@ -1,0 +1,4 @@
+read a,b,c,d
+write a,d,c
+stop
+end

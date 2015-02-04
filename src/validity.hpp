@@ -14,6 +14,16 @@
 using std::vector;
 using std::string;
 
+
+//This enum holds values for error codes such that errors can be properly diagnosed
+enum ERROR_CODE{
+	NO_ERROR = 0,
+	BAD_ARGS,
+	BAD_SYMBOLS,
+	INVALID_SYMBOLS,
+	EXCESS_CHARS,
+};
+
 //Precond:
 // str is a vlid string
 //Postcond:
@@ -30,10 +40,25 @@ bool validSymbol(string str);
 vector<string> split(string str, char sep=',');
 
 
+// //Precond:
+// //  number is a valid integer
+// //Postcond:
+// //  the returned string is the base ten representation of the number
+// string numToStr(int number);
+
+
 //Precond:
-//  number is a valid integer
+//  str is a valid string
+//  c is a valid character
 //Postcond:
-//  the returned string is the base ten representation of the number
-string numToStr(int number);
+//  Returns the amount of instances of c in str
+int numberOf(string str, char c);
+
+
+//Precond:
+//  error is a valid member of the above enum
+//Postcond:
+//  The corresponing string to error will be returned
+string errorString(int error);
 
 #endif

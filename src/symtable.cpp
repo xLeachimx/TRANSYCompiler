@@ -5,13 +5,16 @@
  *Notes:
 */
 
-#define COREMEMSIZE 1000 //define the size of core memory
+ #include "symtable.hpp"
 
-SymTable::SymTable():Table(COREMEMSIZE){
+
+SymTable::SymTable():Table(){
   nextAddr = 0;
 }
 
 int SymTable::insert(string symbol, int value){
   if(value+nextAddr >= COREMEMSIZE)return -1;
-  return Table::insert(symbol,nextAddr);
+  int result = Table::insert(symbol,nextAddr);
+  nextAddr = value+nextAddr;
+  return result;
 }
