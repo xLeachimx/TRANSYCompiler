@@ -38,7 +38,7 @@ enum CommandType{
 };
 
 //scans file for key words and generates object code from that scanning
-string scan(string filename, SymTable &symTable);
+string scan(string filename, SymTable *symTable);
 //determines the keyword categorization of a line
 int commandType(string line);
 //removes extension and appends .obj extension
@@ -73,7 +73,7 @@ int main(int argc, char **argv){
 
 	//turn preproecessed files into obj in first pass
 	for(int i = 0;i < files.size();i++){
-		string objFile = scan(files[i],symTable);
+		string objFile = scan(files[i],&symTable);
 
 		//should an error occur remove all obj and nospaces files
 		if(objFile == ""){
@@ -86,13 +86,13 @@ int main(int argc, char **argv){
 			return 0;
 		}
 		
-		objFiles.push_back(scan(files[i],symTable));
+		objFiles.push_back(objFile);
 		if(!keepNoSpace)remove(files[i].c_str());
 	}
 	return 0;
 }
 
-string scan(string filename, SymTable &symTable){
+string scan(string filename, SymTable *symTable){
 	//setup the file io for the obj file
 	ifstream fin;
 	ofstream fout;
@@ -109,6 +109,7 @@ string scan(string filename, SymTable &symTable){
 	getline(fin,line);
 	bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
 	while(!fin.eof()){
+		cout << line <<endl;
 		int error = 0;
 
 		switch(commandType(line)){
@@ -118,8 +119,8 @@ string scan(string filename, SymTable &symTable){
 			}
 			else{
 				cout << "Error: " << errorString(error) << " on READ command" <<endl;
+				haltScan = true;
 			}
-			haltScan = true;
 			break;
 		case WRITE:
 			if((error=validWrite(line, symTable)) == 0){
@@ -127,8 +128,8 @@ string scan(string filename, SymTable &symTable){
 			}
 			else{
 				cout << "Error: " << errorString(error) << " on WRITE command" <<endl;
+				haltScan = true;
 			}
-			haltScan = true;
 			break;
 		case STOP:
 			if((error=validStop(line)) == 0){
@@ -150,6 +151,8 @@ string scan(string filename, SymTable &symTable){
 		}
 		if(haltScan)break;
 		getline(fin,line);
+		cout << "WE GET HERE" <<endl;
+		cout << line <<endl;
 	}
 	fin.close();
 	fout.close();

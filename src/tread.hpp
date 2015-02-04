@@ -15,7 +15,7 @@ using std::string;
 //Postcond:
 //Returns a valid line of TRANSY object code representing
 //the input
-string parseRead(string line, SymTable &symTable);
+string parseRead(string line, SymTable *symTable);
 
 //Precond:
 //line begins with READ

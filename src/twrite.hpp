@@ -15,10 +15,10 @@ using std::string;
 //Postcond:
 //Returns a valid line of TRANSY object code representing
 //the input
-string parseWrite(string line, SymTable &symTable);
+string parseWrite(string line, SymTable *symTable);
 
 //Precond:
 //line begins with READ
 //Postcond:
 //returns true iff line represents a valid write command
-int validWrite(string line, SymTable &symTable);
+int validWrite(string line, SymTable *symTable);

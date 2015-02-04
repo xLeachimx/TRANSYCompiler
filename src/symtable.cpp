@@ -15,5 +15,7 @@ SymTable::SymTable():Table(COREMEMSIZE){
 
 int SymTable::insert(string symbol, int value){
   if(value+nextAddr >= COREMEMSIZE)return -1;
-  return Table::insert(symbol,nextAddr);
+  int result = Table::insert(symbol,nextAddr);
+  nextAddr = value+nextAddr;
+  return result;
 }

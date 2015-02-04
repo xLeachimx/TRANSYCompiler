@@ -7,6 +7,10 @@
 
 #include "validity.hpp"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 //helper functions
 bool isLetter(char c);
 bool isNumber(char c);
@@ -49,8 +53,8 @@ vector<string> split(string str, char sep){
 	while(str.length() != 0){
 		int location = str.find(sep);
 		if(location != 0){
-			result.push_back(str.substr(0,location-1));
-			if(location != -1)str.erase(0,location);
+			result.push_back(str.substr(0,location));
+			if(location != -1)str.erase(0,location+1);
 			if(location == -1)break;
 		}
 		else if(location == 0){
@@ -60,53 +64,57 @@ vector<string> split(string str, char sep){
 	return result;
 }
 
-//implementation of the numToStr function
+// //implementation of the numToStr function
 
-string numToStr(int number){
-	string result;
-	int place = 0;//remembers where new digits should be placed
-	if(number < 0){
-		place = 1;
-		result += "-";
-		number = number * -1;
-	}
-	while(number > 0){
-		switch(number%10){
-		case 1:
-			result.insert(place,1,'1');
-			break;
-		case 2:
-			result.insert(place,1,'2');
-			break;
-		case 3:
-			result.insert(place,1,'3');
-			break;
-		case 4:
-			result.insert(place,1,'4');
-			break;
-		case 5:
-			result.insert(place,1,'5');
-			break;
-		case 6:
-			result.insert(place,1,'6');
-			break;
-		case 7:
-			result.insert(place,1,'7');
-			break;
-		case 8:
-			result.insert(place,1,'8');
-			break;
-		case 9:
-			result.insert(place,1,'9');
-			break;
-		default:
-			result.insert(place,1,'0');
-			break;
-		}
-		number -= number%10;
-	}
-	return "";
-}
+// string numToStr(int number){
+// 	cout << number <<endl;
+// 	string result;
+// 	int place = 0;//remembers where new digits should be placed
+// 	if(number < 0){
+// 		place = 1;
+// 		result += "-";
+// 		number = number * -1;
+// 	}
+// 	if(number == 0)return "0";
+// 	while(number > 0){
+// 		cout << result <<endl;
+// 		switch(number%10){
+// 		case 1:
+// 			result.insert(place,1,'1');
+// 			break;
+// 		case 2:
+// 			result.insert(place,1,'2');
+// 			break;
+// 		case 3:
+// 			result.insert(place,1,'3');
+// 			break;
+// 		case 4:
+// 			result.insert(place,1,'4');
+// 			break;
+// 		case 5:
+// 			result.insert(place,1,'5');
+// 			break;
+// 		case 6:
+// 			result.insert(place,1,'6');
+// 			break;
+// 		case 7:
+// 			result.insert(place,1,'7');
+// 			break;
+// 		case 8:
+// 			result.insert(place,1,'8');
+// 			break;
+// 		case 9:
+// 			result.insert(place,1,'9');
+// 			break;
+// 		default:
+// 			result.insert(place,1,'0');
+// 			break;
+// 		}
+// 		number -= number%10;
+// 		number = number/10;
+// 	}
+// 	return "";
+// }
 
 //implementation of numberOf
 

@@ -40,11 +40,11 @@ bool validSymbol(string str);
 vector<string> split(string str, char sep=',');
 
 
-//Precond:
-//  number is a valid integer
-//Postcond:
-//  the returned string is the base ten representation of the number
-string numToStr(int number);
+// //Precond:
+// //  number is a valid integer
+// //Postcond:
+// //  the returned string is the base ten representation of the number
+// string numToStr(int number);
 
 
 //Precond:
