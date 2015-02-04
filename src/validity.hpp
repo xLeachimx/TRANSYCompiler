@@ -16,8 +16,8 @@ using std::string;
 
 
 //This enum holds values for error codes such that errors can be properly diagnosed
-enum{
-	NONE = 0,
+enum ERROR_CODE{
+	NO_ERROR = 0,
 	BAD_ARGS,
 	BAD_SYMBOLS,
 	INVALID_SYMBOLS,

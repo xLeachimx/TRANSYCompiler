@@ -6,7 +6,7 @@
 */
 #include <string>
 using std::string;
-#inlcude "symtable.hpp"
+#include "symtable.hpp"
 
 //Precond:
 //line is a valid line of TRANSY code

@@ -10,8 +10,13 @@
 #include "compiler.hpp"
 #include "preprocess.hpp"
 #include "validity.hpp"
+#include "symTable.hpp"
+#include "tread.hpp"
+#include "twrite.hpp"
+#include "tstop.hpp"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <cstdio>
@@ -20,9 +25,11 @@ using std::vector;
 using std::cout;
 using std::endl;
 using std::remove;
+using std::ifstream;
+using std::ofstream;
 
 //an enum used to assist commandType
-enum{
+enum CommandType{
 	NOCOMMAND = -1,
 	READ,
 	WRITE,
@@ -31,7 +38,7 @@ enum{
 };
 
 //scans file for key words and generates object code from that scanning
-string scan(string filename);
+string scan(string filename, SymTable &symTable);
 //determines the keyword categorization of a line
 int commandType(string line);
 //removes extension and appends .obj extension
@@ -70,11 +77,11 @@ int main(int argc, char **argv){
 
 		//should an error occur remove all obj and nospaces files
 		if(objFile == ""){
-			for(int i = 0;i < objFiles.size();i++){
-				remove(objFiles[i].c_Str());
+			for(int j = 0;j < objFiles.size();j++){
+				remove(objFiles[j].c_str());
 			}
-			for(int i = 0;i < files.size();i++){
-				if(!keepNoSpace)remove(files.size());
+			for(int j = 0;j < files.size();j++){
+				if(!keepNoSpace)remove(files[j].c_str());
 			}
 			return 0;
 		}
@@ -151,8 +158,8 @@ string scan(string filename, SymTable &symTable){
 }
 
 int commandType(string line){
-	if(line.sub_str(0,4) == "READ")return READ;
-	if(line.sub_str(0,5) == "WRITE")return WRITE;
+	if(line.substr(0,4) == "READ")return READ;
+	if(line.substr(0,5) == "WRITE")return WRITE;
 	if(line.substr(0,4) == "STOP")return STOP;
 	if(line.substr(0,3) == "END")return END;
 	return NOCOMMAND;

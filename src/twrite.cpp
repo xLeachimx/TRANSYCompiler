@@ -32,5 +32,5 @@ int validWrite(string line, SymTable &symTable){
     if(symTable.retrieve(symbols[i]) == -1)return BAD_SYMBOLS;
     if(!validSymbol(symbols[i]))return INVALID_SYMBOLS;
   }
-  return NONE;
+  return NO_ERROR;
 }

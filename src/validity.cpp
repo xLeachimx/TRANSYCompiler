@@ -5,10 +5,12 @@
 *Notes:
 */
 
+#include "validity.hpp"
+
 //helper functions
 bool isLetter(char c);
 bool isNumber(char c);
-bool isGoodSpecChar(char c)
+bool isGoodSpecChar(char c);
 bool isBadSpecChar(char c);
 
 
@@ -16,7 +18,7 @@ bool isBadSpecChar(char c);
 bool validSymbol(string str){
 	if(isLetter(str[0])){
 		for(int i = 1;i < str.length();i++){
-			if(isBadSpecChar())return false;
+			if(isBadSpecChar(str[i]))return false;
 		}
 		return true;
 	}
@@ -25,7 +27,7 @@ bool validSymbol(string str){
 
 
 bool isLetter(char c){
-	return (c >= 'A' && c <= 'Z')
+	return (c >= 'A' && c <= 'Z');
 }
 
 bool isNumber(char c){
@@ -33,11 +35,11 @@ bool isNumber(char c){
 }
 
 bool isGoodSpecChar(char c){
-	return (c == '_')
+	return (c == '_');
 }
 
 bool isBadSpecChar(char c){
-	return (!isLetter(c) && !isGoodSpecChar(c) && !isNumber(c))
+	return (!isLetter(c) && !isGoodSpecChar(c) && !isNumber(c));
 }
 
 
@@ -74,31 +76,31 @@ string numToStr(int number){
 			result.insert(place,1,'1');
 			break;
 		case 2:
-			result.insert(place,1,'2')
+			result.insert(place,1,'2');
 			break;
 		case 3:
-			result.insert(place,1,'3')
+			result.insert(place,1,'3');
 			break;
 		case 4:
-			result.insert(place,1,'4')
+			result.insert(place,1,'4');
 			break;
 		case 5:
-			result.insert(place,1,'5')
+			result.insert(place,1,'5');
 			break;
 		case 6:
-			result.insert(place,1,'6')
+			result.insert(place,1,'6');
 			break;
 		case 7:
-			result.insert(place,1,'7')
+			result.insert(place,1,'7');
 			break;
 		case 8:
-			result.insert(place,1,'8')
+			result.insert(place,1,'8');
 			break;
 		case 9:
-			result.insert(place,1,'9')
+			result.insert(place,1,'9');
 			break;
 		default:
-			result.insert(place,1,'0')
+			result.insert(place,1,'0');
 			break;
 		}
 		number -= number%10;
@@ -127,7 +129,7 @@ string errorString(int error){
 		case INVALID_SYMBOLS:
 			return "Invalid symbols";
 		case EXCESS_CHARS:
-			return "Excessive characters in line"
+			return "Excessive characters in line";
 		default:
 			return "Unknown Error";
 	}

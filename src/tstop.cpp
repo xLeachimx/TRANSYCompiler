@@ -17,6 +17,6 @@ string parseStop(string line){
 //implementation of validStop function
 int validStop(string line){
   line.erase(0,4);//get rid of STOP
-  if(line.length() > 0)return EXCESS_CHARS
-  return NONE;
+  if(line.length() > 0)return EXCESS_CHARS;
+  return NO_ERROR;
 }

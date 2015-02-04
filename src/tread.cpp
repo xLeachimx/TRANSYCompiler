@@ -16,9 +16,8 @@ string parseRead(string line, SymTable &symTable){
   for(int i = 0;i < symbols.size();i++){
     int addr = -1;
     //what to do if the symbol is not in the table
-    if(addr = symTable.retrieve(symbols[i]) == -1){
-      addr = symTable.nextCoreAddr();
-      symTable.insert(symbols[i],nextAddr);
+    if(symTable.retrieve(symbols[i]) == -1){
+      addr = symTable.insert(symbols[i],1);
     }
     result += numToStr(addr);
     if(i != symbols.size()-1)result += " ";
@@ -37,5 +36,5 @@ int validRead(string line){
   for(int i = 0;i < symbols.size();i++){
     if(!validSymbol(symbols[i]))return INVALID_SYMBOLS;
   }
-  return NONE;
+  return NO_ERROR;
 }

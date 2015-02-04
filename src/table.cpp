@@ -36,8 +36,8 @@ int Table::insert(string symbol, int value){
   TableEntry temp;
   temp.symbol = symbol;
   temp.value = value;
-  entries[insertLoc] = temp;
-  return insertLoc++;
+  entries[insertLoc++] = temp;
+  return value;
 }
 
 int Table::operator[](string symbol){
