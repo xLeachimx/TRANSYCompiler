@@ -50,7 +50,7 @@ int main(int argc, char **argv){
 	keepNoSpace = false;
 	char c;
 	while(--argc > 0 && (*++argv)[0] == '-'){
-		while(c = *++argv[0]){
+		while((c = *++argv[0])){
 			switch(c){
 			case 'n':
 	keepNoSpace = true;

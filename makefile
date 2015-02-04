@@ -1,6 +1,5 @@
 COMPILEDFILES = table.o preprocess.o compiler.o symtable.o tread.o tstop.o twrite.o validity.o
-HEADERFILES = table.hpp preprocess.hpp compiler.hpp symtable.hpp tread.hpp tstop.hpp twrite.hpp validity.hpp
-SOURCEFILES = table.cpp preprocess.cpp compiler.cpp symtable.cpp tread.cpp tstop.cpp twrite.cpp validity.cpp
+SOURCEFILES = $(COMPILEDFILES:.o=.cpp)
 TEMPFOLDER = temp
 MAINFUNC = compiler.cpp
 SOURCEDIR = src/
@@ -8,16 +7,14 @@ PROGNAME = compiler
 
 all: main
 
-main: compile
+main: $(SOURCEFILES)
 	cd $(SOURCEDIR) && \
 	g++ $(COMPILEDFILES) -o $(PROGNAME)
 	mv $(SOURCEDIR)$(PROGNAME) ./
 
-compile:
+$(SOURCEFILES):
 	cd $(SOURCEDIR) && \
-	for file in $(SOURCEFILES) ; do \
-		g++ $$file -c ; \
-	done
+	g++ $@ -c
 
 clean:
 	rm $(SOURCEDIR)*.o

@@ -105,6 +105,7 @@ string numToStr(int number){
 		}
 		number -= number%10;
 	}
+	return "";
 }
 
 //implementation of numberOf
