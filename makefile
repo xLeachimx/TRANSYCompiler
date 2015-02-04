@@ -1,26 +1,19 @@
-COMPILEDFILES = table.o preprocess.o compiler.o
-FILES = table preprocess compiler
-TESTFILES = test.transy
-TESTFLAGS = -n
+COMPILEDFILES = table.o preprocess.o compiler.o symtable.0 tread.o tstop.o twrite.o validity.o
+HEADERFILES = table.hpp preprocess.hpp compiler.hpp symtable.hpp tread.hpp tstop.hpp twrite.hpp validity.hpp
+SOURCEFILES = table.cpp preporcess.cpp compiler.cpp symtable.cpp tread.cpp tstop.cpp twrite.cpp validity.cpp
 TEMPFOLDER = temp
 MAINFUNC = compiler.cpp
 SOURCEDIR = src/
-TESTDIR = tests/
 PROGNAME = compiler
 
 all: main
 
-test: main
-	for file in $(TESTFILES); do \
-		./$(PROGNAME) $(TESTFLAGS) $(TESTDIR)$$file ; \
-	done
-
-main: compile
+main: COMPILEDFILES
 	cd $(SOURCEDIR) && \
 	g++ $(COMPILEDFILES) -o $(PROGNAME)
 	mv $(SOURCEDIR)$(PROGNAME) ./
 
-compile:
+compile: HEADERFILES
 	cd $(SOURCEDIR) && \
 	for file in $(FILES) ; do \
 		g++ $$file.cpp -c ; \

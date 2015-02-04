@@ -74,7 +74,7 @@ int main(int argc, char **argv){
 				remove(objFiles[i].c_Str());
 			}
 			for(int i = 0;i < files.size();i++){
-				remove(files.size());
+				if(!keepNoSpace)remove(files.size());
 			}
 			return 0;
 		}
