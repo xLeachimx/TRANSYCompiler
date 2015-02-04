@@ -4,6 +4,8 @@
 *  Interface for functions which help determine validity of
 *  Symbols and such for the TRANSY compiler
 *Notes:
+*  symbol length maxed to 80 such that line are kept short by the programmer without impossing rediculous limitations
+*
 */
 
 #ifndef VALIDITY_HPP

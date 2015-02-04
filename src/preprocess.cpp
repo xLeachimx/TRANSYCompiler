@@ -4,9 +4,11 @@
 *	Implements the function processFile from the file preprocessor.hpp
 */
 #include "preprocess.hpp"
-#include <cstdio>
-using std::putc;
-using std::getc;
+#include <fstream>
+using std::ifstream;
+using std::ofstream;
+using std::endl;
+using std::getline;
 
 string removal(string filename);//handles all the removal and capitalization tasks
 string newFilename(string filename);
@@ -18,51 +20,50 @@ string processFile(string filename){
 }
 
 string removal(string filename){
-  FILE *input;
-  FILE *output;
-  input = fopen(filename.c_str(), "r");
-  output = fopen(newFilename(filename).c_str(), "w");
-  
-  char c;
-  bool protect = false; //if true what is being written it to be immedialtely put through
-  bool enable = true; //if true it enables writing to the output file
-  bool writtenToLine = false; //if true then something has been written on the current line
-  while((c=getc(input)) != EOF){
-    if(c == '\"')protect = !protect;
-    if(c == '\n'){
-      // Ensure that upon finishing a line that we only write a new line if we have written something
-      // To the output file. Also make sure we enable writing to the output file.
-      enable = true;
-      if(!writtenToLine)continue;
-    }
-    if(!enable)continue;
-    if(protect){
-      // output unaltered characters
-      putc(c, output);
-      continue;
-    }
-    c = capitalize(c);
-    //check for comments
-    if(c == 'C'){
-      c = getc(input);
-      if(c == '*'){
-	enable = false;
+  ifstream origin;
+  ofstream nospace;
+
+  origin.open(filename.c_str());
+  nospace.open(newFilename(filename).c_str());
+
+  if(!origin.is_open())return "";
+
+  string line;
+  getline(origin, line);
+
+  int lineCount = 1;
+
+  while(!origin.eof()){
+    bool inQuote = false;
+    for(int i = 0;i < line.length();i++){
+      if(line[i] == '\"')inQuote = !inQuote;//detect quotes
+      if(inQuote)continue;
+      //remove whitespace
+      if(isWhiteSpace(line[i])){
+        line.erase(i,1);
+        i--;
+        continue;
       }
-      else if(c != EOF){
-	putc('C', output);
-	if(!isWhiteSpace(c))putc(c, output);
-	if(c == '\"')protect = true;
-	writtenToLine = true;
+      line[i] = capitalize(line[i]);
+      //check for comments
+      if(line[i] == 'C'){
+        if(i+1 < line.length()){
+          if(line[i+1] == '*'){
+            //remove comments
+            line.erase(i);
+            i--;
+          }
+        }
       }
     }
-    else if(!isWhiteSpace(c)){
-      putc(c, output);
-      writtenToLine = true;
+    if(line.length() > 0){
+      nospace << lineCount << " ";
+      nospace << line <<endl;
     }
-    if(c == '\n')writtenToLine = false;
+    lineCount++;
+    getline(origin,line);
   }
-  fclose(input);
-  fclose(output);
+
   return newFilename(filename);
 }
 

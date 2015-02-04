@@ -20,6 +20,7 @@ bool isBadSpecChar(char c);
 
 //implementation of validSymbol interface
 bool validSymbol(string str){
+	if(str.length() > 80)return false;
 	if(isLetter(str[0])){
 		for(int i = 1;i < str.length();i++){
 			if(isBadSpecChar(str[i]))return false;

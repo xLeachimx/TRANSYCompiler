@@ -92,6 +92,8 @@ int main(int argc, char **argv){
 	return 0;
 }
 
+
+//implementation of scan function
 string scan(string filename, SymTable *symTable){
 	//setup the file io for the obj file
 	ifstream fin;
@@ -106,10 +108,14 @@ string scan(string filename, SymTable *symTable){
 	}
 
 	string line;
+	int lineNumber = 0;
+	fin >> lineNumber;
 	getline(fin,line);
 	bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
 	while(!fin.eof()){
 		int error = 0;
+
+		line.erase(0,1);//removes the beginning space artifact left by the line tracking system
 
 		switch(commandType(line)){
 		case READ:
@@ -117,7 +123,7 @@ string scan(string filename, SymTable *symTable){
 				fout << parseRead(line, symTable) <<endl;
 			}
 			else{
-				cout << "Error: " << errorString(error) << " on READ command" <<endl;
+				cout << "Error on line " << lineNumber << ": " << errorString(error) << " on READ command" <<endl;
 				haltScan = true;
 			}
 			break;
@@ -126,7 +132,7 @@ string scan(string filename, SymTable *symTable){
 				fout << parseWrite(line, symTable) <<endl;
 			}
 			else{
-				cout << "Error: " << errorString(error) << " on WRITE command" <<endl;
+				cout << "Error on line " << lineNumber << ": " << errorString(error) << " on WRITE command" <<endl;
 				haltScan = true;
 			}
 			break;
@@ -135,7 +141,7 @@ string scan(string filename, SymTable *symTable){
 				fout << parseStop(line) <<endl;
 			}
 			else{
-				cout << "Error: " << errorString(error) << " on STOP command" <<endl;
+				cout << "Error on line " << lineNumber << ": " << errorString(error) << " on STOP command" <<endl;
 				haltScan = true;
 			}
 			break;
@@ -145,11 +151,12 @@ string scan(string filename, SymTable *symTable){
 			return objFilename;
 			break;
 		default:
-			cout << "No Known Command" <<endl;
+			cout << "No Known Command on line " << lineNumber <<endl;
 			haltScan = true;
 			break;
 		}
 		if(haltScan)break;
+		fin >> lineNumber;
 		getline(fin,line);
 	}
 	fin.close();
