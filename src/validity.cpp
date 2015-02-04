@@ -126,6 +126,8 @@ string errorString(int error){
 			return "Bad symbols";
 		case INVALID_SYMBOLS:
 			return "Invalid symbols";
+		case EXCESS_CHARS:
+			return "Excessive characters in line"
 		default:
 			return "Unknown Error";
 	}

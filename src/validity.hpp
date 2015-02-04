@@ -21,6 +21,7 @@ enum{
 	BAD_ARGS,
 	BAD_SYMBOLS,
 	INVALID_SYMBOLS,
+	EXCESS_CHARS,
 };
 
 //Precond:

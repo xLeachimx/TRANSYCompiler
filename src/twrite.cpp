@@ -1,14 +1,14 @@
 /*FILE:twrite.cpp
  *Author: Michael Huelsman
  *Description:
- *  Implementation of the interface outlined in tread.hpp
+ *  Implementation of the interface outlined in twrite.hpp
  *Notes:
 */
 
 #include "twrite.hpp"
 #include "validity.hpp"
 
-//implementation of parseRead func
+//implementation of parseWrite func
 string parseWrite(string line, SymTable &symTable){
   line.erase(0,5);//get rid of WRITE
   vector<string> symbols = split(line,',');
@@ -21,7 +21,7 @@ string parseWrite(string line, SymTable &symTable){
 }
 
 
-//implementation of validRead function
+//implementation of validWrite function
 int validWrite(string line, SymTable &symTable){
   line.erase(0,4);//get rid of READ
   vector<string> symbols = split(line,',');
