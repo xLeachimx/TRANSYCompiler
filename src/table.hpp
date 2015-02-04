@@ -7,6 +7,8 @@
 #ifndef TABLE_HPP
 #define TABLE_HPP
 
+#define COREMEMSIZE 1000
+
 #include <string>
 using std::string;
 
@@ -28,8 +30,7 @@ private:
     int value;
   };
 
-  TableEntry *entries;
-  int size;
+  TableEntry entries[1000];
   int insertLoc;
 };
 

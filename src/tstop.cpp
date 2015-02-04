@@ -10,7 +10,7 @@
 
 //implementation of parseRead func
 string parseStop(string line){
-  return "2";
+  return "3";
 }
 
 

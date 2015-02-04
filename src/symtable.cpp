@@ -7,9 +7,8 @@
 
  #include "symtable.hpp"
 
-#define COREMEMSIZE 1000 //define the size of core memory
 
-SymTable::SymTable():Table(COREMEMSIZE){
+SymTable::SymTable():Table(){
   nextAddr = 0;
 }
 

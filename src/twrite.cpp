@@ -10,7 +10,7 @@
 
 using std::to_string;
 
-#include <iosteam>
+#include <iostream>
 using std::cout;
 using std::endl;
 
@@ -22,7 +22,6 @@ string parseWrite(string line, SymTable *symTable){
   for(int i = 0;i < symbols.size();i++){
     result += to_string(symTable->retrieve(symbols[i]));
     if(i != symbols.size()-1)result += " ";
-    cout << result <<endl;
   }
   return result;
 }
@@ -30,7 +29,7 @@ string parseWrite(string line, SymTable *symTable){
 
 //implementation of validWrite function
 int validWrite(string line, SymTable *symTable){
-  line.erase(0,4);//get rid of READ
+  line.erase(0,5);//get rid of WRITE
   vector<string> symbols = split(line,',');
   if(numberOf(line,',') != symbols.size()-1){
     return BAD_ARGS;

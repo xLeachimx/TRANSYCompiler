@@ -69,7 +69,7 @@ int main(int argc, char **argv){
 	}
 
 	//prep for first pass
-	SymTable symTable;
+	SymTable symTable = SymTable();
 
 	//turn preproecessed files into obj in first pass
 	for(int i = 0;i < files.size();i++){
@@ -109,7 +109,6 @@ string scan(string filename, SymTable *symTable){
 	getline(fin,line);
 	bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
 	while(!fin.eof()){
-		cout << line <<endl;
 		int error = 0;
 
 		switch(commandType(line)){
@@ -147,12 +146,11 @@ string scan(string filename, SymTable *symTable){
 			break;
 		default:
 			cout << "No Known Command" <<endl;
+			haltScan = true;
 			break;
 		}
 		if(haltScan)break;
 		getline(fin,line);
-		cout << "WE GET HERE" <<endl;
-		cout << line <<endl;
 	}
 	fin.close();
 	fout.close();
