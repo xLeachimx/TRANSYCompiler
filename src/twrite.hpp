@@ -21,4 +21,4 @@ string parseWrite(string line, SymTable *symTable);
 //line begins with READ
 //Postcond:
 //returns true iff line represents a valid write command
-int validWrite(string line, SymTable *symTable);
+int validWrite(string line);
