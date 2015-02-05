@@ -7,8 +7,10 @@
 
 #include "twrite.hpp"
 #include "validity.hpp"
+#include <cstdio>
 
-using std::to_string;
+using std::sprintf;
+//using std::to_string;
 
 #include <iostream>
 using std::cout;
@@ -20,7 +22,14 @@ string parseWrite(string line, SymTable *symTable){
   vector<string> symbols = split(line,',');
   string result = "2 ";
   for(int i = 0;i < symbols.size();i++){
-    result += to_string(symTable->retrieve(symbols[i]));
+    int addr = -1;
+    //what to do if the symbol is not in the table
+    if((addr = symTable->retrieve(symbols[i])) == -1){
+      addr = symTable->insert(symbols[i],1);
+    }
+    char buffer[10];
+    sprintf(buffer,"%d",addr);
+    result += buffer;
     if(i != symbols.size()-1)result += " ";
   }
   return result;
@@ -28,14 +37,13 @@ string parseWrite(string line, SymTable *symTable){
 
 
 //implementation of validWrite function
-int validWrite(string line, SymTable *symTable){
+int validWrite(string line){
   line.erase(0,5);//get rid of WRITE
   vector<string> symbols = split(line,',');
   if(numberOf(line,',') != symbols.size()-1){
     return BAD_ARGS;
   }
   for(int i = 0;i < symbols.size();i++){
-    if(symTable->retrieve(symbols[i]) == -1)return BAD_SYMBOLS;
     if(!validSymbol(symbols[i]))return INVALID_SYMBOLS;
   }
   return NO_ERROR;

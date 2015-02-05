@@ -3,18 +3,19 @@ SOURCEFILES = $(COMPILEDFILES:.o=.cpp)
 TEMPFOLDER = temp
 MAINFUNC = compiler.cpp
 SOURCEDIR = src/
+COMPFLAGS = #-std=c++11
 PROGNAME = compiler
 
 all: main
 
 main: $(SOURCEFILES)
 	cd $(SOURCEDIR) && \
-	g++ $(COMPILEDFILES) -o $(PROGNAME)
+	g++ $(COMPFLAGS) $(COMPILEDFILES) -o $(PROGNAME)
 	mv $(SOURCEDIR)$(PROGNAME) ./
 
 $(SOURCEFILES):
 	cd $(SOURCEDIR) && \
-	g++ $@ -c
+	g++ $@ -c $(COMPFLAGS)
 
 clean:
 	rm $(SOURCEDIR)*.o

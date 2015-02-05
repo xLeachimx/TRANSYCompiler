@@ -8,7 +8,9 @@
 #include "tread.hpp"
 #include "validity.hpp"
 
-using std::to_string;
+//using std::to_string;
+#include <cstdio>
+using std::sprintf;
 
 //implementation of parseRead func
 string parseRead(string line, SymTable *symTable){
@@ -21,7 +23,9 @@ string parseRead(string line, SymTable *symTable){
     if((addr = symTable->retrieve(symbols[i])) == -1){
       addr = symTable->insert(symbols[i],1);
     }
-    result += to_string(addr);
+    char buffer[10];
+    sprintf(buffer,"%d",addr);
+    result += buffer;
     if(i < symbols.size()-1)result += " ";
   }
   return result;
