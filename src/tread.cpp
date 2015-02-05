@@ -36,7 +36,7 @@ string parseRead(string line, SymTable *symTable){
 int validRead(string line){
   line.erase(0,4);//get rid of READ
   vector<string> symbols = split(line,',');
-  if(numberOf(line,',') != symbols.size()-1){
+  if(numberOf(line,',') != symbols.size()-1 || symbols.size() <= 0){
     return BAD_ARGS;
   }
   for(int i = 0;i < symbols.size();i++){

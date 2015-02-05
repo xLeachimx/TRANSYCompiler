@@ -40,7 +40,7 @@ string parseWrite(string line, SymTable *symTable){
 int validWrite(string line){
   line.erase(0,5);//get rid of WRITE
   vector<string> symbols = split(line,',');
-  if(numberOf(line,',') != symbols.size()-1){
+  if(numberOf(line,',') != symbols.size()-1 || symbols.size() <= 0){
     return BAD_ARGS;
   }
   for(int i = 0;i < symbols.size();i++){
