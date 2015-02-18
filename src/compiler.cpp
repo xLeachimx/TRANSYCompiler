@@ -35,6 +35,13 @@ enum CommandType{
 	WRITE,
 	STOP,
 	END,
+	DIM,
+	AREAD,
+	AWRITE,
+	CDUMP,
+	NOP,
+	LISTO,
+	CLS,
 };
 
 //scans file for key words and generates object code from that scanning
@@ -43,17 +50,29 @@ string scan(string filename, SymTable *symTable);
 int commandType(string line);
 //removes extension and appends .obj extension
 string objName(string filename);
+//grabs the extension of the filename
+string extName(string filename);
 
 int main(int argc, char **argv){
   //flags
   bool keepNoSpace;
+  bool keepObj;
+  bool skipPreproc;
   keepNoSpace = false;
+  keepObj = false;
+  skipPreproc = false;
   char c;
   while(--argc > 0 && (*++argv)[0] == '-'){
     while((c = *++argv[0])){
       switch(c){
       case 'n':
 	keepNoSpace = true;
+	break;
+      case 'o':
+	keepObj = true;
+	break;
+      case 'p':
+	skipPreproc = true;
 	break;
       default:
 	cout << "Bad flag:" << c <<endl;
@@ -65,7 +84,18 @@ int main(int argc, char **argv){
   vector<string> objFiles;//holds the filenames for all the .obj files
   //preprocess the files
   for(int i = 0;i < argc;i++){
-    files.push_back(processFile(argv[i]));
+    if(!skipPreproc){
+      string file = argv[i];
+      if(extName(file) != ""){
+	files.push_back(processFile(file));
+      }
+      else{
+	files.push_back(processFile(file+".transy"))
+      }
+    }
+    else{
+      files.push_back(argv[i]);
+    }
   }
   
   //prep for first pass
@@ -78,7 +108,7 @@ int main(int argc, char **argv){
     //should an error occur remove all obj and nospaces files
     if(objFile == ""){
       for(int j = 0;j < objFiles.size();j++){
-	remove(objFiles[j].c_str());
+	if(!keepObj)remove(objFiles[j].c_str());
       }
       for(int j = 0;j < files.size();j++){
 	if(!keepNoSpace)remove(files[j].c_str());
@@ -145,6 +175,20 @@ string scan(string filename, SymTable *symTable){
 	haltScan = true;
       }
       break;
+    case DIM:
+      break;
+    case CDUMP:
+      break;
+    case LISTO:
+      break;
+    case NOP:
+      break;
+    case AREAD:
+      break;
+    case AWRITE:
+      break;
+    case CLS:
+      break;
     case END:
       fin.close();
       fout.close();
@@ -170,6 +214,13 @@ int commandType(string line){
   if(line.substr(0,5) == "WRITE")return WRITE;
   if(line.substr(0,4) == "STOP")return STOP;
   if(line.substr(0,3) == "END")return END;
+  if(line.substr(0,2) == "DIM")return DIM;
+  if(line.substr(0,4) == "CDUMP")return CDUMP;
+  if(line.substr(0,4) == "LISTO")return LISTO;
+  if(line.substr(0,2) == "NOP")return NOP;
+  if(line.substr(0,4) == "AREAD")return AREAD;
+  if(line.substr(0,5) == "AWRITE")return AWRITE;
+  if(line.substr(0,2) == "CLS")return CLS;
   return NOCOMMAND;
 }
 
@@ -177,4 +228,10 @@ string objName(string filename){
   string newName = filename;
   newName.erase(newName.rfind('.'));
   return newName+".obj";
+}
+
+string extName(string filename){
+  int extLoc = filename.rfind('.')+1;
+  if(extLoc == 0)return "";
+  return filename.substr(extLoc);
 }
