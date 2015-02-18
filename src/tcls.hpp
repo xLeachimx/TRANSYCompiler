@@ -1,22 +1,24 @@
-/*FILE:tstop.cpp
+/*FILE:tcls.hpp
  *Author: Michael Huelsman
  *Description:
- *  Implementation of the interface outlined in tstop.hpp
+ *   parses and validated TRANSY cls commands
  *Notes:
 */
+#include <string>
+using std::string;
+#include "symtable.hpp"
 
-#include "tstop.hpp"
-#include "validity.hpp"
+//Precond:
+//line is a valid line of TRANSY code
+//line begins with CLS
+//symTable is the general symbol table
+//Postcond:
+//Returns a valid line of TRANSY object code representing
+//the input
+string parseCls(string line);
 
-//implementation of parseRead func
-string parseStop(string line){
-  return "3";
-}
-
-
-//implementation of validStop function
-int validStop(string line){
-  line.erase(0,4);//get rid of STOP
-  if(line.length() > 0)return EXCESS_CHARS;
-  return NO_ERROR;
-}
+//Precond:
+//line begins with CLS
+//Postcond:
+//returns true iff line represents a valid cls command
+int validCls(string line);

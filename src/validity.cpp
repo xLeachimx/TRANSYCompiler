@@ -30,6 +30,26 @@ bool validSymbol(string str){
 	return false;
 }
 
+//implementation of validNumber interface
+bool validNumber(string str){
+  pointCount = 0;
+  bool negative = false;
+  if(str[0] == '-')negative = true;
+  int start = 0;
+  if(negative)start = 1;
+  if(!isNumber(str[start]) || str[start] == '0' )return false;
+  for(int i = start+1;i < str.length();i++){
+    if(str[i] == '.'){
+      pointCount++;
+      if(pointCount > 1)return false;
+    }
+    else if(!isNumber(str[i])){
+      return false;
+    }
+  }
+  return true;
+}
+
 
 bool isLetter(char c){
 	return (c >= 'A' && c <= 'Z');

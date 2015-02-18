@@ -32,6 +32,12 @@ enum ERROR_CODE{
 // returns true iff str counts as a valid symbol in TRANSY
 bool validSymbol(string str);
 
+//Precond
+// str is a valid string
+//Postcond:
+// returns true iff str is a valid number in TRANSY
+bool validNumber(string str);
+
 //Precond:
 //  str is a valid string
 //  sep is a valid character

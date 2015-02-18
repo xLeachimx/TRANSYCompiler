@@ -3,7 +3,7 @@
  *Description:
  *   Implementation of the main compiler file
  *Notes:
- *   Only recognizes commands READ, WRITE, STOP, and END
+ *   Only recognizes commands READ, WRITE, STOP, END, CDUMP, CLS, NOP, LISTO
  *   Error reporting limited to bad arguments and bad symbols
  */
 
@@ -14,6 +14,10 @@
 #include "tread.hpp"
 #include "twrite.hpp"
 #include "tstop.hpp"
+#include "tcdump.hpp"
+#include "tcls.hpp"
+#include "tnop.hpp"
+#include "tlisto.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -178,16 +182,40 @@ string scan(string filename, SymTable *symTable){
     case DIM:
       break;
     case CDUMP:
+      if((error=validCdump(line)) == 0){
+	fout << parseCdump(line) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CDUMP command" <<endl;
+      }
       break;
     case LISTO:
+      if((error=validListo(line)) == 0){
+	fout << parseListo(line) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+      }
       break;
     case NOP:
+      if((error=validNop(line)) == 0){
+	fout << parseNop(line) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+      }
       break;
     case AREAD:
       break;
     case AWRITE:
       break;
     case CLS:
+      if((error=validCls(line)) == 0){
+	fout << parseCls(line) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+      }
       break;
     case END:
       fin.close();
@@ -214,13 +242,13 @@ int commandType(string line){
   if(line.substr(0,5) == "WRITE")return WRITE;
   if(line.substr(0,4) == "STOP")return STOP;
   if(line.substr(0,3) == "END")return END;
-  if(line.substr(0,2) == "DIM")return DIM;
-  if(line.substr(0,4) == "CDUMP")return CDUMP;
-  if(line.substr(0,4) == "LISTO")return LISTO;
-  if(line.substr(0,2) == "NOP")return NOP;
-  if(line.substr(0,4) == "AREAD")return AREAD;
-  if(line.substr(0,5) == "AWRITE")return AWRITE;
-  if(line.substr(0,2) == "CLS")return CLS;
+  if(line.substr(0,3) == "DIM")return DIM;
+  if(line.substr(0,5) == "CDUMP")return CDUMP;
+  if(line.substr(0,5) == "LISTO")return LISTO;
+  if(line.substr(0,3) == "NOP")return NOP;
+  if(line.substr(0,5) == "AREAD")return AREAD;
+  if(line.substr(0,6) == "AWRITE")return AWRITE;
+  if(line.substr(0,3) == "CLS")return CLS;
   return NOCOMMAND;
 }
 
