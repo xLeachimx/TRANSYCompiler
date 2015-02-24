@@ -151,16 +151,22 @@ int numberOf(string str, char c){
 //implementation of errorString
 
 string errorString(int error){
-	switch(error){
-		case BAD_ARGS:
-			return "Bad arguments";
-		case BAD_SYMBOLS:
-			return "Bad symbols";
-		case INVALID_SYMBOLS:
-			return "Invalid symbols";
-		case EXCESS_CHARS:
-			return "Excessive characters in line";
-		default:
-			return "Unknown Error";
-	}
+  switch(error){
+  case BAD_ARGS:
+    return "Bad arguments";
+  case BAD_SYMBOLS:
+    return "Bad symbols";
+  case INVALID_SYMBOLS:
+    return "Invalid symbols";
+  case EXCESS_CHARS:
+    return "Excessive characters in line";
+  case UNINITIALIZED_ARRAY:
+    return "Uninitialized array used";
+  case INVALID_NUMBER:
+    return "Invalid number";
+  case BAD_NUMBER:
+    return "Such a number or numbers cannot be used"
+  default:
+    return "Unknown Error";
+  }
 }

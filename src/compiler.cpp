@@ -18,6 +18,7 @@
 #include "tcls.hpp"
 #include "tnop.hpp"
 #include "tlisto.hpp"
+#include "taread.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -206,6 +207,12 @@ string scan(string filename, SymTable *symTable){
       }
       break;
     case AREAD:
+      if((error=validAread(line, symTable)) == 0){
+	fout << parseAread(line, symTable) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+      }
       break;
     case AWRITE:
       break;
