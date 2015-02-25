@@ -68,8 +68,8 @@ string removal(string filename){
 }
 
 string newFilename(string filename){
-  string name = filename.erase(filename.find(".")); // strip the filename of the extension
-  name += ".nospaces";
+  string name = filename.erase(filename.rfind(".")); // strip the filename of the extension
+  name += ".noblanks";
   return name;
 }
 

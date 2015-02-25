@@ -3,7 +3,7 @@
  *Description:
  *   Implementation of the main compiler file
  *Notes:
- *   Only recognizes commands READ, WRITE, STOP, END, CDUMP, CLS, NOP, LISTO, AREAD, AWRITE
+ *   Only recognizes commands READ, WRITE, STOP, END, CDUMP, CLS, NOP, LISTO, AREAD, AWRITE, DIM
  *   Error reporting limited to bad arguments and bad symbols
  */
 
@@ -20,6 +20,7 @@
 #include "tlisto.hpp"
 #include "taread.hpp"
 #include "tawrite.hpp"
+#include "tdim.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -86,7 +87,7 @@ int main(int argc, char **argv){
       }
     }
   }
-  vector<string> files;//holds the filenames for all the .nospaces files
+  vector<string> files;//holds the filenames for all the .noblanks files
   vector<string> objFiles;//holds the filenames for all the .obj files
   //preprocess the files
   for(int i = 0;i < argc;i++){
@@ -96,14 +97,18 @@ int main(int argc, char **argv){
 	files.push_back(processFile(file));
       }
       else{
-	files.push_back(processFile(file+".transy"))
+	files.push_back(processFile(file+".transy"));
       }
     }
     else{
-      files.push_back(argv[i]);
+      if(extName(argv[i]) != ""){
+	files.push_back(argv[i]);
+      }
+      else{
+	files.push_back(string(argv[i])+".noblanks");
+      }
     }
   }
-  
   //prep for first pass
   SymTable symTable = SymTable();
   
@@ -160,7 +165,6 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on READ command" <<endl;
-	haltScan = true;
       }
       break;
     case WRITE:
@@ -169,7 +173,6 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on WRITE command" <<endl;
-	haltScan = true;
       }
       break;
     case STOP:
@@ -178,10 +181,17 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on STOP command" <<endl;
-	haltScan = true;
       }
       break;
     case DIM:
+      if((error=validDim(line,symTable)) == 0){
+	parseDim(line,symTable);
+	//only do this if need be dim op code is exported
+	//fout << parseStop(line) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on DIM command" <<endl;
+      }
       break;
     case CDUMP:
       if((error=validCdump(line)) == 0){
@@ -238,7 +248,6 @@ string scan(string filename, SymTable *symTable){
       break;
     default:
       cout << "No Known Command on line " << lineNumber <<endl;
-      haltScan = true;
       break;
     }
     if(haltScan)break;

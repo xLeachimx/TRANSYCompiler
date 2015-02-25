@@ -32,7 +32,8 @@ bool validSymbol(string str){
 
 //implementation of validNumber interface
 bool validNumber(string str){
-  pointCount = 0;
+  if(str.size() == 1 && str == "0")return true;
+  int pointCount = 0;
   bool negative = false;
   if(str[0] == '-')negative = true;
   int start = 0;
@@ -165,7 +166,9 @@ string errorString(int error){
   case INVALID_NUMBER:
     return "Invalid number";
   case BAD_NUMBER:
-    return "Such a number or numbers cannot be used"
+    return "Such a number or numbers cannot be used";
+  case DUPLICATE_DECLARATION:
+    return "A duplicate declaration occured";
   default:
     return "Unknown Error";
   }

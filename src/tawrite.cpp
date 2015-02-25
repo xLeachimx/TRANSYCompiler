@@ -24,7 +24,7 @@ string parseAwrite(string line, SymTable *symTable){
   sprintf(buffer,"%d",symTable->retrieve(args[0]));
   result += buffer;
   result += ' ';
-  result += args[1] + ' ' + args[2]
+  result += args[1] + ' ' + args[2];
   return result;
 }
 
