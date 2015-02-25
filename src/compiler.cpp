@@ -109,11 +109,11 @@ int main(int argc, char **argv){
       }
     }
   }
-  //prep for first pass
-  SymTable symTable = SymTable();
-  
+  if(argc == 0)files.push_back("test.transy");
   //turn preproecessed files into obj in first pass
   for(int i = 0;i < files.size();i++){
+    //prep for first pass
+    SymTable symTable = SymTable();
     string objFile = scan(files[i],&symTable);
     
     //should an error occur remove all obj and nospaces files
@@ -154,6 +154,7 @@ string scan(string filename, SymTable *symTable){
   getline(fin,line);
   bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
   while(!fin.eof()){
+    bool errorFound = false;
     int error = 0;
     
     line.erase(0,1);//removes the beginning space artifact left by the line tracking system
@@ -165,6 +166,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on READ command" <<endl;
+	errorFound = true;
       }
       break;
     case WRITE:
@@ -173,6 +175,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on WRITE command" <<endl;
+	errorFound = true;
       }
       break;
     case STOP:
@@ -181,6 +184,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on STOP command" <<endl;
+	errorFound = true;
       }
       break;
     case DIM:
@@ -191,6 +195,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on DIM command" <<endl;
+	errorFound = true;
       }
       break;
     case CDUMP:
@@ -199,6 +204,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CDUMP command" <<endl;
+	errorFound = true;
       }
       break;
     case LISTO:
@@ -207,6 +213,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+	errorFound = true;
       }
       break;
     case NOP:
@@ -215,6 +222,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+	errorFound = true;
       }
       break;
     case AREAD:
@@ -231,6 +239,7 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AWRITE command" <<endl;
+	errorFound = true;
       }
       break;
     case CLS:
@@ -239,15 +248,15 @@ string scan(string filename, SymTable *symTable){
       }
       else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	errorFound = true;
       }
       break;
     case END:
-      fin.close();
-      fout.close();
-      return objFilename;
+      haltScan = true;
       break;
     default:
       cout << "No Known Command on line " << lineNumber <<endl;
+      errorFound = true;
       break;
     }
     if(haltScan)break;
@@ -256,7 +265,7 @@ string scan(string filename, SymTable *symTable){
   }
   fin.close();
   fout.close();
-  if(haltScan)return "";
+  if(errorFound)return "";
   return objFilename;
 }
 
