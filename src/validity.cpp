@@ -154,22 +154,22 @@ int numberOf(string str, char c){
 string errorString(int error){
   switch(error){
   case BAD_ARGS:
-    return "Bad arguments";
+    return "Bad arguments ";
   case BAD_SYMBOLS:
-    return "Bad symbols";
+    return "Bad symbols ";
   case INVALID_SYMBOLS:
-    return "Invalid symbols";
+    return "Invalid symbols ";
   case EXCESS_CHARS:
-    return "Excessive characters in line";
+    return "Excessive characters in line ";
   case UNDECLARED_ARRAY:
-    return "Uninitialized array used";
+    return "Uninitialized array used ";
   case INVALID_NUMBER:
-    return "Invalid number";
+    return "Invalid number ";
   case BAD_NUMBER:
-    return "Such a number or numbers cannot be used";
+    return "Such a number or numbers cannot be used ";
   case DUPLICATE_DECLARATION:
-    return "A duplicate declaration occured";
+    return "A duplicate declaration occured ";
   default:
-    return "Unknown Error";
+    return "Unknown Error ";
   }
 }
