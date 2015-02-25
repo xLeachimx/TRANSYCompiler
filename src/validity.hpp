@@ -4,7 +4,7 @@
 *  Interface for functions which help determine validity of
 *  Symbols and such for the TRANSY compiler
 *Notes:
-*  symbol length maxed to 80 such that line are kept short by the programmer without impossing rediculous limitations
+*  symbol length maxed to 80 such that line are kept short by the programmer without impossing ridiculous limitations
 *
 */
 
@@ -24,7 +24,7 @@ enum ERROR_CODE{
 	BAD_SYMBOLS,
 	INVALID_SYMBOLS,
 	EXCESS_CHARS,
-	UNINITIALIZED_ARRAY,
+	UNDECLARED_ARRAY,
 	INVALID_NUMBER,
 	BAD_NUMBER,
 };

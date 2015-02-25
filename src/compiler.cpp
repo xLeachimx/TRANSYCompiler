@@ -3,7 +3,7 @@
  *Description:
  *   Implementation of the main compiler file
  *Notes:
- *   Only recognizes commands READ, WRITE, STOP, END, CDUMP, CLS, NOP, LISTO
+ *   Only recognizes commands READ, WRITE, STOP, END, CDUMP, CLS, NOP, LISTO, AREAD, AWRITE
  *   Error reporting limited to bad arguments and bad symbols
  */
 
@@ -19,6 +19,7 @@
 #include "tnop.hpp"
 #include "tlisto.hpp"
 #include "taread.hpp"
+#include "tawrite.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -211,10 +212,16 @@ string scan(string filename, SymTable *symTable){
 	fout << parseAread(line, symTable) <<endl;
       }
       else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AREAD command" <<endl;
       }
       break;
     case AWRITE:
+      if((error=validAwrite(line, symTable)) == 0){
+	fout << parseAwrite(line, symTable) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AWRITE command" <<endl;
+      }
       break;
     case CLS:
       if((error=validCls(line)) == 0){

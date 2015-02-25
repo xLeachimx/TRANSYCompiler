@@ -1,11 +1,11 @@
-/*FILE:taread.cpp
+/*FILE:tawrite.cpp
  *Author: Michael Huelsman
  *Description:
- *  Implementation of the interface outlined in taread.hpp
+ *  Implementation of the interface outlined in tawrite.hpp
  *Notes:
 */
 
-#include "taread.hpp"
+#include "tawrite.hpp"
 #include "validity.hpp"
 
 //using std::to_string;
@@ -15,10 +15,10 @@ using std::sprintf;
 using std::atoi;
 
 //implementation of parseAread func
-string parseAread(string line, SymTable *symTable){
-  line.erase(0,5);//get rid of AREAD
+string parseAwrite(string line, SymTable *symTable){
+  line.erase(0,6);//get rid of AWRITE
   vector<string> args = split(line,',');
-  string result = "11 ";
+  string result = "12 ";
   int addr = -1;
   char buffer[10];
   sprintf(buffer,"%d",symTable->retrieve(args[0]));
@@ -30,8 +30,8 @@ string parseAread(string line, SymTable *symTable){
 
 
 //implementation of validAread function
-int validAread(string line, SymTable *symTable){
-  line.erase(0,5);//get rid of AREAD
+int validAwrite(string line, SymTable *symTable){
+  line.erase(0,6);//get rid of AWRITE
   vector<string> args = split(line,',');
   if(numberOf(line,',') != 2 || args.size() != 3){
     return BAD_ARGS;

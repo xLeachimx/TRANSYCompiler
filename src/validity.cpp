@@ -160,7 +160,7 @@ string errorString(int error){
     return "Invalid symbols";
   case EXCESS_CHARS:
     return "Excessive characters in line";
-  case UNINITIALIZED_ARRAY:
+  case UNDECLARED_ARRAY:
     return "Uninitialized array used";
   case INVALID_NUMBER:
     return "Invalid number";
