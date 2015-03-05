@@ -21,6 +21,7 @@
 #include "taread.hpp"
 #include "tawrite.hpp"
 #include "tdim.hpp"
+#include "core.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -49,6 +50,14 @@ enum CommandType{
 	NOP,
 	LISTO,
 	CLS,
+	LREAD,
+	LWRITE,
+	LOOP,
+	LOOPEND,
+	IFA,
+	IF,
+	GOTO,
+	SUBP,
 };
 
 //a small struct for use with determining validity of object code

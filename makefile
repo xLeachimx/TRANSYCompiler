@@ -1,4 +1,4 @@
-COMPILEDFILES = table.o preprocess.o compiler.o symtable.o tread.o tstop.o twrite.o validity.o tlisto.o tnop.o tcls.o tcdump.o taread.o tawrite.o tdim.o
+COMPILEDFILES = table.o preprocess.o compiler.o symtable.o tread.o tstop.o twrite.o validity.o tlisto.o tnop.o tcls.o tcdump.o taread.o tawrite.o tdim.o core.o
 SOURCEFILES = $(COMPILEDFILES:.o=.cpp)
 TEMPFOLDER = temp
 MAINFUNC = compiler.cpp
