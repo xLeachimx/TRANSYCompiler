@@ -25,6 +25,8 @@
 #include "table.hpp"
 #include "tgoto.hpp"
 #include "littable.hpp"
+#include "tloopend.hpp"
+#include "tlwrite.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -289,6 +291,24 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	errorFound = true;
       }
       break;
+    case LOOPEND:
+      if((error=validLoopend(line)) == 0){
+	fout << parseLoopend(line) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	errorFound = true;
+      }
+      break;
+    case LWRITE:
+      if((error=validLwrite(line,literals)) == 0){
+	fout << parseLwrite(line,literals) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	errorFound = true;
+      }
+      break;
     case END:
       haltScan = true;
       break;
@@ -323,6 +343,8 @@ int commandType(string line){
   if(line.substr(0,3) == "CLS")return CLS;
   if(line.substr(0,4) == "GOTO")return GOTO;
   if(line.substr(0,5) == "LREAD")return LREAD;
+  if(line.substr(0,8) == "LOOP-END")return LOOPEND;
+  if(line.substr(0,6) == "LWRITE")return LWRITE;
   
   return NOCOMMAND;
 }
