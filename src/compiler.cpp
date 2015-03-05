@@ -132,7 +132,7 @@ int main(int argc, char **argv){
   for(int i = 0;i < files.size();i++){
     //prep for first pass
     SymTable symTable = SymTable();
-    objFile postScan = scan(files[i],&symTable);
+    objFile postScan = scan(files[i],&symTable,&lineLabel[i]);
     
     //should an error occur remove all obj and nospaces files
     if(postScan.valid){
