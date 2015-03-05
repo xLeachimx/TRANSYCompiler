@@ -30,6 +30,27 @@ bool validSymbol(string str){
 	return false;
 }
 
+//implementation of validNumber interface
+bool validNumber(string str){
+  if(str.size() == 1 && str == "0")return true;
+  int pointCount = 0;
+  bool negative = false;
+  if(str[0] == '-')negative = true;
+  int start = 0;
+  if(negative)start = 1;
+  if(!isNumber(str[start]) || str[start] == '0' )return false;
+  for(int i = start+1;i < str.length();i++){
+    if(str[i] == '.'){
+      pointCount++;
+      if(pointCount > 1)return false;
+    }
+    else if(!isNumber(str[i])){
+      return false;
+    }
+  }
+  return true;
+}
+
 
 bool isLetter(char c){
 	return (c >= 'A' && c <= 'Z');
@@ -131,16 +152,24 @@ int numberOf(string str, char c){
 //implementation of errorString
 
 string errorString(int error){
-	switch(error){
-		case BAD_ARGS:
-			return "Bad arguments";
-		case BAD_SYMBOLS:
-			return "Bad symbols";
-		case INVALID_SYMBOLS:
-			return "Invalid symbols";
-		case EXCESS_CHARS:
-			return "Excessive characters in line";
-		default:
-			return "Unknown Error";
-	}
+  switch(error){
+  case BAD_ARGS:
+    return "Bad arguments ";
+  case BAD_SYMBOLS:
+    return "Bad symbols ";
+  case INVALID_SYMBOLS:
+    return "Invalid symbols ";
+  case EXCESS_CHARS:
+    return "Excessive characters in line ";
+  case UNDECLARED_ARRAY:
+    return "Uninitialized array used ";
+  case INVALID_NUMBER:
+    return "Invalid number ";
+  case BAD_NUMBER:
+    return "Such a number or numbers cannot be used ";
+  case DUPLICATE_DECLARATION:
+    return "A duplicate declaration occured ";
+  default:
+    return "Unknown Error ";
+  }
 }

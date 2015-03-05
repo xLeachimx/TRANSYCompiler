@@ -28,4 +28,7 @@
 *.app
 
 # Temp testing files
-*.nospaces
+*.noblanks
+
+# emacs backups
+*~

@@ -1,0 +1,7 @@
+C* fuck this shit
+dim a[100]
+read b,c
+dim d[2],de[3]
+aread a,2,3
+awrite d,0,1
+dim a[10]

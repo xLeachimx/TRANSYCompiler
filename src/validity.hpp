@@ -4,7 +4,7 @@
 *  Interface for functions which help determine validity of
 *  Symbols and such for the TRANSY compiler
 *Notes:
-*  symbol length maxed to 80 such that line are kept short by the programmer without impossing rediculous limitations
+*  symbol length maxed to 80 such that line are kept short by the programmer without impossing ridiculous limitations
 *
 */
 
@@ -24,6 +24,10 @@ enum ERROR_CODE{
 	BAD_SYMBOLS,
 	INVALID_SYMBOLS,
 	EXCESS_CHARS,
+	UNDECLARED_ARRAY,
+	INVALID_NUMBER,
+	BAD_NUMBER,
+	DUPLICATE_DECLARATION,
 };
 
 //Precond:
@@ -31,6 +35,12 @@ enum ERROR_CODE{
 //Postcond:
 // returns true iff str counts as a valid symbol in TRANSY
 bool validSymbol(string str);
+
+//Precond
+// str is a valid string
+//Postcond:
+// returns true iff str is a valid number in TRANSY
+bool validNumber(string str);
 
 //Precond:
 //  str is a valid string
