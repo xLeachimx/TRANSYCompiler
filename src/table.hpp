@@ -7,7 +7,7 @@
 #ifndef TABLE_HPP
 #define TABLE_HPP
 
-#define COREMEMSIZE 1000
+#define MAX_TABLE_ENTRIES
 
 #include <string>
 using std::string;
@@ -30,7 +30,7 @@ private:
     int value;
   };
 
-  TableEntry entries[1000];
+  TableEntry entries[MAX_TABLE_ENTRIES];
   int insertLoc;
 };
 

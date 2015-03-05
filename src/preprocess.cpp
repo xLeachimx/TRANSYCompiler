@@ -4,6 +4,7 @@
 *	Implements the function processFile from the file preprocessor.hpp
 */
 #include "preprocess.hpp"
+#include "validity.hpp"
 #include <fstream>
 using std::ifstream;
 using std::ofstream;
@@ -14,12 +15,13 @@ string removal(string filename);//handles all the removal and capitalization tas
 string newFilename(string filename);
 char capitalize(char c);
 bool isWhiteSpace(char c);
+string removeLabel(string &str);//removes and returns the label
 
-string processFile(string filename){
-  return removal(filename);
+string processFile(string filename, Table *lineLabels){
+  return removal(filename, lineLabels);
 }
 
-string removal(string filename){
+string removal(string filename, Table *lineLabels){
   ifstream origin;
   ofstream nospace;
 
@@ -32,9 +34,14 @@ string removal(string filename){
   getline(origin, line);
 
   int lineCount = 1;
+  int objLine = 0;
 
   while(!origin.eof()){
     bool inQuote = false;
+    label = removeLabel(line);
+    if(label != ""){
+      lineLabels->insert(label,objLine);
+    }
     for(int i = 0;i < line.length();i++){
       if(line[i] == '\"')inQuote = !inQuote;//detect quotes
       if(inQuote)continue;
@@ -59,6 +66,7 @@ string removal(string filename){
     if(line.length() > 0){
       nospace << lineCount << " ";
       nospace << line <<endl;
+      objLine++;
     }
     lineCount++;
     getline(origin,line);
@@ -83,4 +91,17 @@ char capitalize(char c){
 
 bool isWhiteSpace(char c){
   return (c == ' ' || c == '\t');
+}
+
+
+string removeLabel(string &str){
+  string result = "";
+  int colonLoc = str.find(':');//internal to human body
+  if(colonLoc == -1)return "";
+  result = str.substr(0,str.find(':'));
+  if(validSymbol(result)){
+    str.erase(0,str.find(':'));
+    return result;
+  }
+  return "";
 }

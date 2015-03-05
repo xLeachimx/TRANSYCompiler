@@ -22,6 +22,7 @@
 #include "tawrite.hpp"
 #include "tdim.hpp"
 #include "core.hpp"
+#include "table.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -104,15 +105,17 @@ int main(int argc, char **argv){
   }
   vector<string> files;//holds the filenames for all the .noblanks files
   vector<string> objFiles;//holds the filenames for all the .obj files
+  vector<Table> lineLabels;
   //preprocess the files
   for(int i = 0;i < argc;i++){
     if(!skipPreproc){
       string file = argv[i];
+      lineLabel.push_back(Table());
       if(extName(file) != ""){
-	files.push_back(processFile(file));
+	files.push_back(processFile(file, &lineLabel.back()));
       }
       else{
-	files.push_back(processFile(file+".transy"));
+	files.push_back(processFile(file+".transy", &lineLabel.back()));
       }
     }
     else{
