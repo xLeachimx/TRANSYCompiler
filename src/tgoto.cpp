@@ -14,7 +14,7 @@ using std::sprintf;
 //implementation of parseGoto function
 string parseGoto(string line, Table *lineTable){
   line.erase(0,4);//get rid of GOTO
-  result = "10 "
+  result = "8 "
   lineReferred = lineTable->retreive(line);
   char buffer[10];
   sprintf(buffer,"%d",lineReferred);

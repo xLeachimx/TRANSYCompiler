@@ -27,6 +27,7 @@
 #include "littable.hpp"
 #include "tloopend.hpp"
 #include "tlwrite.hpp"
+#include "tifa.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -309,6 +310,15 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	errorFound = true;
       }
       break;
+    case IFA:
+      if((error=validIfa(line,lineLabels,symTable)) == 0){
+	fout << parseIfa(line,lineLabels,symTable) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	errorFound = true;
+      }
+      break;
     case END:
       haltScan = true;
       break;
@@ -345,6 +355,7 @@ int commandType(string line){
   if(line.substr(0,5) == "LREAD")return LREAD;
   if(line.substr(0,8) == "LOOP-END")return LOOPEND;
   if(line.substr(0,6) == "LWRITE")return LWRITE;
+  if(line.substr(0,3) == "IFA")return IFA;
   
   return NOCOMMAND;
 }
