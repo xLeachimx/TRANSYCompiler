@@ -51,6 +51,12 @@ enum CommandType{
 	CLS,
 };
 
+//a small struct for use with determining validity of object code
+struct objFile{
+  string name;
+  bool valid;
+};
+
 //scans file for key words and generates object code from that scanning
 string scan(string filename, SymTable *symTable);
 //determines the keyword categorization of a line
@@ -114,28 +120,24 @@ int main(int argc, char **argv){
   for(int i = 0;i < files.size();i++){
     //prep for first pass
     SymTable symTable = SymTable();
-    string objFile = scan(files[i],&symTable);
+    objFile postScan = scan(files[i],&symTable);
     
     //should an error occur remove all obj and nospaces files
-    if(objFile == ""){
-      for(int j = 0;j < objFiles.size();j++){
-	if(!keepObj)remove(objFiles[j].c_str());
-      }
-      for(int j = 0;j < files.size();j++){
-	if(!keepNoSpace)remove(files[j].c_str());
-      }
-      return 0;
+    if(postScan.valid){
+       objFiles.push_back(postScan.name);
+      if(!keepNoSpace)remove(files[i].c_str());
     }
-    
-    objFiles.push_back(objFile);
-    if(!keepNoSpace)remove(files[i].c_str());
+    else{
+      if(!keepObj)remove(postScan.name.c_str());
+      if(!keepNoSpace)remove(files[i].c_str());
+    }
   }
   return 0;
 }
 
 
 //implementation of scan function
-string scan(string filename, SymTable *symTable){
+objFile scan(string filename, SymTable *symTable){
   //setup the file io for the obj file
   ifstream fin;
   ofstream fout;
@@ -153,8 +155,8 @@ string scan(string filename, SymTable *symTable){
   fin >> lineNumber;
   getline(fin,line);
   bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
+  bool errorFound = false;
   while(!fin.eof()){
-    bool errorFound = false;
     int error = 0;
     
     line.erase(0,1);//removes the beginning space artifact left by the line tracking system
@@ -230,7 +232,8 @@ string scan(string filename, SymTable *symTable){
 	fout << parseAread(line, symTable) <<endl;
       }
       else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AREAD command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AREAD command" <<endl;\
+	errorFound = true;
       }
       break;
     case AWRITE:
@@ -265,8 +268,10 @@ string scan(string filename, SymTable *symTable){
   }
   fin.close();
   fout.close();
-  if(errorFound)return "";
-  return objFilename;
+  objFile result;
+  result.name = objFilename;
+  result.valid = !errorFound;
+  return result;
 }
 
 int commandType(string line){
