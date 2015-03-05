@@ -27,7 +27,7 @@ string parseLread(string line, LitTable *litTable){
 
 //implementation of validLread function
 int validLread(string line, LitTable *litTable){
-  line.erase(0,4);//get rid of LREAD
+  line.erase(0,5);//get rid of LREAD
   if(!validLiteralSymbol(line))return INVALID_SYMBOLS;
   return NO_ERROR;
 }
