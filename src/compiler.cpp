@@ -23,6 +23,8 @@
 #include "tdim.hpp"
 #include "core.hpp"
 #include "table.hpp"
+#include "tgoto.hpp"
+#include "littable.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -68,7 +70,7 @@ struct objFile{
 };
 
 //scans file for key words and generates object code from that scanning
-string scan(string filename, SymTable *symTable);
+string scan(string filename, SymTable *symTable, Table *lineLabels);
 //determines the keyword categorization of a line
 int commandType(string line);
 //removes extension and appends .obj extension
@@ -149,7 +151,7 @@ int main(int argc, char **argv){
 
 
 //implementation of scan function
-objFile scan(string filename, SymTable *symTable){
+objFile scan(string filename, SymTable *symTable, Table *lineLabels){
   //setup the file io for the obj file
   ifstream fin;
   ofstream fout;
@@ -162,6 +164,9 @@ objFile scan(string filename, SymTable *symTable){
     return "";
   }
   
+  //setup some literals
+  LitTable literals = LitTable();
+
   string line;
   int lineNumber = 0;
   fin >> lineNumber;
@@ -266,6 +271,24 @@ objFile scan(string filename, SymTable *symTable){
 	errorFound = true;
       }
       break;
+    case GOTO:
+      if((error=validGoto(line,lineLabels)) == 0){
+	fout << parseGoto(line,lineLabels) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	errorFound = true;
+      }
+      break;
+    case LREAD:
+      if((error=validLread(line,literals)) == 0){
+	fout << parseLread(line,literals) <<endl;
+      }
+      else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	errorFound = true;
+      }
+      break;
     case END:
       haltScan = true;
       break;
@@ -298,6 +321,9 @@ int commandType(string line){
   if(line.substr(0,5) == "AREAD")return AREAD;
   if(line.substr(0,6) == "AWRITE")return AWRITE;
   if(line.substr(0,3) == "CLS")return CLS;
+  if(line.substr(0,4) == "GOTO")return GOTO;
+  if(line.substr(0,5) == "LREAD")return LREAD;
+  
   return NOCOMMAND;
 }
 

@@ -13,7 +13,7 @@ SymTable::SymTable():Table(){
 }
 
 int SymTable::insert(string symbol, int value){
-  if(value+nextAddr >= COREMEMSIZE)return -1;
+  if(value+nextAddr >= MAX_TABLE_ENTRIES)return -1;
   int result = Table::insert(symbol,nextAddr);
   nextAddr = value+nextAddr;
   return result;

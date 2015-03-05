@@ -20,14 +20,22 @@ bool isBadSpecChar(char c);
 
 //implementation of validSymbol interface
 bool validSymbol(string str){
-	if(str.length() > 80)return false;
-	if(isLetter(str[0])){
-		for(int i = 1;i < str.length();i++){
-			if(isBadSpecChar(str[i]))return false;
-		}
-		return true;
-	}
-	return false;
+  if(str.length() > 80)return false;
+  if(isLetter(str[0])){
+    for(int i = 1;i < str.length();i++){
+      if(isBadSpecChar(str[i]))return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+//implementation of validLiteralSymbol interface
+bool validLiteralSymbol(string str){
+  if(str.length() > 80)return false;
+  if(str[0] != '$')return false;
+  str.erase(0,1); //remove $
+  return validSymbol(str);
 }
 
 //implementation of validNumber interface
@@ -169,6 +177,10 @@ string errorString(int error){
     return "Such a number or numbers cannot be used ";
   case DUPLICATE_DECLARATION:
     return "A duplicate declaration occured ";
+  case BAD_LINE_LABEL:
+    return "Incorrect line label ";
+  case BAD_LITERAL:
+    return "Incorrect literal ";
   default:
     return "Unknown Error ";
   }
