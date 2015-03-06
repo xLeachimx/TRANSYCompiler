@@ -127,7 +127,7 @@ int validIf(string line, Table *lineTable, SymTable *symTable){
     symOne = line.substr(0,opLoc);
     line.erase(0,opLoc+2);
     symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.fins(')')+1);
+    line.erase(0,line.find(')')+1);
   }
   else{
     return BAD_ARGS;

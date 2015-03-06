@@ -7,7 +7,6 @@
 #ifndef PREPROCESS_HPP
 #define PREPROCESS_HPP
 
-#include "table.hpp"
 #include <string>
 using std::string;
 
@@ -17,6 +16,6 @@ using std::string;
 //Postcondition:
 //   The return value is the filename of a file where all comments and spaces
 //      have been removed along with all letters being capitalized 
-string processFile(string filename, Table lineLabels);
+string processFile(string filename);
 
 #endif
