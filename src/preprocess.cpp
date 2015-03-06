@@ -16,8 +16,8 @@ string newFilename(string filename);
 char capitalize(char c);
 bool isWhiteSpace(char c);
 
-string processFile(string filename, Table *lineLabels){
-  return removal(filename, lineLabels);
+string processFile(string filename){
+  return removal(filename);
 }
 
 string removal(string filename){

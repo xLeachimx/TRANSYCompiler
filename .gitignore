@@ -32,3 +32,6 @@
 
 # emacs backups
 *~
+
+# assignment turnins
+*.tar

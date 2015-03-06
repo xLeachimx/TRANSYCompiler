@@ -17,7 +17,7 @@ using std::atoi;
 //implementation of parseSubp func
 string parseSubp(string line, SymTable *symTable){
   line.erase(0,4);//get rid of Subp
-  string result = "13 "
+  string result = "13 ";
   int leftBrac = line.find('(');
   int rightBrac = line.rfind(')');
   string func = line.substr(0,leftBrac);
@@ -25,22 +25,22 @@ string parseSubp(string line, SymTable *symTable){
   string parse = line.substr(0,rightBrac);
 
   if(func == "SIN"){
-    result += "0 "
+    result += "0 ";
   }
   else if(func == "COS"){
-    result += "1 "
+    result += "1 ";
   }
   else if(func == "EXP"){
-    result += "2 "
+    result += "2 ";
   }
   else if(func == "ABS"){
-    result += "3 "
+    result += "3 ";
   }
   else if(func == "ALG"){
-    result += "4 "
+    result += "4 ";
   }
   else if(func == "SQR"){
-    result += "5 "
+    result += "5 ";
   }
 
   vector<string> args = split(parse,',');
@@ -53,7 +53,7 @@ string parseSubp(string line, SymTable *symTable){
 
   symLoc = symTable->retrieve(args[1]);
   if(symLoc == -1){
-    symLoc == symTable->insert(args[1],1)
+    symLoc = symTable->insert(args[1],1);
   }
   sprintf(buffer,"%d",symLoc);
   result += buffer;
@@ -84,21 +84,16 @@ int validSubp(string line, SymTable *symTable){
     if(symLoc == -1)return BAD_ARGS;
   }
   else if(validNumber(args[0])){
+    args[0] = standardizeNumber(args[0]);
     int symLoc = symTable->retrieve(args[0]);
-    if(symLoc == -1)symTable->insert(args[0]);
+    if(symLoc == -1)symTable->insert(args[0],1);
   }
   else{
     return INVALID_SYMBOLS;
   }
 
   if(!validSymbol(args[1])){
-    if(validNumber(args[0])){
-      int symLoc = symTable->retrieve(args[0]);
-      if(symLoc == -1)symTable->insert(args[0]);
-    }
-    else{
-      return BAD_ARGS;
-    }
+    return BAD_ARGS;
   }
   return NO_ERROR;
 }

@@ -4,12 +4,17 @@
  *  Interface for a core ADT
  */
 
+#ifndef CORE_HPP
+#define CORE_HPP
 #define CORE_SIZE 1001
 #define MAX_CORE_LOC 999
 #define DEFAULT_VAL 0.1234567
 #define VALID_FLAG_LOC 1000
 #define COMP_SUCCEED 1
 #define COMP_FAIL 0
+
+#include <string>
+using std::string;
 
 class Core{
 public:
@@ -42,3 +47,5 @@ protected:
 private:
   double data[CORE_SIZE];
 };
+
+#endif

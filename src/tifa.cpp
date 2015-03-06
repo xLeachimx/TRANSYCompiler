@@ -12,17 +12,17 @@
 using std::sprintf;
 
 //implementation of parseIfa function
-string parseIfa(string line, Table *lineTablem, SymTable *symTable){
+string parseIfa(string line, Table *lineTable, SymTable *symTable){
   line.erase(0,3);//get rid of IFA
-  result = "10 ";
+  string result = "10 ";
   line.erase(0,1);//removes (
   string internal = line.substr(0,line.find(')'));
   line.erase(0,line.find(')')+1);
-  symLoc = symTable->retrieve(internal);
+  int symLoc = symTable->retrieve(internal);
   char buffer[10];
   sprintf(buffer,"%d",symLoc);
   result += buffer;
-  vector<string> labels = split(str, ',');
+  vector<string> labels = split(line, ',');
   for(int i = 0;i < labels.size();i++){
     int lineReferred = lineTable->retrieve(labels[i]);
     sprintf(buffer,"%d",lineReferred);
@@ -42,18 +42,18 @@ int validIfa(string line, Table *lineTable, SymTable *symTable){
   if(!validSymbol(internal) && !validNumber(internal))return BAD_ARGS;
   int memLoc = symTable->retrieve(internal);
   if(validSymbol(internal)){
-    if(memLoc == -1)return INVALID_SYMBOL;
+    if(memLoc == -1)return INVALID_SYMBOLS;
   }
   else{
     if(memLoc == -1){
-      symTable->insert(internal,1)
+      symTable->insert(internal,1);
     }
   }
   line.erase(0,line.find(')')+1); //get rid of already used bits
-  vector<string> labels = split(str, ',');
+  vector<string> labels = split(line, ',');
   for(int i = 0;i < labels.size();i++){
     int lineReferred = lineTable->retrieve(labels[i]);
-    if(lineReferred = -1)return BAD_LINE_LABEL;
+    if(lineReferred == -1)return BAD_LINE_LABEL;
   }
   return NO_ERROR;
 }

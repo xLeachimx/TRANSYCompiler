@@ -42,11 +42,13 @@ int validAread(string line, SymTable *symTable){
   if(symTable->retrieve(args[0]) == -1)return UNDECLARED_ARRAY;
   if(symTable->retrieve(args[1]) == -1){
     if(!validNumber(args[1]))return INVALID_SYMBOLS;
-    symTable->insert(args[1])
+    args[1] = standardizeNumber(args[1]);
+    if(symTable->retrieve(args[1]) == -1)symTable->insert(args[1],1);
   }
   if(symTable->retrieve(args[2]) == -1){
     if(!validNumber(args[2]))return INVALID_SYMBOLS;
-    symTable->insert(args[2]);
+    args[2] = standardizeNumber(args[2]);
+    if(symTable->retrieve(args[2]) == -1)symTable->insert(args[2],1);
   }
   return NO_ERROR;
 }

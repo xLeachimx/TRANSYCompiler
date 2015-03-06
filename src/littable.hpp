@@ -17,7 +17,7 @@ public:
   LitTable();
 
   //override the insert function such that value means the location
-  int insert(string symbol, int value);
+  int insert(string symbol);
 
   //writes contents to a file
   void toFile(string filename);

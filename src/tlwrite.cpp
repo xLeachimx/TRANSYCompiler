@@ -14,7 +14,7 @@ using std::sprintf;
 //implementation of parseLwrite function
 string parseLwrite(string line, LitTable *litTable){
   line.erase(0,5);//get rid of LREAD
-  result = "17 ";
+  string result = "17 ";
   int litLoc = litTable->retrieve(line);
   char buffer[10];
   sprintf(buffer,"%d",litLoc);

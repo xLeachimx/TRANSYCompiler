@@ -14,8 +14,8 @@ using std::sprintf;
 //implementation of parseGoto function
 string parseGoto(string line, Table *lineTable){
   line.erase(0,4);//get rid of GOTO
-  result = "8 "
-  lineReferred = lineTable->retreive(line);
+  string result = "8 ";
+  int lineReferred = lineTable->retrieve(line);
   char buffer[10];
   sprintf(buffer,"%d",lineReferred);
   result += buffer;
@@ -26,7 +26,7 @@ string parseGoto(string line, Table *lineTable){
 int validGoto(string line, Table *lineTable){
   line.erase(0,4);//get rid of GOTO
   if(!validSymbol(line))return INVALID_SYMBOLS;
-  lineReferred = lineTable->retrieve(line);
+  int lineReferred = lineTable->retrieve(line);
   if(lineReferred == -1)return BAD_LINE_LABEL;
   return NO_ERROR;
 }

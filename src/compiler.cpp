@@ -27,7 +27,9 @@
 #include "littable.hpp"
 #include "tloopend.hpp"
 #include "tlwrite.hpp"
+#include "tlread.hpp"
 #include "tifa.hpp"
+#include "tif.hpp"
 #include "tloop.hpp"
 #include "tsubp.hpp"
 
@@ -75,19 +77,21 @@ struct objFile{
 };
 
 //scans file for key words and generates object code from that scanning
-string scan(string filename, SymTable *symTable, Table *lineLabels);
+objFile scan(string filename, SymTable *symTable, Table *lineLabels);
 //determines the keyword categorization of a line
 int commandType(string line);
 //removes extension and appends .obj extension
 string objName(string filename);
 //removes extension and appends .literal extension
-string litName(stinrg filename);
+string litName(string filename);
 //removes extension and appends .core extension
 string coreName(string filename);
 //grabs the extension of the filename
 string extName(string filename);
 //scans file and removes line label
 void populateLabelTable(string filename, Table *lineLabels);
+//removes the line label from the str(if one is there)
+string removeLineLabel(string str);
 
 int main(int argc, char **argv){
 	//flags
@@ -172,7 +176,9 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	
 	if(!fin.is_open()){
 		cout << "Could not open file:" << filename <<endl;
-		return "";
+		objFile blank;
+		blank.valid = false;
+		return blank;
 	}
 	
 	//setup some literals
@@ -294,8 +300,8 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 			}
 			break;
 		case LREAD:
-			if((error=validLread(line,literals)) == 0){
-	fout << parseLread(line,literals) <<endl;
+			if((error=validLread(line,&literals)) == 0){
+	fout << parseLread(line,&literals) <<endl;
 			}
 			else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LREAD command" <<endl;
@@ -312,8 +318,8 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 			}
 			break;
 		case LWRITE:
-			if((error=validLwrite(line,literals)) == 0){
-	fout << parseLwrite(line,literals) <<endl;
+			if((error=validLwrite(line,&literals)) == 0){
+	fout << parseLwrite(line,&literals) <<endl;
 			}
 			else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LWRITE command" <<endl;
@@ -330,8 +336,8 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 			}
 			break;
 			case IF:
-			if((error=validIfa(line,lineLabels,symTable)) == 0){
-	fout << parseIfa(line,lineLabels,symTable) <<endl;
+			if((error=validIf(line,lineLabels,symTable)) == 0){
+	fout << parseIf(line,lineLabels,symTable) <<endl;
 			}
 			else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IF command" <<endl;
@@ -340,7 +346,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 			break;
 			case LOOP:
 			if((error=validLoop(line,symTable)) == 0){
-	fout << parseIfa(line,symTable) <<endl;
+	fout << parseLoop(line,symTable) <<endl;
 			}
 			else{
 	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP command" <<endl;
@@ -373,8 +379,8 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	objFile result;
 	result.name = objFilename;
 	result.valid = !errorFound;
-	symTable->toCore().toFile(coreName(filename));
-	literals->toFile(litName(filename));
+	symTable->genCore().toFile(coreName(filename));
+	literals.toFile(litName(filename));
 	return result;
 }
 
@@ -436,15 +442,15 @@ void populateLabelTable(string filename, Table *lineLabels){
 	}
 
 	int temp = 0;
-	cin >> temp;//remove line relation
-	string line = "":
+	fin >> temp;//remove line relation
+	string line = "";
 	getline(fin,line);
 	line.erase(0,1);//remove artifact space
 
 	int lineCount = 0;
 
-	while(!fin.eof){
-		colonLoc = line.find(':'); //internal to human body
+	while(!fin.eof()){
+		int colonLoc = line.find(':'); //internal to human body
 		string label = line.substr(0,colonLoc);
 		if(validSymbol(label)){
 			lineLabels->insert(label,lineCount);
@@ -456,9 +462,9 @@ void populateLabelTable(string filename, Table *lineLabels){
 }
 
 string removeLineLabel(string str){
-	colonLoc = line.find(':'); //internal to human body
-	string label = line.substr(0,colonLoc);
-	if(!validSymbol(label)){
+	int colonLoc = str.find(':'); //internal to human body
+	string label = str.substr(0,colonLoc);
+	if(colonLoc == -1 || !validSymbol(label)){
 		return str;
 	}
 	str.erase(0,colonLoc+1);

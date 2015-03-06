@@ -188,12 +188,11 @@ string errorString(int error){
   default:
     return "Unknown Error ";
   }
-
+}
   //implementation of standardizeNumber
-  string standardizeNumber(string str){
-    char buffer[30];
-    sprintf(buffer,"%f",atof(str.c_str()));
-    str = buffer;
-    return str;
-  }
+string standardizeNumber(string str){
+  char buffer[30];
+  sprintf(buffer,"%f",atof(str.c_str()));
+  str = buffer;
+  return str;
 }

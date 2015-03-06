@@ -15,7 +15,7 @@ Core::Core(){
   for(int i = 0;i <= MAX_CORE_LOC;i++){
     data[i] = DEFAULT_VAL;
   }
-  data[VALID_FLAG_LOC] = COMP_FAIL
+  data[VALID_FLAG_LOC] = COMP_FAIL;
 }
 
 //implementation of the changeAddr
@@ -35,7 +35,7 @@ double Core::getAddrContent(int addr){
   return data[addr];
 }
 
-void toFile(string filename){
+void Core::toFile(string filename){
   ofstream fout;
   fout.open(filename.c_str());
   for(int i = 0;i < MAX_CORE_LOC;i++){

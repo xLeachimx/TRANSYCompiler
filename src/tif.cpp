@@ -12,9 +12,9 @@
 using std::sprintf;
 
 //implementation of parseIf function
-string parseIf(string line, Table *lineTablem, SymTable *symTable){
+string parseIf(string line, Table *lineTable, SymTable *symTable){
   line.erase(0,2);//get rid of IF
-  result = "18 ";
+  string result = "18 ";
   line.erase(0,1);//removes (
   string internal = line.substr(0,line.find(')'));
   line.erase(0,line.find(')')+1);
@@ -48,7 +48,7 @@ string parseIf(string line, Table *lineTablem, SymTable *symTable){
     comp = 3;
     line.erase(0,opLoc+2);
     symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')'+1);
+    line.erase(0,line.find(')')+1);
   }
   else if((opLoc=line.find(">")) != -1){
     symOne = line.substr(0,opLoc);
@@ -62,9 +62,9 @@ string parseIf(string line, Table *lineTablem, SymTable *symTable){
     comp = 5;
     line.erase(0,opLoc+2);
     symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.fins(')')+1);
+    line.erase(0,line.find(')')+1);
   }
-  symLoc = symTable->retrieve(symOne);
+  int symLoc = symTable->retrieve(symOne);
   char buffer[10];
   sprintf(buffer,"%d",symLoc);
   result += buffer;
@@ -115,7 +115,7 @@ int validIf(string line, Table *lineTable, SymTable *symTable){
     symOne = line.substr(0,opLoc);
     line.erase(0,opLoc+2);
     symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')'+1);
+    line.erase(0,line.find(')')+1);
   }
   else if((opLoc=line.find(">")) != -1){
     symOne = line.substr(0,opLoc);
@@ -134,21 +134,23 @@ int validIf(string line, Table *lineTable, SymTable *symTable){
   }
   if(!validSymbol(symOne)){
     if(!validNumber(symOne))return BAD_ARGS;
-    if(symTable->retrieve(symOne) == -1)symTable->insert(standardizeNumber(symOne),1);
+    symOne = standardizeNumber(symOne);
+    if(symTable->retrieve(symOne) == -1)symTable->insert(symOne,1);
   }
   else{
-    if(symTable->retrieve(symOne) == -1)return INVALID_SYMBOL;
+    if(symTable->retrieve(symOne) == -1)return INVALID_SYMBOLS;
   }
   if(!validSymbol(symTwo)){
     if(!validNumber(symTwo))return BAD_ARGS;
-    if(symTable->retrieve(symTwo) == -1)symTable->insert(standardizeNumber(symTwo),1);
+    symTwo = standardizeNumber(symTwo);
+    if(symTable->retrieve(symTwo) == -1)symTable->insert(symTwo,1);
   }
   else{
-    if(symTable->retrieve(symTwo) == -1)return INVALID_SYMBOL;
+    if(symTable->retrieve(symTwo) == -1)return INVALID_SYMBOLS;
   }
-  symLoc = symTable->retrieve(symTwo);
+  int symLoc = symTable->retrieve(symTwo);
   if(line.substr(0,4) != "THEN")return BAD_ARGS;
   line.erase(0,4);//remove THEN
-  if(lineTable->retrieve(line) == -1)BAD_LINE_LABEL;
+  if(lineTable->retrieve(line) == -1)return BAD_LINE_LABEL;
   return NO_ERROR;
 }

@@ -23,7 +23,7 @@ string parseLoop(string line, SymTable *symTable){
   int eqlLoc = args[0].find('=');
   string symbol = args[0].substr(0,eqlLoc);
   args[0].erase(0,eqlLoc+1);
-  symLoc = -1;
+  int symLoc = -1;
   if((symLoc=symTable->retrieve(symbol)) == -1){
     symLoc = symTable->insert(symbol,1);
   }
@@ -49,8 +49,8 @@ string parseLoop(string line, SymTable *symTable){
 }
 
 
-//implementation of validAread function
-int validAread(string line, SymTable *symTable){
+//implementation of validLoop function
+int validLoop(string line, SymTable *symTable){
   line.erase(0,4);//get rid of LOOP
   vector<string> args = split(line,',');
   if(numberOf(line,',') != 2)return BAD_ARGS;
@@ -61,7 +61,7 @@ int validAread(string line, SymTable *symTable){
   int eqlLoc = args[0].find('=');
   string symbol = args[0].substr(0,eqlLoc);
   args[0].erase(0,eqlLoc+1);
-  symLoc = -1;
+  int symLoc = -1;
   if(!validSymbol(symbol))return INVALID_SYMBOLS;
 
   for(int i = 0;i < 3;i++){
@@ -70,8 +70,9 @@ int validAread(string line, SymTable *symTable){
     }
     else{
       if(!validNumber(args[i]))return BAD_ARGS;
+      args[i] = standardizeNumber(args[i]);
       if(symTable->retrieve(args[i]) == -1){
-        symTable->insert(standarizeNumber(args[i]),1);
+        symTable->insert(args[i],1);
       }
     }
   }
