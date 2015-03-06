@@ -43,7 +43,11 @@ def getListOfFilesToMake
            'tgoto.cpp',
            'tgoto.hpp',
            'tif.hpp',
-           'tif.cpp'
+           'tif.cpp',
+           'tloop.cpp',
+           'tloop.hpp',
+           'tsubp.hpp',
+           'tsubp.cpp'
           ]
 end
 

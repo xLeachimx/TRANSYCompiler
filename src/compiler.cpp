@@ -28,6 +28,8 @@
 #include "tloopend.hpp"
 #include "tlwrite.hpp"
 #include "tifa.hpp"
+#include "tloop.hpp"
+#include "tsubp.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -287,7 +289,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	fout << parseGoto(line,lineLabels) <<endl;
 			}
 			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on GOTO command" <<endl;
 	errorFound = true;
 			}
 			break;
@@ -296,7 +298,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	fout << parseLread(line,literals) <<endl;
 			}
 			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LREAD command" <<endl;
 	errorFound = true;
 			}
 			break;
@@ -305,7 +307,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	fout << parseLoopend(line) <<endl;
 			}
 			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP-END command" <<endl;
 	errorFound = true;
 			}
 			break;
@@ -314,7 +316,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	fout << parseLwrite(line,literals) <<endl;
 			}
 			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LWRITE command" <<endl;
 	errorFound = true;
 			}
 			break;
@@ -323,7 +325,34 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	fout << parseIfa(line,lineLabels,symTable) <<endl;
 			}
 			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IFA command" <<endl;
+	errorFound = true;
+			}
+			break;
+			case IF:
+			if((error=validIfa(line,lineLabels,symTable)) == 0){
+	fout << parseIfa(line,lineLabels,symTable) <<endl;
+			}
+			else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IF command" <<endl;
+	errorFound = true;
+			}
+			break;
+			case LOOP:
+			if((error=validLoop(line,symTable)) == 0){
+	fout << parseIfa(line,symTable) <<endl;
+			}
+			else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP command" <<endl;
+	errorFound = true;
+			}
+			break;
+			case SUBP:
+			if((error=validSubp(line,symTable)) == 0){
+	fout << parseSubp(line,symTable) <<endl;
+			}
+			else{
+	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on SUBP command" <<endl;
 	errorFound = true;
 			}
 			break;
@@ -366,6 +395,9 @@ int commandType(string line){
 	if(line.substr(0,8) == "LOOP-END")return LOOPEND;
 	if(line.substr(0,6) == "LWRITE")return LWRITE;
 	if(line.substr(0,3) == "IFA")return IFA;
+	if(line.substr(0,2) == "IF")return IF;
+	if(line.substr(0,4) == "LOOP")return LOOP;
+	if(line.substr(0,4) == "SUBP")return SUBP;
 	
 	return NOCOMMAND;
 }
