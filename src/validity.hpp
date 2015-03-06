@@ -81,4 +81,10 @@ int numberOf(string str, char c);
 //  The corresponing string to error will be returned
 string errorString(int error);
 
+//Precond:
+//  str represents a number
+//Postcond:
+//  The returned string is standradized numerical string
+string standardizeNumber(string str);
+
 #endif

@@ -29,7 +29,21 @@ def getListOfFilesToMake
            'twrite.cpp',
            'twrite.hpp',
            'validity.hpp',
-           'validity.cpp'
+           'validity.cpp',
+           'tlread.cpp',
+           'tlread.hpp',
+           'tlwrite.cpp',
+           'tlwrite.hpp',
+           'tloopend.hpp',
+           'tloopend.cpp',
+           'littable.cpp',
+           'littable.hpp',
+           'tifa.hpp',
+           'tifa.cpp',
+           'tgoto.cpp',
+           'tgoto.hpp',
+           'tif.hpp',
+           'tif.cpp'
           ]
 end
 

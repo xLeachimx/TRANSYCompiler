@@ -8,8 +8,12 @@
 #include "validity.hpp"
 
 #include <iostream>
+#include <cstdio>
+#include <cstdlib>
 using std::cout;
 using std::endl;
+using std::sprintf;
+using std::atof;
 
 //helper functions
 bool isLetter(char c);
@@ -183,5 +187,13 @@ string errorString(int error){
     return "Incorrect literal ";
   default:
     return "Unknown Error ";
+  }
+
+  //implementation of standardizeNumber
+  string standardizeNumber(string str){
+    char buffer[30];
+    sprintf(buffer,"%f",atof(str.c_str()));
+    str = buffer;
+    return str;
   }
 }
