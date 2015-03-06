@@ -5,6 +5,12 @@
  *
  */
 //implementation of core constructor
+
+#include "core.hpp"
+#include <fstream>
+using std::endl;
+using std::ofstream;
+
 Core::Core(){
   for(int i = 0;i <= MAX_CORE_LOC;i++){
     data[i] = DEFAULT_VAL;
@@ -27,4 +33,13 @@ double Core::getAddrContent(int addr){
     return DEFAULT_VAL;
   }
   return data[addr];
+}
+
+void toFile(string filename){
+  ofstream fout;
+  fout.open(filename.c_str());
+  for(int i = 0;i < MAX_CORE_LOC;i++){
+    fout << data[i] <<endl;
+  }
+  fout.close();
 }

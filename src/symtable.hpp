@@ -10,6 +10,7 @@
 #define SYMTABLE_HPP
 
 #include "table.hpp"
+#include "core.hpp"
 
 
 class SymTable: public Table{
@@ -18,6 +19,9 @@ public:
 
   //override the insert function such that value means the number of core address taken
   int insert(string symbol, int value);
+
+  //generates a core instance that reflects the symbol table
+  Core genCore();
 protected:
 private:
   int nextAddr;

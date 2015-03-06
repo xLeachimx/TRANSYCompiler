@@ -32,6 +32,12 @@ public:
   //Postcond:
   // Returns the value in the address specified by addr
   double getAddrContent(int addr);
+
+  //Precond:
+  //  filename is a valid filename
+  //Postcond:
+  //  Core is output to the specified file
+  void toFile(string filename);
 protected:
 private:
   double data[CORE_SIZE];

@@ -344,6 +344,8 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 	objFile result;
 	result.name = objFilename;
 	result.valid = !errorFound;
+	symTable->toCore().toFile(coreName(filename));
+	literals->toFile(litName(filename));
 	return result;
 }
 

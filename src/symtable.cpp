@@ -18,3 +18,12 @@ int SymTable::insert(string symbol, int value){
   nextAddr = value+nextAddr;
   return result;
 }
+
+
+Core SymTable::genCore(){
+	Core result = Core();
+	for(int i = 0;i < insertLoc;i++){
+		result.changeAddr(i,entries[i].value);
+	}
+	return result;
+}

@@ -18,6 +18,9 @@ public:
 
   //override the insert function such that value means the location
   int insert(string symbol, int value);
+
+  //writes contents to a file
+  void toFile(string filename);
 protected:
 private:
   int nextAddr;

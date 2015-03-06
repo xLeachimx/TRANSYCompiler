@@ -6,6 +6,9 @@
 */
 
  #include "littable.hpp"
+ #include <fstream>
+ using std::endl;
+ using std::ofstream;
 
 
 LitTable::LitTable():Table(){
@@ -17,4 +20,19 @@ int LitTable::insert(string symbol){
   int result = Table::insert(symbol,nextAddr);
   nextAddr++;
   return result;
+}
+
+void toFile(string filename){
+	if(insertLoc == 0)return;
+	ofstream fout;
+	fout.open(filename.c_str());
+	for(int i = 0;i < insertLoc;i++){
+		if(entries[i].symbol[0] == '$'){
+			fout << "" <<endl;//handle variables
+		}
+		else{
+			fout << entries[i] <<endl;
+		}
+	}
+	fout.close();
 }
