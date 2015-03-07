@@ -22,48 +22,50 @@ string parseIf(string line, Table *lineTable, SymTable *symTable){
   int comp = -1;
   string symOne = "";
   string symTwo = "";
-  if((opLoc=line.find("=")) != -1){
-    symOne = line.substr(0,opLoc);
+  if((opLoc=internal.find("=")) != -1){
+    symOne = internal.substr(0,opLoc);
     comp = 0;
-    line.erase(0,opLoc+1);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find("<=")) != -1){
-    symOne = line.substr(0,opLoc);
+  else if((opLoc=internal.find("<=")) != -1){
+    symOne = internal.substr(0,opLoc);
     comp = 1;
-    line.erase(0,opLoc+2);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find("<")) != -1){
-    symOne = line.substr(0,opLoc);
+  else if((opLoc=internal.find("<")) != -1){
+    symOne = internal.substr(0,opLoc);
     comp = 2;
-    line.erase(0,opLoc+1);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find(">=")) != -1){
-    symOne = line.substr(0,opLoc);
+  else if((opLoc=internal.find(">=")) != -1){
+    symOne = internal.substr(0,opLoc);
     comp = 3;
-    line.erase(0,opLoc+2);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find(">")) != -1){
-    symOne = line.substr(0,opLoc);
+  else if((opLoc=internal.find(">")) != -1){
+    symOne = internal.substr(0,opLoc);
     comp = 4;
-    line.erase(0,opLoc+1);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find("!=")) != -1){
-    symOne = line.substr(0,opLoc);
+  else if((opLoc=internal.find("!=")) != -1){
+    symOne = internal.substr(0,opLoc);
     comp = 5;
-    line.erase(0,opLoc+2);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
+  if(validNumber(symOne))symOne = standardizeNumber(symOne);
+  if(validNumber(symTwo))symTwo = standardizeNumber(symTwo);
   int symLoc = symTable->retrieve(symOne);
   char buffer[10];
   sprintf(buffer,"%d",symLoc);
@@ -86,48 +88,48 @@ string parseIf(string line, Table *lineTable, SymTable *symTable){
 //implementation of validIf function
 int validIf(string line, Table *lineTable, SymTable *symTable){
   line.erase(0,2);//get rid of IF
-  if(line[0] != ')')return BAD_ARGS;
+  if(line[0] != '(')return BAD_ARGS;
   line.erase(0,1);//removes (
   string internal = line.substr(0,line.find(')'));
   line.erase(0,line.find(')')+1);
   int opLoc = -1;
   string symOne = "";
   string symTwo = "";
-  if((opLoc=line.find("=")) != -1){
-    symOne = line.substr(0,opLoc);
-    line.erase(0,opLoc+1);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+  if((opLoc=internal.find("=")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find("<=")) != -1){
-    symOne = line.substr(0,opLoc);
-    line.erase(0,opLoc+2);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+  else if((opLoc=internal.find("<=")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find("<")) != -1){
-    symOne = line.substr(0,opLoc);
-    line.erase(0,opLoc+1);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+  else if((opLoc=internal.find("<")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find(">=")) != -1){
-    symOne = line.substr(0,opLoc);
-    line.erase(0,opLoc+2);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+  else if((opLoc=internal.find(">=")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find(">")) != -1){
-    symOne = line.substr(0,opLoc);
-    line.erase(0,opLoc+1);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+  else if((opLoc=internal.find(">")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=line.find("!=")) != -1){
-    symOne = line.substr(0,opLoc);
-    line.erase(0,opLoc+2);
-    symTwo = line.substr(0,line.find(')'));
-    line.erase(0,line.find(')')+1);
+  else if((opLoc=internal.find("!=")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
   }
   else{
     return BAD_ARGS;

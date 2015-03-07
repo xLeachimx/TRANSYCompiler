@@ -30,11 +30,11 @@ string removal(string filename){
   if(!origin.is_open())return "";
 
   string line;
-  getline(origin, line);
 
   int lineCount = 1;
 
-  while(!origin.eof()){
+  do{
+    getline(origin, line);
     bool inQuote = false;
     for(int i = 0;i < line.length();i++){
       if(line[i] == '\"')inQuote = !inQuote;//detect quotes
@@ -62,8 +62,7 @@ string removal(string filename){
       nospace << line <<endl;
     }
     lineCount++;
-    getline(origin,line);
-  }
+  }while(!origin.eof());
 
   return newFilename(filename);
 }

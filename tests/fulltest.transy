@@ -1,0 +1,8 @@
+label: read a,b,c
+goto label
+ifa(a)label,label,label
+if(a < b) then label
+loop i=10,b,c
+loop-end
+lwrite "Hello, World!"
+lwrite "Worry!"

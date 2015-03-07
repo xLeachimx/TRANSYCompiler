@@ -20,7 +20,7 @@ Core::Core(){
 
 //implementation of the changeAddr
 bool Core::changeAddr(int addr, double to){
-  if(addr <= MAX_CORE_LOC || addr < 0){
+  if(addr >= MAX_CORE_LOC || addr < 0){
     return false;
   }
   data[addr] = to;
@@ -29,7 +29,7 @@ bool Core::changeAddr(int addr, double to){
 
 //implementation of the getAddrContent 
 double Core::getAddrContent(int addr){
-  if(addr <= MAX_CORE_LOC || addr < 0){
+  if(addr >= MAX_CORE_LOC || addr < 0){
     return DEFAULT_VAL;
   }
   return data[addr];

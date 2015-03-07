@@ -29,9 +29,9 @@ int validLwrite(string line, LitTable *litTable){
     if(!validLiteralSymbol(line))return INVALID_SYMBOLS;
     return NO_ERROR;
   }
-  else if(line[0] == '\''){
+  else if(line[0] == '\"'){
     line.erase(0,1);//remove the first '
-    int endLoc = line.find('\'');
+    int endLoc = line.find('\"');
     if(endLoc == -1)return BAD_LITERAL;
     string lit = line.substr(0,endLoc);
     line.erase(0,endLoc+1);

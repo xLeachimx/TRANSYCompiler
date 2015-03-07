@@ -11,8 +11,8 @@
 //using std::to_string;
 #include <cstdio>
 #include <cstdlib>
+using std::printf;
 using std::sprintf;
-using std::atoi;
 
 //implementation of parseLoop func
 string parseLoop(string line, SymTable *symTable){
@@ -30,21 +30,14 @@ string parseLoop(string line, SymTable *symTable){
   char buffer[10];
   sprintf(buffer,"%d",symLoc); 
   result += buffer;
-  result += ' ';
 
-  symLoc = symTable->retrieve(args[0]);
-  sprintf(buffer,"%d",symLoc);
-  result += buffer;
-  result += ' ';
-
-  symLoc = symTable->retrieve(args[1]);
-  sprintf(buffer,"%d",symLoc);
-  result += buffer;
-  result += ' ';
-
-  symLoc = symTable->retrieve(args[2]);
-  sprintf(buffer,"%d",symLoc);
-  result += buffer;
+  for(int i = 0;i < 3;i++){
+    result += ' ';
+    if(validNumber(args[i]))args[i] = standardizeNumber(args[i]);
+    symLoc = symTable->retrieve(args[i]);
+    sprintf(buffer,"%d",symLoc);
+    result += buffer;
+  }
   return result;
 }
 
@@ -54,7 +47,7 @@ int validLoop(string line, SymTable *symTable){
   line.erase(0,4);//get rid of LOOP
   vector<string> args = split(line,',');
   if(numberOf(line,',') != 2)return BAD_ARGS;
-  if(numberOf(line,'='))return BAD_ARGS;
+  if(numberOf(line,'=') != 1)return BAD_ARGS;
   if(args.size() != 3)return BAD_ARGS;
 
   //detect intialization

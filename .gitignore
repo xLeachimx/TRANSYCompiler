@@ -29,6 +29,8 @@
 
 # Temp testing files
 *.noblanks
+*.core
+*.literal
 
 # emacs backups
 *~

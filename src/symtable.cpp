@@ -5,8 +5,13 @@
  *Notes:
 */
 
- #include "symtable.hpp"
-
+#include "symtable.hpp"
+#include "validity.hpp"
+#include <cstdlib>
+using std::atof;
+#include <iostream>
+using std::cout;
+using std::endl;
 
 SymTable::SymTable():Table(){
   nextAddr = 0;
@@ -23,7 +28,9 @@ int SymTable::insert(string symbol, int value){
 Core SymTable::genCore(){
 	Core result = Core();
 	for(int i = 0;i < insertLoc;i++){
-		result.changeAddr(i,entries[i].value);
+		if(validNumber(entries[i].symbol)){
+			result.changeAddr(entries[i].value,atof(entries[i].symbol.c_str()));
+		}
 	}
 	return result;
 }

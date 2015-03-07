@@ -18,6 +18,7 @@ string parseIfa(string line, Table *lineTable, SymTable *symTable){
   line.erase(0,1);//removes (
   string internal = line.substr(0,line.find(')'));
   line.erase(0,line.find(')')+1);
+  if(validNumber(internal))internal = standardizeNumber(internal);
   int symLoc = symTable->retrieve(internal);
   char buffer[10];
   sprintf(buffer,"%d",symLoc);
@@ -39,15 +40,10 @@ int validIfa(string line, Table *lineTable, SymTable *symTable){
   line.erase(0,1);//removes (
   if(line.find(')') == -1)return BAD_ARGS;
   string internal = line.substr(0,line.find(')'));
-  if(!validSymbol(internal) && !validNumber(internal))return BAD_ARGS;
-  int memLoc = symTable->retrieve(internal);
-  if(validSymbol(internal)){
-    if(memLoc == -1)return INVALID_SYMBOLS;
-  }
-  else{
-    if(memLoc == -1){
-      symTable->insert(internal,1);
-    }
+  if(symTable->retrieve(internal) == -1){
+    if(!validNumber(internal))return INVALID_SYMBOLS;
+    internal = standardizeNumber(internal);
+    if(symTable->retrieve(internal) == -1)symTable->insert(internal,1);
   }
   line.erase(0,line.find(')')+1); //get rid of already used bits
   vector<string> labels = split(line, ',');

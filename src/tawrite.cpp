@@ -24,6 +24,8 @@ string parseAwrite(string line, SymTable *symTable){
   sprintf(buffer,"%d",symTable->retrieve(args[0]));
   result += buffer;
   result += ' ';
+  if(validNumber(args[1]))args[1] = standardizeNumber(args[1]);
+  if(validNumber(args[2]))args[2] = standardizeNumber(args[2]);
   result += args[1] + ' ' + args[2];
   return result;
 }
