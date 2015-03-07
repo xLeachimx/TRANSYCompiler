@@ -19,9 +19,9 @@ string parseSubp(string line, SymTable *symTable){
   line.erase(0,4);//get rid of Subp
   string result = "13 ";
   int leftBrac = line.find('(');
-  int rightBrac = line.rfind(')');
   string func = line.substr(0,leftBrac);
   line.erase(0,leftBrac+1);
+  int rightBrac = line.rfind(')');
   string parse = line.substr(0,rightBrac);
 
   if(func == "SIN"){
@@ -66,10 +66,11 @@ string parseSubp(string line, SymTable *symTable){
 int validSubp(string line, SymTable *symTable){
   line.erase(0,4);//get rid of Subp
   int leftBrac = line.find('(');
-  int rightBrac = line.rfind(')');
-  if(leftBrac == -1 || rightBrac == -1)return BAD_ARGS;
+  if(leftBrac == -1)return BAD_ARGS;
   string func = line.substr(0,leftBrac);
   line.erase(0,leftBrac+1);
+  int rightBrac = line.rfind(')');
+  if(rightBrac == -1)return BAD_ARGS;
   string parse = line.substr(0,rightBrac);
 
   if(func != "SIN" && func != "COS" && func != "EXP" && func != "ABS" && func != "ALG" && func != "SQR"){

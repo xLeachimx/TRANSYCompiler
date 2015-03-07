@@ -6,3 +6,4 @@ loop i=10,b,c
 loop-end
 lwrite "Hello, World!"
 lwrite "Worry!"
+subp sin(c,b)
