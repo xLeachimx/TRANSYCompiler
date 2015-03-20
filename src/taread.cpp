@@ -12,7 +12,6 @@
 #include <cstdio>
 #include <cstdlib>
 using std::sprintf;
-using std::atoi;
 
 //implementation of parseAread func
 string parseAread(string line, SymTable *symTable){
@@ -24,6 +23,8 @@ string parseAread(string line, SymTable *symTable){
   sprintf(buffer,"%d",symTable->retrieve(args[0]));
   result += buffer;
   result += ' ';
+  if(validNumber(args[1]))args[1] = standardizeNumber(args[1]);
+  if(validNumber(args[2]))args[2] = standardizeNumber(args[2]);
   result += args[1] + ' ' + args[2];
   return result;
 }
@@ -37,11 +38,18 @@ int validAread(string line, SymTable *symTable){
     return BAD_ARGS;
   }
   if(!validSymbol(args[0]))return INVALID_SYMBOLS;
-  if(!validNumber(args[1]))return INVALID_NUMBER;
-  if(!validNumber(args[2]))return INVALID_NUMBER;
-  if(args[1][0] == '-')return BAD_NUMBER;
-  if(args[2][0] == '-')return BAD_NUMBER;
-  if(atoi(args[1].c_str()) > atoi(args[2].c_str()))return BAD_NUMBER;
+  if(!validNumber(args[1]) && !validSymbol(args[1]))return BAD_ARGS;
+  if(!validNumber(args[2]) && !validSymbol(args[1]))return BAD_ARGS;
   if(symTable->retrieve(args[0]) == -1)return UNDECLARED_ARRAY;
+  if(symTable->retrieve(args[1]) == -1){
+    if(!validNumber(args[1]))return INVALID_SYMBOLS;
+    args[1] = standardizeNumber(args[1]);
+    if(symTable->retrieve(args[1]) == -1)symTable->insert(args[1],1);
+  }
+  if(symTable->retrieve(args[2]) == -1){
+    if(!validNumber(args[2]))return INVALID_SYMBOLS;
+    args[2] = standardizeNumber(args[2]);
+    if(symTable->retrieve(args[2]) == -1)symTable->insert(args[2],1);
+  }
   return NO_ERROR;
 }

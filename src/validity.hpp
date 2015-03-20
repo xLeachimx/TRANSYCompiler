@@ -28,6 +28,8 @@ enum ERROR_CODE{
 	INVALID_NUMBER,
 	BAD_NUMBER,
 	DUPLICATE_DECLARATION,
+	BAD_LINE_LABEL,
+	BAD_LITERAL,
 };
 
 //Precond:
@@ -35,6 +37,12 @@ enum ERROR_CODE{
 //Postcond:
 // returns true iff str counts as a valid symbol in TRANSY
 bool validSymbol(string str);
+
+//Precond:
+// str is a valid string
+//Postcond:
+// return true iff str counts as a valid literal symbol in TRANSY
+bool validLiteralSymbol(string str);
 
 //Precond
 // str is a valid string
@@ -72,5 +80,11 @@ int numberOf(string str, char c);
 //Postcond:
 //  The corresponing string to error will be returned
 string errorString(int error);
+
+//Precond:
+//  str represents a number
+//Postcond:
+//  The returned string is standradized numerical string
+string standardizeNumber(string str);
 
 #endif

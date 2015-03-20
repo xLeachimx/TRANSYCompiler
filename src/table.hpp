@@ -7,10 +7,15 @@
 #ifndef TABLE_HPP
 #define TABLE_HPP
 
-#define COREMEMSIZE 1000
+#define MAX_TABLE_ENTRIES 1000
 
 #include <string>
 using std::string;
+
+struct TableEntry{
+    string symbol;
+    int value;
+};
 
 class Table{
 public:
@@ -24,14 +29,10 @@ public:
 protected:
   void createNewNode(string symbol, int value);
   int location(string symbol);
-private:
-  struct TableEntry{
-    string symbol;
-    int value;
-  };
-
-  TableEntry entries[1000];
+  
+  TableEntry entries[MAX_TABLE_ENTRIES];
   int insertLoc;
+private:
 };
 
 #endif

@@ -29,6 +29,14 @@
 
 # Temp testing files
 *.noblanks
+*.core
+*.literal
 
 # emacs backups
 *~
+
+# assignment turnins
+*.tar
+
+# MAC DIRECTORY
+.DS_Store

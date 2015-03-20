@@ -21,7 +21,7 @@ int Table::retrieve(string symbol){
 }
 
 int Table::insert(string symbol, int value){
-  if(insertLoc >= COREMEMSIZE)return -1;
+  if(insertLoc >= MAX_TABLE_ENTRIES)return -1;
   TableEntry temp;
   temp.symbol = symbol;
   temp.value = value;
