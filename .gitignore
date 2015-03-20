@@ -37,3 +37,6 @@
 
 # assignment turnins
 *.tar
+
+# MAC DIRECTORY
+.DS_Store
