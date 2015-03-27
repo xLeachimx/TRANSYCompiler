@@ -13,8 +13,11 @@ files = getListOfFiles
 count = 0
 for f in files
   file = File.open('src/'+f,'r')
-  count += file.read().split("\n").length()
+  contents = file.read().split("\n")
   file.close
+  contents.map!{|l| l.strip()}
+  contents.delete_if{|l| l.start_with?('//')}
+  count += contents.length()
 end
 
 puts "Those files have " + count.to_s + " line in total"

@@ -51,7 +51,7 @@ int validAread(string line, SymTable *symTable){
   if(symTable->retrieve(args[2]) == -1){
     if(!validNumber(args[2]))return INVALID_SYMBOLS;
     if(validNumber(args[2])){
-      args[1] = standardizeNumber(args[2]);
+      args[2] = standardizeNumber(args[2]);
       if(symTable->retrieve(args[2]) == -1)symTable->insert(args[2],1);
     }
   }

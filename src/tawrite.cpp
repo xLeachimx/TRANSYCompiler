@@ -19,28 +19,13 @@ string parseAwrite(string line, SymTable *symTable){
   line.erase(0,6);//get rid of AWRITE
   vector<string> args = split(line,',');
   string result = "12 ";
-  int addr = -1;
-  char buffer[10];
-  sprintf(buffer,"%d",symTable->retrieve(args[0]));
-  result += buffer;
-  result += ' ';
-  if(validNumber(args[1])){
-    args[1] = standardizeNumber(args[1]);
-    result += args[1];
-    result += ' ';
-  }
-  else{
-    sprintf(buffer,"%d",symTable->retrieve(args[1]));
+  for(int i = 0;i < args.size();i++){
+    int addr = -1;
+    char buffer[10];
+    if(validNumber(args[i]))args[i] = standardizeNumber(args[i]);
+    sprintf(buffer,"%d",symTable->retrieve(args[i]));
     result += buffer;
     result += ' ';
-  }
-  if(validNumber(args[2])){
-    args[2] = standardizeNumber(args[2]);
-    result += args[2];
-  }
-  else{
-    sprintf(buffer,"%d",symTable->retrieve(args[2]));
-    result += buffer;
   }
   return result;
 }
@@ -67,7 +52,7 @@ int validAwrite(string line, SymTable *symTable){
   if(symTable->retrieve(args[2]) == -1){
     if(!validNumber(args[2]))return INVALID_SYMBOLS;
     if(validNumber(args[2])){
-      args[1] = standardizeNumber(args[2]);
+      args[2] = standardizeNumber(args[2]);
       if(symTable->retrieve(args[2]) == -1)symTable->insert(args[2],1);
     }
   }

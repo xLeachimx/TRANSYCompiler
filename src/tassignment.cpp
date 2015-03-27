@@ -88,6 +88,7 @@ int validAssignment(string line, SymTable *symTable){
 	if(!validCharsAssignment(line))return BAD_FORM;
 	Token tokens[MAX_TOKENS_IN_STORE];
 	int size = tokenize(line, tokens, MAX_TOKENS_IN_STORE);
+	if(size == -1)return BAD_FORM;
 	for(int i = 0;i < size;i++){
 		if(tokens[i].getToken() == "ID"){
 			if(validSymbol(tokens[i].getSymbol())){
@@ -102,7 +103,9 @@ int validAssignment(string line, SymTable *symTable){
 	// for(int i = 0;i < size;i++){
 	// 	cout << "Symbol: " << tokens[i].getSymbol() << "\tToken: " << tokens[i].getToken() <<endl;
 	// }
+	// cout << "Here" <<endl;
 	if(!transduction(tokens,size))return BAD_FORM;
+	// cout << "Not here" <<endl;
 	for(int i = 0;i < size;i++){
 		if(tokens[i].getToken() == "ID"){
 			// cout << "Token:" <<endl;
@@ -139,10 +142,13 @@ int tokenize(string str, Token store[], int size){
 			operSeen = true;
 			lastOper = str[i];
 			string temp = str.substr(lastStop, i-lastStop);
+			Token t = Token("","");
+			if(temp != ""){
+				t = Token(temp, "ID");
+				store[insert++] = t;
+				if(insert == size) return size;
+			}
 			lastStop = i + 1;
-			Token t = Token(temp, "ID");
-			store[insert++] = t;
-			if(insert == size) return size;
 			t = Token(str.substr(i,1),str.substr(i,1));
 			store[insert++] = t;
 			if(insert == size) return size;
@@ -359,48 +365,93 @@ void setupTransducer(Transducer &t){
 	temp.action = U2;
 	t.addRule(temp);
 	//line six
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","ID");
 	temp.action = S1;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","+");
-	temp.action = S2;
+	temp.action = U1;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","-");
-	temp.action = S2;
+	temp.action = U1;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","*");
-	temp.action = S2;
+	temp.action = U1;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","/");
-	temp.action = S2;
+	temp.action = U1;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","(");
 	temp.action = S2;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("",")");
 	temp.action = U3;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","[");
 	temp.action = S2;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","]");
 	temp.action = U4;
 	t.addRule(temp);
-	temp.topStack = Token("","(");
+	temp.topStack = Token("","/");
 	temp.input = Token("","^");
 	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","/");
+	temp.input = Token("","EOL");
+	temp.action = U2;
 	t.addRule(temp);
 	//line seven
+	temp.topStack = Token("","(");
+	temp.input = Token("","ID");
+	temp.action = S1;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","+");
+	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","-");
+	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","*");
+	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","/");
+	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","(");
+	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("",")");
+	temp.action = U3;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","[");
+	temp.action = S2;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","]");
+	temp.action = U4;
+	t.addRule(temp);
+	temp.topStack = Token("","(");
+	temp.input = Token("","^");
+	temp.action = S2;
+	t.addRule(temp);
 	//line eight
+	//line nine
 	temp.topStack = Token("","[");
 	temp.input = Token("","ID");
 	temp.action = S1;
@@ -441,8 +492,8 @@ void setupTransducer(Transducer &t){
 	temp.input = Token("","^");
 	temp.action = S2;
 	t.addRule(temp);
-	//line nine
 	//line ten
+	//line eleven
 	temp.topStack = Token("","^");
 	temp.input = Token("","ID");
 	temp.action = S1;
