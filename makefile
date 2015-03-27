@@ -1,4 +1,4 @@
-COMPILED_FILES = src/core.o src/littable.o src/preprocess.o src/symtable.o src/table.o src/taread.o src/tawrite.o src/tcdump.o src/tcls.o src/tdim.o src/tgoto.o src/tif.o src/tifa.o src/tlisto.o src/tloop.o src/tloopend.o src/tlread.o src/tlwrite.o src/tnop.o src/token.o src/tokenStack.o src/transducer.o src/tread.o src/tstop.o src/tsubp.o src/twrite.o src/validity.o
+COMPILED_FILES = src/core.o src/littable.o src/preprocess.o src/symtable.o src/table.o src/taread.o src/tassignment.o src/tawrite.o src/tcdump.o src/tcls.o src/tdim.o src/tgoto.o src/tif.o src/tifa.o src/tlisto.o src/tloop.o src/tloopend.o src/tlread.o src/tlwrite.o src/tnop.o src/token.o src/tokenStack.o src/transducer.o src/tread.o src/tstop.o src/tsubp.o src/twrite.o src/validity.o
 SOURCEDIR = src/
 PROGNAME = compiler
 
@@ -29,6 +29,10 @@ src/table.o: src/table.cpp src/table.hpp
 src/taread.o: src/taread.cpp src/taread.hpp src/validity.hpp src/symtable.hpp src/validity.o src/symtable.o
 	cd $(SOURCEDIR) && \
 	g++ taread.cpp -c
+
+src/tassignment.o: src/tassignment.cpp src/validity.hpp src/tassignment.hpp src/token.hpp src/tokenStack.hpp src/transducer.hpp src/symtable.hpp src/validity.o src/token.o src/tokenStack.o src/transducer.o src/symtable.o
+	cd $(SOURCEDIR) && \
+	g++ tassignment.cpp -c
 
 src/tawrite.o: src/tawrite.cpp src/tawrite.hpp src/validity.hpp src/symtable.hpp src/validity.o src/symtable.o
 	cd $(SOURCEDIR) && \
@@ -90,7 +94,7 @@ src/tokenStack.o: src/tokenStack.cpp src/tokenStack.hpp src/token.hpp src/token.
 	cd $(SOURCEDIR) && \
 	g++ tokenStack.cpp -c
 
-src/transducer.o: src/transducer.cpp src/token.hpp src/token.o
+src/transducer.o: src/transducer.cpp src/transducer.hpp src/token.hpp src/token.o
 	cd $(SOURCEDIR) && \
 	g++ transducer.cpp -c
 

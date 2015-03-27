@@ -15,12 +15,12 @@ using std::string;
 
 enum ACTION{
 	BAD_ACTION,
-	U1,
-	U2,
-	U3,
-	U4,
-	S1,
-	S2,
+	U1,//1
+	U2,//2
+	U3,//3
+	U4,//4
+	S1,//5
+	S2,//6
 };
 
 struct Rule{

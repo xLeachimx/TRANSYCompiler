@@ -75,8 +75,8 @@ bool validCharsAssignment(string str){
 
 //implemenation of isMathOperator
 bool isMathOperator(char c){
-  string temp = "=+-/*^("
-  return (temp.find(c) != -1)
+  string temp = "=+-/*^(";
+  return (temp.find(c) != -1);
 }
 
 bool isLetter(char c){
@@ -96,8 +96,8 @@ bool isBadSpecChar(char c){
 }
 
 bool isOperator(char c){
-  string temp = "=+-/*()[]^"
-  return (temp.find(c) != -1)
+  string temp = "=+-/*()[]^";
+  return (temp.find(c) != -1);
 }
 
 

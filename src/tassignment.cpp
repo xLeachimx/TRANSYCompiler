@@ -2,10 +2,15 @@
 #include "tassignment.hpp"
 #include "token.hpp"
 #include "tokenStack.hpp"
+#include "transducer.hpp"
 #include <cstdio>
 #include <cstdlib>
 using std::atoi;
 using std::sprintf;
+
+#include <iostream>
+using std::cout;
+using std::endl;
 
 #define MAX_TOKENS_IN_STORE 101
 
@@ -23,25 +28,46 @@ string parseAssignment(string line, SymTable *symTable){
 	int size = tokenize(line, tokens, MAX_TOKENS_IN_STORE);
 	transduction(tokens,size);
 	for(int i = 0;i < size;i++){
-		if(tokens[i].token == "ID"){
+		if(tokens[i].getToken() == "ID"){
 			if(validSymbol(tokens[i].getSymbol())){
-				int addr = symtable.retrieve(tokens[i].getSymbol());
+				int addr = symTable->retrieve(tokens[i].getSymbol());
 				if(addr == -1){
-					addr = symtable.insert(tokens[i].getSymbol());
+					addr = symTable->insert(tokens[i].getSymbol(),1);
 				}
-				result += sprintf(buffer,"%d",addr);
+				char buffer[10];
+				sprintf(buffer,"%d",addr);
+				result += buffer;
 				result += ' ';
 			}
 			else if(validNumber(tokens[i].getSymbol())){
 				string temp = standardizeNumber(tokens[i].getSymbol());
-				int addr = symtable.retrieve(temp);
+				int addr = symTable->retrieve(temp);
 				if(addr == -1){
-					addr = symtable.insert(temp);
+					addr = symTable->insert(temp,1);
 				}
-				result += sprintf(buffer,"%d",addr);
+				char buffer[10];
+				sprintf(buffer,"%d",addr);
+				result += buffer;
 				result += ' ';
 			}
 			else if(tokens[i].getSymbol()[0] == '-' && validSymbol(tokens[i].getSymbol().substr(1))){
+				int addr = symTable->retrieve("0");
+				if(addr == -1){
+					addr = symTable->insert("0",1);
+				}
+				char buffer[10];
+				sprintf(buffer,"%d",addr);
+				result += buffer;
+				result += ' ';
+				string temp = tokens[i].getSymbol().substr(1);
+				addr = symTable->retrieve(temp);
+				if(addr == -1){
+					addr = symTable->insert(temp,1);
+				}
+				sprintf(buffer,"%d",addr);
+				result += buffer;
+				result += ' ';
+				result += "-7 ";
 			}
 		}
 		else{
@@ -64,14 +90,30 @@ int validAssignment(string line, SymTable *symTable){
 	int size = tokenize(line, tokens, MAX_TOKENS_IN_STORE);
 	for(int i = 0;i < size;i++){
 		if(tokens[i].getToken() == "ID"){
-			if(!validNumber(tokens[i].getSymbol()) && !validSymbol(tokens[i].getSymbol()))return BAD_ARGS;
+			if(validSymbol(tokens[i].getSymbol())){
+				if(i != size-1){
+					if(tokens[i+1].getToken() == "["){
+						if(symTable->retrieve(tokens[i].getSymbol()) == -1)return UNDECLARED_ARRAY;
+					}
+				}
+			}
 		}
 	}
+	// for(int i = 0;i < size;i++){
+	// 	cout << "Symbol: " << tokens[i].getSymbol() << "\tToken: " << tokens[i].getToken() <<endl;
+	// }
 	if(!transduction(tokens,size))return BAD_FORM;
 	for(int i = 0;i < size;i++){
-		if(tokens[i].token == "ID"){
-			if( !(validSymbol(tokens[i].getSymbol())) && !(validNumber(tokens[i].getSymbol())) && !(tokens[i].getSymbol()[0] == '-' && validSymbol(tokens[i].getSymbol().substr(1))) ){
-				return BAD_ARGS;
+		if(tokens[i].getToken() == "ID"){
+			// cout << "Token:" <<endl;
+			// cout << "\tSymbol: " << tokens[i].getSymbol() <<endl;
+			// cout << "\tToken: " << tokens[i].getToken() <<endl;
+			if(validNumber(tokens[i].getSymbol())){
+			}
+			else if(validSymbol(tokens[i].getSymbol())){
+			}
+			else if(tokens[i].getSymbol()[0] == '-'){
+				if(!validSymbol(tokens[i].getSymbol().substr(1)))return BAD_ARGS;
 			}
 		}
 	}
@@ -86,19 +128,28 @@ int tokenize(string str, Token store[], int size){
 	for(int i = 0;i < str.length();i++){
 		if(isOperator(str[i])){
 			if(operSeen && isMathOperator(lastOper) && str[i] == '-'){
-				operatorSeen = false;
+				operSeen = false;
 				continue;
 			}
-			operatorSeen = true;
+			else if(operSeen && isMathOperator(lastOper) && str[i] == '+'){
+				operSeen = false;
+				lastStop = i;
+				continue;
+			}
+			operSeen = true;
 			lastOper = str[i];
 			string temp = str.substr(lastStop, i-lastStop);
 			lastStop = i + 1;
 			Token t = Token(temp, "ID");
 			store[insert++] = t;
 			if(insert == size) return size;
-			t = Token(str[i], str[i]);
+			t = Token(str.substr(i,1),str.substr(i,1));
 			store[insert++] = t;
 			if(insert == size) return size;
+			if(i == str.length()-1){
+				store[insert++] = Token("EOL","EOL");
+				return insert;	
+			}
 		}
 		else if(i == str.length()-1){
 			string temp = str.substr(lastStop, i-lastStop+1);
@@ -108,6 +159,7 @@ int tokenize(string str, Token store[], int size){
 			store[insert++] = Token("EOL","EOL");
 			if(insert == size) return size;
 		}
+		if(!isOperator(str[i]))operSeen = false;
 	}
 	return insert;
 }
@@ -129,6 +181,10 @@ void setupTransducer(Transducer &t){
 	temp.topStack = Token("","INVALID");
 	temp.input = Token("","[");
 	temp.action = S2;
+	t.addRule(temp);	
+	temp.topStack = Token("","INVALID");
+	temp.input = Token("","EOL");
+	temp.action = U2;
 	t.addRule(temp);
 	//line two
 	temp.topStack = Token("","=");
@@ -439,9 +495,16 @@ bool transduction(Token line[], int size){
 	TokenStack one;
 	TokenStack two;
 	int action = BAD_ACTION;
+	// for(int i = 0;i < size;i++){
+	// 	cout << "Symbol: " << line[i].getSymbol() << "\tToken: " << line[i].getToken() <<endl;
+	// }
 	for(int i = 0;i < size;i++){
-		int action = temp.getAction(line[i],two.peek());
-		switch action{
+		// cout << "Before: " <<endl;
+		// cout << "Top Stack: " << two.peek().getToken() <<endl;
+		// cout << "Input: " << line[i].getToken() <<endl;
+		action = temp.getAction(line[i],two.peek());
+		// cout << "Required Action: " << action <<endl;
+		switch(action){
 			case U1:
 				if(!one.push(two.pop()))return false;
 				break;
@@ -451,14 +514,14 @@ bool transduction(Token line[], int size){
 				}
 				break;
 			case U3:
-				while(two.peek().token != '('){
+				while(two.peek().getToken() != "("){
 					if(two.size() <= 0)return false;
 					if(!one.push(two.pop()))return false;
 				}
 				two.pop();
 				break;
 			case U4:
-				while(two.peek().token != '['){
+				while(two.peek().getToken() != "["){
 					if(two.size() <= 0)return false;
 					if(!one.push(two.pop()))return false;
 				}
@@ -474,6 +537,9 @@ bool transduction(Token line[], int size){
 				return false;
 				break;
 		}
+		// cout << "After: " <<endl;
+		// cout << "Top Stack: " << two.peek().getToken() <<endl;
+		// cout << "Input: " << line[i+1].getToken() <<endl;
 	}
 	if(action != U2)return false;
 	one.copyContents(line,size);
