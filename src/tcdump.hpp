@@ -4,6 +4,10 @@
  *   parses and validated TRANSY cdump commands
  *Notes:
 */
+
+#ifndef TCDUMP_HPP
+#define TCDUMP_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,4 @@ string parseCdump(string line);
 //Postcond:
 //returns true iff line represents a valid stop command
 int validCdump(string line);
+#endif

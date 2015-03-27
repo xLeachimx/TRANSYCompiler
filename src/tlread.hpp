@@ -5,6 +5,9 @@
  *Notes:
 */
 
+#ifndef TLREAD_HPP
+#define TLREAD_HPP
+
 #include <string>
 using std::string;
 #include "littable.hpp"
@@ -23,3 +26,5 @@ string parseLread(string line, LitTable *litTable);
 //Postcond:
 //returns true iff line represents a valid lread command
 int validLread(string line, LitTable *litTable);
+
+#endif

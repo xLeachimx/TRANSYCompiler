@@ -30,6 +30,7 @@ enum ERROR_CODE{
 	DUPLICATE_DECLARATION,
 	BAD_LINE_LABEL,
 	BAD_LITERAL,
+	BAD_FORM,
 };
 
 //Precond:
@@ -49,6 +50,12 @@ bool validLiteralSymbol(string str);
 //Postcond:
 // returns true iff str is a valid number in TRANSY
 bool validNumber(string str);
+
+//Precond
+// str is a valid string
+//Postcond:
+// returns true iff str has only characters that would be in an assignment statement in TRANSY
+bool validCharsAssignment(string str);
 
 //Precond:
 //  str is a valid string
@@ -87,4 +94,15 @@ string errorString(int error);
 //  The returned string is standradized numerical string
 string standardizeNumber(string str);
 
+//Precond:
+//  c is a valid character
+//Postcond:
+//  return true iff c is +,-,*,/,^
+bool isMathOperator(char c);
+
+//Precond:
+//  c is a valid character
+//Postcond:
+//  return true iff c is +,-,*,/,^,[,],(,)
+bool isOperator(char c);
 #endif

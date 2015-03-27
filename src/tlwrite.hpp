@@ -5,6 +5,9 @@
  *Notes:
 */
 
+#ifndef TLWRITE_HPP
+#define TLWRITE_HPP
+
 #include <string>
 using std::string;
 #include "littable.hpp"
@@ -23,3 +26,5 @@ string parseLwrite(string line, LitTable *litTable);
 //Postcond:
 //returns true iff line represents a valid lwrite command
 int validLwrite(string line, LitTable *litTable);
+
+#endif

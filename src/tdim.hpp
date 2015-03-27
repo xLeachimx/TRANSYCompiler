@@ -4,6 +4,10 @@
  *   parses and validated TRANSY dim commands
  *Notes:
 */
+
+#ifndef TDIM_HPP
+#define TDIM_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,5 @@ string parseDim(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid dim command
 int validDim(string line, SymTable *symTable);
+
+#endif

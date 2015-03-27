@@ -4,6 +4,10 @@
  *   parses and validated TRANSY awrite commands
  *Notes:
 */
+
+#ifndef TAWRITE_HPP
+#define TAWRITE_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,5 @@ string parseAwrite(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid awrite command
 int validAwrite(string line, SymTable *symTable);
+
+#endif

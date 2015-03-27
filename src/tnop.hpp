@@ -4,6 +4,10 @@
  *   parses and validated TRANSY nop commands
  *Notes:
 */
+
+#ifndef TNOP_HPP
+#define TNOP_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,5 @@ string parseNop(string line);
 //Postcond:
 //returns true iff line represents a valid nop command
 int validNop(string line);
+
+#endif

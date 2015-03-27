@@ -4,6 +4,10 @@
  *   parses and validated TRANSY loop-end commands
  *Notes:
 */
+
+#ifndef TLOOPEND_HPP
+#define TLOOPEND_HPP
+
 #include <string>
 using std::string;
 
@@ -21,3 +25,5 @@ string parseLoopend(string line);
 //Postcond:
 //returns true iff line represents a valid loop-end command
 int validLoopend(string line);
+
+#endif

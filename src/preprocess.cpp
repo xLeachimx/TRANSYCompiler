@@ -28,6 +28,7 @@ string removal(string filename){
   nospace.open(newFilename(filename).c_str());
 
   if(!origin.is_open())return "";
+  if(!nospace.is_open())return "";
 
   string line;
 
@@ -35,6 +36,7 @@ string removal(string filename){
 
   do{
     getline(origin, line);
+    if(origin.eof())break;
     bool inQuote = false;
     for(int i = 0;i < line.length();i++){
       if(line[i] == '\"')inQuote = !inQuote;//detect quotes

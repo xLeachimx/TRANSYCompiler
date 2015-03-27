@@ -4,6 +4,9 @@
  *   parses and validated TRANSY subp commands
  *Notes:
 */
+
+#ifndef TSUBP_HPP
+#define TSUBP_HPP
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +25,5 @@ string parseSubp(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid subp command
 int validSubp(string line, SymTable *symTable);
+
+#endif

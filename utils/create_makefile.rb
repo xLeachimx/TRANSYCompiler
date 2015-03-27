@@ -1,5 +1,9 @@
 def convertToObj doc
-	doc.partition('.')[0]+'.o'
+	File.basename(doc,File.extname(doc))+'.o'
+end
+
+def convertToHeader doc
+	File.basename(doc,File.extname(doc))+'.hpp'
 end
 
 def isProperFile? name
@@ -8,6 +12,7 @@ def isProperFile? name
 end
 
 def dependencies file, srcdir
+	return [] if !File.exist?(file)
 	handle = File.new(file,'r')
 	contents = handle.read
 	handle.close
@@ -30,8 +35,8 @@ def createMakefileFromList docs, main, name, srcdir
 	docs.each do |d|
 		extension = File.extname(d)
 		if(extension == '.cpp' || extension == '.c')
-			dep = dependencies(srcdir+d,srcdir)
-			objdep = dep.map{|de| convertToObj(de)}.delete_if{|de| de == (srcdir + convertToObj(d))}
+			dep = dependencies(srcdir+d,srcdir) + dependencies(srcdir+convertToHeader(d),srcdir)
+			objdep = dep.map{|de| srcdir+convertToObj(de)}.delete_if{|de| de == (srcdir + convertToObj(d))}
 			makefile += srcdir + convertToObj(d) + ': ' + srcdir + d + ' ' + dep.join(' ') + ' ' + objdep.join(' ') +"\n"
 			makefile += "\tcd $(SOURCEDIR) && \\\n"
 			makefile += "\tg++ " + d + " -c\n\n"
