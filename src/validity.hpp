@@ -97,8 +97,14 @@ string standardizeNumber(string str);
 //Precond:
 //  c is a valid character
 //Postcond:
-//  return true iff c is +,-,*,/,^
+//  return true iff c is +,-,*,/,^,(,[
 bool isMathOperator(char c);
+
+//Precond:
+//  c is a valid character
+//Postcond:
+//  return true iff c is +,-,*,/,^
+bool isTrueMathOperator(char c);
 
 //Precond:
 //  c is a valid character

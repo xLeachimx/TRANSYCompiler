@@ -8,7 +8,7 @@ cdump 30, 40
 dim e[5]
 aread e,3,4
 awrite e,a,5
-hi = 4/5
+loop = 4/5
 hi = 3 + (4/5) - e[4+5]
 hello = -d
 howdy = +d

@@ -99,25 +99,29 @@ int main(int argc, char **argv){
   bool keepNoSpace;
   bool keepObj;
   bool skipPreproc;
+  bool globalSymTable;
   keepNoSpace = false;
   keepObj = false;
   skipPreproc = false;
+  globalSymTable = false;
   char c;
   while(--argc > 0 && (*++argv)[0] == '-'){
     while((c = *++argv[0])){
       switch(c){
       case 'n':
-  keepNoSpace = true;
-  break;
+        keepNoSpace = true;
+        break;
       case 'o':
-  keepObj = true;
-  break;
+        keepObj = true;
+        break;
       case 'p':
-  skipPreproc = true;
-  break;
+        skipPreproc = true;
+        break;
+      case 'g':
+        globalSymTable = true;
       default:
-  cout << "Bad flag:" << c <<endl;
-  break;
+        cout << "Bad flag:" << c <<endl;
+        break;
       }
     }
   }
@@ -145,9 +149,10 @@ int main(int argc, char **argv){
   }
   if(argc == 0)files.push_back("test.transy");
   //turn preproecessed files into obj in first pass
+  SymTable symTable = SymTable();
   for(int i = 0;i < files.size();i++){
     //prep for first pass
-    SymTable symTable = SymTable();
+    if(!globalSymTable)symTable = SymTable();
     Table lineLabel = Table();
     populateLabelTable(files[i],&lineLabel);
     objFile postScan = scan(files[i],&symTable,&lineLabel);

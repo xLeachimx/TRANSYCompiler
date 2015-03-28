@@ -75,7 +75,12 @@ bool validCharsAssignment(string str){
 
 //implemenation of isMathOperator
 bool isMathOperator(char c){
-  string temp = "=+-/*^(";
+  string temp = "=+-/*^([";
+  return (temp.find(c) != -1);
+}
+
+bool isTrueMathOperator(char c){
+  string temp = "=+-/*^";
   return (temp.find(c) != -1);
 }
 

@@ -99,6 +99,13 @@ int validAssignment(string line, SymTable *symTable){
 				}
 			}
 		}
+		else{
+			if(isTrueMathOperator(tokens[i].getToken()[0])){
+				if(i != size-1 && tokens[i+1].getToken() != "ID" && isTrueMathOperator(tokens[i+1].getToken()[0])){
+					return BAD_FORM;
+				}
+			}
+		}
 	}
 	// for(int i = 0;i < size;i++){
 	// 	cout << "Symbol: " << tokens[i].getSymbol() << "\tToken: " << tokens[i].getToken() <<endl;
