@@ -194,194 +194,200 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 		int error = 0;
 		
 		line.erase(0,1);//removes the beginning space artifact left by the line tracking system
-
-		line = removeLineLabel(line);
-		
-		switch(commandType(line)){
-		case READ:
-			if((error=validRead(line)) == 0){
-	fout << parseRead(line, symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on READ command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case WRITE:
-			if((error=validWrite(line)) == 0){
-	fout << parseWrite(line, symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on WRITE command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case STOP:
-			if((error=validStop(line)) == 0){
-	fout << parseStop(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on STOP command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case DIM:
-			if((error=validDim(line,symTable)) == 0){
-	parseDim(line,symTable);
-	//only do this if need be dim op code is exported
-	//fout << parseStop(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << " on DIM command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case CDUMP:
-			if((error=validCdump(line)) == 0){
-	fout << parseCdump(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CDUMP command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case LISTO:
-			if((error=validListo(line)) == 0){
-	fout << parseListo(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case NOP:
-			if((error=validNop(line)) == 0){
-	fout << parseNop(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case AREAD:
-			if((error=validAread(line, symTable)) == 0){
-	fout << parseAread(line, symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AREAD command" <<endl;\
-	errorFound = true;
-			}
-			break;
-		case AWRITE:
-			if((error=validAwrite(line, symTable)) == 0){
-	fout << parseAwrite(line, symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AWRITE command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case CLS:
-			if((error=validCls(line)) == 0){
-	fout << parseCls(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case GOTO:
-			if((error=validGoto(line,lineLabels)) == 0){
-	fout << parseGoto(line,lineLabels) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on GOTO command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case LREAD:
-			if((error=validLread(line,&literals)) == 0){
-	fout << parseLread(line,&literals) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LREAD command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case LOOPEND:
-			if((error=validLoopend(line)) == 0){
-	fout << parseLoopend(line) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP-END command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case LWRITE:
-			if((error=validLwrite(line,&literals)) == 0){
-	fout << parseLwrite(line,&literals) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LWRITE command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case IFA:
-			if((error=validIfa(line,lineLabels,symTable)) == 0){
-	fout << parseIfa(line,lineLabels,symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IFA command" <<endl;
-	errorFound = true;
-			}
-			break;
-			case IF:
-			if((error=validIf(line,lineLabels,symTable)) == 0){
-	fout << parseIf(line,lineLabels,symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IF command" <<endl;
-	errorFound = true;
-			}
-			break;
-			case LOOP:
-			if((error=validLoop(line,symTable)) == 0){
-	fout << parseLoop(line,symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP command" <<endl;
-	errorFound = true;
-			}
-			break;
-			case SUBP:
-			if((error=validSubp(line,symTable)) == 0){
-	fout << parseSubp(line,symTable) <<endl;
-			}
-			else{
-	cout << "Error on line " << lineNumber << ": " << errorString(error) << "on SUBP command" <<endl;
-	errorFound = true;
-			}
-			break;
-		case END:
-			haltScan = true;
-			break;
-		default:
-			cout << "No Known Command on line " << lineNumber <<endl;
-			errorFound = true;
-			break;
-		}
-		if(haltScan)break;
-		fin >> lineNumber;
-		getline(fin,line);
-	}
-	fin.close();
-	fout.close();
-	objFile result;
-	result.name = objFilename;
-	result.valid = !errorFound;
-	symTable->genCore().toFile(coreName(filename));
-	literals.toFile(litName(filename));
-	return result;
+    line = removeLineLabel(line);
+    int assignmentError = 0;
+    if((assignmentError = validAssignment(line, symTable)) == 0){
+      fout << parseAssignment(line, symTable) <<endl;
+    }
+    else{
+      switch(commandType(line)){
+      case READ:
+        if((error=validRead(line)) == 0){
+          fout << parseRead(line, symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << " on READ command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case WRITE:
+        if((error=validWrite(line)) == 0){
+          fout << parseWrite(line, symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << " on WRITE command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case STOP:
+        if((error=validStop(line)) == 0){
+          fout << parseStop(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << " on STOP command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case DIM:
+        if((error=validDim(line,symTable)) == 0){
+          parseDim(line,symTable);
+          //only do this if need be dim op code is exported
+          //fout << parseStop(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << " on DIM command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case CDUMP:
+        if((error=validCdump(line)) == 0){
+          fout << parseCdump(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CDUMP command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case LISTO:
+        if((error=validListo(line)) == 0){
+          fout << parseListo(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case NOP:
+        if((error=validNop(line)) == 0){
+          fout << parseNop(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on NOP command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case AREAD:
+        if((error=validAread(line, symTable)) == 0){
+          fout << parseAread(line, symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AREAD command" <<endl;\
+          errorFound = true;
+        }
+        break;
+      case AWRITE:
+        if((error=validAwrite(line, symTable)) == 0){
+          fout << parseAwrite(line, symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on AWRITE command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case CLS:
+        if((error=validCls(line)) == 0){
+          fout << parseCls(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on CLS command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case GOTO:
+        if((error=validGoto(line,lineLabels)) == 0){
+          fout << parseGoto(line,lineLabels) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on GOTO command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case LREAD:
+        if((error=validLread(line,&literals)) == 0){
+          fout << parseLread(line,&literals) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LREAD command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case LOOPEND:
+        if((error=validLoopend(line)) == 0){
+          fout << parseLoopend(line) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP-END command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case LWRITE:
+        if((error=validLwrite(line,&literals)) == 0){
+          fout << parseLwrite(line,&literals) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LWRITE command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case IFA:
+        if((error=validIfa(line,lineLabels,symTable)) == 0){
+          fout << parseIfa(line,lineLabels,symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IFA command" <<endl;
+          errorFound = true;
+        }
+        break;
+        case IF:
+        if((error=validIf(line,lineLabels,symTable)) == 0){
+          fout << parseIf(line,lineLabels,symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on IF command" <<endl;
+          errorFound = true;
+        }
+        break;
+        case LOOP:
+        if((error=validLoop(line,symTable)) == 0){
+          fout << parseLoop(line,symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on LOOP command" <<endl;
+          errorFound = true;
+        }
+        break;
+        case SUBP:
+        if((error=validSubp(line,symTable)) == 0){
+          fout << parseSubp(line,symTable) <<endl;
+        }
+        else{
+          cout << "Error on line " << lineNumber << ": " << errorString(error) << "on SUBP command" <<endl;
+          errorFound = true;
+        }
+        break;
+      case END:
+        haltScan = true;
+        break;
+      default:
+        if(assignmentError != 0){
+          cout << "Error on line " << lineNumber << ": " << errorString(assignmentError) <<endl;
+          errorFound = true;
+        }
+        break;
+      }
+    }
+      if(haltScan)break;
+      fin >> lineNumber;
+      getline(fin,line);
+  }
+  fin.close();
+  fout.close();
+  objFile result;
+  result.name = objFilename;
+  result.valid = !errorFound;
+  symTable->genCore(result.valid).toFile(coreName(filename));
+  literals.toFile(litName(filename));
+  return result;
 }
 
 int commandType(string line){

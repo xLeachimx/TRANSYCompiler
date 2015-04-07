@@ -15,6 +15,11 @@ for f in files
   file = File.open('src/'+f,'r')
   count += file.read().split("\n").length()
   file.close
+  contents.map!{|l| l.strip()}
+  contents.delete_if{|l| l.start_with?('//')}
+  contents.delete_if{|l| l.start_with?('*')}
+  contents.delete_if{|l| l.start_with?('/*')}
+  count += contents.length()
 end
 
 puts "Those files have " + count.to_s + " line in total"

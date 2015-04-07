@@ -21,7 +21,7 @@ public:
   int insert(string symbol, int value);
 
   //generates a core instance that reflects the symbol table
-  Core genCore();
+  Core genCore(bool valid);
 protected:
 private:
   int nextAddr;

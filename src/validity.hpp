@@ -16,9 +16,10 @@
 using std::vector;
 using std::string;
 
+#define ITEMS_WRITTEN_BEFORE_NEWLINE 5
 
 //This enum holds values for error codes such that errors can be properly diagnosed
-enum ERROR_CODE{
+enum COMPILER_ERROR_CODE{
 	NO_ERROR = 0,
 	BAD_ARGS,
 	BAD_SYMBOLS,
@@ -30,6 +31,14 @@ enum ERROR_CODE{
 	DUPLICATE_DECLARATION,
 	BAD_LINE_LABEL,
 	BAD_LITERAL,
+};
+
+enum EXECUTOR_ERROR_CODE{
+	NO_ERROR = 0,
+	SEG_FAULT,
+	INVALID_RANGE,
+	UNINITIALIZED_VAR,
+	BAD_CALL,
 };
 
 //Precond:

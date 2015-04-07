@@ -25,8 +25,9 @@ int SymTable::insert(string symbol, int value){
 }
 
 
-Core SymTable::genCore(){
+Core SymTable::genCore(bool success){
 	Core result = Core();
+	result.setValid(success);
 	for(int i = 0;i < insertLoc;i++){
 		if(validNumber(entries[i].symbol)){
 			result.changeAddr(entries[i].value,atof(entries[i].symbol.c_str()));
