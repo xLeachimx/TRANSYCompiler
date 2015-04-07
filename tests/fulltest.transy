@@ -6,12 +6,14 @@ loop i=10,b,c
 loop-end
 cdump 30, 40
 dim e[5]
+dim f[10]
 aread e,3,4
 awrite e,a,5
 loop = 4/5
 hi = 3 + (4/5) - e[4+5]
 hello = -d
 howdy = +d
+f[2] = -4
 lwrite "Hello, World!"
 lwrite "Worry!"
 subp sin(c,b)

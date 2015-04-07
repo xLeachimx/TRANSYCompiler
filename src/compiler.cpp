@@ -190,17 +190,16 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
   //setup some literals
   LitTable literals = LitTable();
 
-  string line;
-  int lineNumber = 0;
-  fin >> lineNumber;
-  getline(fin,line);
-  bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
-  bool errorFound = false;
-  while(!fin.eof()){
-    int error = 0;
-    
-    line.erase(0,1);//removes the beginning space artifact left by the line tracking system
-
+	string line;
+	int lineNumber = 0;
+	fin >> lineNumber;
+	getline(fin,line);
+	bool haltScan = false;//A flag to know when an error has occurred and therefore compilation should be stopped
+	bool errorFound = false;
+	while(!fin.eof()){
+		int error = 0;
+		
+		line.erase(0,1);//removes the beginning space artifact left by the line tracking system
     line = removeLineLabel(line);
     int assignmentError = 0;
     if((assignmentError = validAssignment(line, symTable)) == 0){
@@ -392,7 +391,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
   objFile result;
   result.name = objFilename;
   result.valid = !errorFound;
-  symTable->genCore().toFile(coreName(filename));
+  symTable->genCore(result.valid).toFile(coreName(filename));
   literals.toFile(litName(filename));
   return result;
 }

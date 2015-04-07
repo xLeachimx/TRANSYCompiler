@@ -39,6 +39,12 @@ public:
   double getAddrContent(int addr);
 
   //Precond:
+  //  valid is a boolean value
+  //Postcond:
+  //  VALID_FLAG_LOC contains 1 if valid is true
+  void setValid(bool valid);
+
+  //Precond:
   //  filename is a valid filename
   //Postcond:
   //  Core is output to the specified file

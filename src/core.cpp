@@ -27,6 +27,10 @@ bool Core::changeAddr(int addr, double to){
   return true;
 }
 
+void Core::setValid(bool valid){
+  data[VALID_FLAG_LOC] = valid?1:0;
+}
+
 //implementation of the getAddrContent 
 double Core::getAddrContent(int addr){
   if(addr >= MAX_CORE_LOC || addr < 0){
@@ -38,7 +42,7 @@ double Core::getAddrContent(int addr){
 void Core::toFile(string filename){
   ofstream fout;
   fout.open(filename.c_str());
-  for(int i = 0;i < MAX_CORE_LOC;i++){
+  for(int i = 0;i < CORE_SIZE;i++){
     fout << data[i] <<endl;
   }
   fout.close();

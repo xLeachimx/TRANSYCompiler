@@ -17,6 +17,8 @@ for f in files
   file.close
   contents.map!{|l| l.strip()}
   contents.delete_if{|l| l.start_with?('//')}
+  contents.delete_if{|l| l.start_with?('*')}
+  contents.delete_if{|l| l.start_with?('/*')}
   count += contents.length()
 end
 
