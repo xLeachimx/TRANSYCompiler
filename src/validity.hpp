@@ -42,6 +42,14 @@ enum EXECUTOR_ERROR_CODE{
 	BAD_CALL,
 };
 
+enum EXECUTOR_ERROR_CODE{
+	NO_ERROR = 0,
+	SEG_FAULT,
+	INVALID_RANGE,
+	UNINITIALIZED_VAR,
+	BAD_CALL,
+};
+
 //Precond:
 // str is a vlid string
 //Postcond:
