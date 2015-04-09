@@ -100,10 +100,12 @@ int main(int argc, char **argv){
   bool keepObj;
   bool skipPreproc;
   bool globalSymTable;
+  bool execute;
   keepNoSpace = false;
   keepObj = false;
   skipPreproc = false;
   globalSymTable = false;
+  execute = false;
   char c;
   while(--argc > 0 && (*++argv)[0] == '-'){
     while((c = *++argv[0])){
@@ -119,6 +121,10 @@ int main(int argc, char **argv){
         break;
       case 'g':
         globalSymTable = true;
+        break;
+      case 'x':
+        execute = true;
+        break;
       default:
         cout << "Bad flag:" << c <<endl;
         break;
@@ -161,6 +167,9 @@ int main(int argc, char **argv){
     if(postScan.valid){
        objFiles.push_back(postScan.name);
       if(!keepNoSpace)remove(files[i].c_str());
+      if(execute){
+        // executorMain(2,{"",objFiles[objFiles.last()].c_str()});
+      }
     }
     else{
       if(!keepObj)remove(postScan.name.c_str());
@@ -202,7 +211,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 		line.erase(0,1);//removes the beginning space artifact left by the line tracking system
     line = removeLineLabel(line);
     int assignmentError = 0;
-    if((assignmentError = validAssignment(line, symTable)) == 0){
+    if(assignmentError = validAssignment(line, symTable)) == 0){
       fout << parseAssignment(line, symTable) <<endl;
     }
     else{
@@ -461,12 +470,12 @@ void populateLabelTable(string filename, Table *lineLabels){
 
   int lineCount = 0;
 
-  while(!fin.eof()){
-    int colonLoc = line.find(':'); //internal to human body
-    string label = line.substr(0,colonLoc);
-    if(colonLoc != -1){
-      lineLabels->insert(label,lineCount);
-    }
+	while(!fin.eof()){
+		int colonLoc = line.find(':'); //internal to human body
+		string label = line.substr(0,colonLoc);
+		if(colonLoc != -1){
+			lineLabels->insert(label,lineCount);
+		}
     temp = 0;
     fin >> temp;//remove line relation
     line = "";

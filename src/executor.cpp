@@ -14,13 +14,30 @@ using std::endl;
 using std::atoi;
 
 #include "validity.hpp"
+#include "generalstack.hpp"
+#include "eread.hpp"
+#include "ewrite.hpp"
+#include "estop.hpp"
+#include "ecdump.hpp"
+#include "elisto.hpp"
+#include "enop.hpp"
+#include "egoto.hpp"
+#include "eifa.hpp"
+#include "earead.hpp"
+#include "eawrite.hpp"
+#include "eloop.hpp"
+#include "eloopend.hpp"
+#include "elread.hpp"
+#include "elwrite.hpp"
+#include "eif.hpp"
+#include "ecls.hpp"
 
 //does the actual job of parsing the .obj file
 //returns true iff successful
-bool parseObjFile(string filename, int buffer[][],int lineSizes[], int maxLines, int maxLineSize);
+bool parseObjFile(string filename, int buffer[][],int lineSizes[], int &length, int maxLines, int maxLineSize);
 //converts a string into a series of integers
 //returns true iff successful
-bool parseObjLine(string str, int line[], int maxSize);
+bool parseObjLine(string str, int line[], int maxSize, int &size);
 //converts a filename to the apprpriate .core filename by changing the extension
 //returns that transformation
 string translateToCore(string filename);
@@ -34,7 +51,7 @@ string translateToLiteral(string filename);
 //returns true iff successful
 bool parseLiteralFile(string filename, string lits[]);
 
-int main(){
+int executorMain(int argc, char **argv){
 	//flags
 	bool supressWarnings = false;
 	char c;
@@ -73,39 +90,101 @@ int main(){
 
 void execute(string filename, Core *core, string *lits){
 	int objCode[MAX_OBJ_LINES][MAX_OBJ_LINE_SIZE];
+	int length = 0;
 	int lineSizes[MAX_OBJ_LINES];
-	if(!parseObjFile(filename,objCode,lineSizes,MAX_OBJ_LINES,MAX_OBJ_LINE_SIZE)){
+	int loopsSeen[MAX_OBJ_LINES];
+	for(int i = 0;i < MAX_OBJ_LINES;i++){
+		loopsSeen[i] = false;
+	}
+	GeneralStack<int> loopStack;
+	if(!parseObjFile(filename,objCode,lineSizes,length,MAX_OBJ_LINES,MAX_OBJ_LINE_SIZE)){
 		cout << "ERROR: Problem opening/parsing object file" << endl;
 		return;
 	}
 	int pc = 0;
-	while(pc < MAX_OBJ_LINES){
+	while(pc < length){
 		if(isRead(objCode[pc][0])){
+			int error = executeRead(&objCode[pc][1], lineSizes[pc], core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isWrite(objCode[pc][0])){
+			int error = executeWrite(&objCode[pc][1], lineSizes[pc], core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
+
 		}
 		else if(isStop(objCode[pc][0])){
+			return;
 		}
 		else if(isCdump(objCode[pc][0])){
+			int error = executeCdump(&objCode[pc][1], lineSizes[pc], core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isListo(objCode[pc][0])){
+			int error = executeListo(objCode, lineSizes, length);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isNop(objCode[pc][0])){
+			continue;
 		}
 		else if(isGoto(objCode[pc][0])){
+			int error = executeGoto(&objCode[pc][1], lineSizes[pc], &pc);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isIfa(objCode[pc][0])){
+			int error = executeIfa(&objCode[pc][1], lineSizes[pc], core, &pc);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isAread(objCode[pc][0])){
+			int error = executeAread(&objCode[pc][1], lineSizes[pc], core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isAwrite(objCode[pc][0])){
+			int error = executeAwrite(&objCode[pc][1], lineSizes[pc], core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isSubp(objCode[pc][0])){
+			int error = executeSubp(&objCode[pc][1], lineSizes[pc], core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isLoop(objCode[pc][0])){
 			bool end = false;
-			bool seen = false;
-			executeLoop((&objCode[pc])++,lineSizes[pc],core,seen,&end);
+			bool seen = loopsSeen[pc];
+			if(!loopStack.push(pc)){
+				cout << "ERROR: Too many nested loops" <<endl;
+				return;
+			}
+			int error = executeLoop((&objCode[pc])++,lineSizes[pc],core,seen,&end);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 			if(end){
 				int matchingEnd;
 				count = 1;
@@ -114,18 +193,43 @@ void execute(string filename, Core *core, string *lits){
 					if(isLoopEnd(objCode[matchingEnd][0]))count--;
 					if(count == 0)break;
 				}
+				loopsSeen[pc] = false;
 				pc = matchingEnd+1;
 			}
 		}
 		else if(isLoopEnd(objCode[pc][0])){
+			if(!loopStack.pop(pc)){
+				cout << "ERROR: Loop Ended with not where to return" <<endl;
+				return;
+			}
 		}
 		else if(isLread(objCode[pc][0])){
+			int error = executeLread(&objCode[pc][1], lineSizes[pc], lits);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isLwrite(objCode[pc][0])){
+			int error = executeLWrite(&objCode[pc][1], lineSizes[pc], lits);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isIf(objCode[pc][0])){
+			int error = executeIf(&objCode[pc][1], lineSizes[pc], core, &pc);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isCls(objCode[pc][0])){
+			int error = executeCls();
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 		else if(isAssignment(objCode[pc][0])){
 		}
@@ -135,7 +239,7 @@ void execute(string filename, Core *core, string *lits){
 
 //does the actual job of parsing the .obj file
 //returns true iff successful
-bool parseObjFile(string filename, int buffer[][],int lineSizes[], int maxLines, int maxLineSize){
+bool parseObjFile(string filename, int buffer[][],int lineSizes[], int &length, int maxLines, int maxLineSize){
 	int counter = 0;
 	string line;
 	ifstream fin;
@@ -144,25 +248,29 @@ bool parseObjFile(string filename, int buffer[][],int lineSizes[], int maxLines,
 	getline(fin,line);
 	while(!fin.eof()){
 		if(counter >= maxLines){
+			length = counter;
 			fin.close();
 			return false;
 		}
-		if(!parseObjLine(line, buffer[i], maxLineSize)){
+		if(!parseObjLine(line, buffer[i], lineSizes[i], maxLineSize)){
+			length = counter;
 			fin.close();
 			return false;
 		}
 		getline(fin,temp);
 	}
+	length = counter;
 	fin.close();
 }
 //converts a string into a series of integers
 //returns true iff successful
-bool parseObjLine(string str, int line[], int maxSize){
+bool parseObjLine(string str, int line[],int &size, int maxSize){
 	vector<string> elements = split(str,' ');
 	if(elements.size() > maxSize)return false;
 	for(int i = 0;i < elements.size();i++){
 		line[i] = atoi(elements[i].c_str());
 	}
+	size = elements.size();
 	return true;
 }
 //converts a filename to the apprpriate .core filename by changing the extension

@@ -39,6 +39,7 @@ enum EXECUTOR_ERROR_CODE{
 	INVALID_RANGE,
 	UNINITIALIZED_VAR,
 	BAD_CALL,
+	BAD_COMPARISON,
 };
 
 //Precond:
@@ -95,6 +96,12 @@ int numberOf(string str, char c);
 //Postcond:
 //  The corresponing string to error will be returned
 string errorString(int error);
+
+//Precond:
+//  error is a valid member of the above enum
+//Postcond:
+//  The corresponing string to error will be returned
+string errorStringExecutor(int error);
 
 //Precond:
 //  str represents a number
