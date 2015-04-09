@@ -4,6 +4,9 @@
  *   parses and validated TRANSY write commands
  *Notes:
 */
+
+#ifndef TWRITE_HPP
+#define TWRITE_HPP
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +25,5 @@ string parseWrite(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid write command
 int validWrite(string line);
+
+#endif

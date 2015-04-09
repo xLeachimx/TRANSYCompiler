@@ -4,6 +4,10 @@
  *   parses and validated TRANSY stop commands
  *Notes:
 */
+
+#ifndef TSTOP_HPP
+#define TSTOP_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,5 @@ string parseStop(string line);
 //Postcond:
 //returns true iff line represents a valid stop command
 int validStop(string line);
+
+#endif

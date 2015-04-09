@@ -4,6 +4,10 @@
  *   parses and validated TRANSY cls commands
  *Notes:
 */
+
+#ifndef TCLS_HPP
+#define TCLS_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,5 @@ string parseCls(string line);
 //Postcond:
 //returns true iff line represents a valid cls command
 int validCls(string line);
+
+#endif

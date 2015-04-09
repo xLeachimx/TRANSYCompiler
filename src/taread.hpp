@@ -4,6 +4,9 @@
  *   parses and validated TRANSY aread commands
  *Notes:
 */
+#ifndef TAREAD_HPP
+#define TAREAD_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +25,5 @@ string parseAread(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid aread command
 int validAread(string line, SymTable *symTable);
+
+#endif

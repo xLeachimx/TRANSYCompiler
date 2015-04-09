@@ -4,6 +4,9 @@
  *   parses and validated TRANSY read commands
  *Notes:
 */
+
+#ifndef TREAD_HPP
+#define TREAD_HPP
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +25,5 @@ string parseRead(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid read command
 int validRead(string line);
+
+#endif

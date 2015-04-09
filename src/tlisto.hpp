@@ -4,6 +4,9 @@
  *   parses and validated TRANSY listo commands
  *Notes:
 */
+
+#ifndef TLISTO_HPP
+#define TLISTO_HPP
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +25,5 @@ string parseListo(string line);
 //Postcond:
 //returns true iff line represents a valid listo command
 int validListo(string line);
+
+#endif

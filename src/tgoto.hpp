@@ -5,6 +5,9 @@
  *Notes:
 */
 
+#ifndef TGOTO_HPP
+#define TGOTO_HPP
+
 #include <string>
 using std::string;
 #include "table.hpp"
@@ -23,3 +26,5 @@ string parseGoto(string line, Table *lineTable);
 //Postcond:
 //returns true iff line represents a valid goto command
 int validGoto(string line, Table *lineTable);
+
+#endif

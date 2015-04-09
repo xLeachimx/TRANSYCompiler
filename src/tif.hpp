@@ -5,6 +5,8 @@
  *Notes:
 */
 
+#ifndef TIF_HPP
+#define TIF_HPP
 #include <string>
 using std::string;
 #include "table.hpp"
@@ -24,3 +26,5 @@ string parseIf(string line, Table *lineTable, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid if command
 int validIf(string line, Table *lineTable, SymTable *symTable);
+
+#endif

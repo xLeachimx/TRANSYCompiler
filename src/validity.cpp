@@ -63,6 +63,26 @@ bool validNumber(string str){
   return true;
 }
 
+//implementation of the validCharsAssignment interface
+bool validCharsAssignment(string str){
+  int equalCount = 0;
+  for(int i = 0;i < str.length();i++){
+    if(str[i] == '=')equalCount++;
+    if(!isNumber(str[i]) && !isLetter(str[i]) && !isOperator(str[i])) return false;
+  }
+  return (equalCount == 1);
+}
+
+//implemenation of isMathOperator
+bool isMathOperator(char c){
+  string temp = "=+-/*^([";
+  return (temp.find(c) != -1);
+}
+
+bool isTrueMathOperator(char c){
+  string temp = "=+-/*^";
+  return (temp.find(c) != -1);
+}
 
 bool isLetter(char c){
 	return (c >= 'A' && c <= 'Z');
@@ -78,6 +98,11 @@ bool isGoodSpecChar(char c){
 
 bool isBadSpecChar(char c){
 	return (!isLetter(c) && !isGoodSpecChar(c) && !isNumber(c));
+}
+
+bool isOperator(char c){
+  string temp = "=+-/*()[]^";
+  return (temp.find(c) != -1);
 }
 
 
@@ -185,6 +210,8 @@ string errorString(int error){
     return "Incorrect line label ";
   case BAD_LITERAL:
     return "Incorrect literal ";
+  case BAD_FORM:
+    return "Incorrect form ";
   default:
     return "Unknown Error ";
   }

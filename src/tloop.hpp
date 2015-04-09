@@ -4,6 +4,10 @@
  *   parses and validated TRANSY loop commands
  *Notes:
 */
+
+#ifndef TLOOP_HPP
+#define TLOOP_HPP
+
 #include <string>
 using std::string;
 #include "symtable.hpp"
@@ -22,3 +26,5 @@ string parseLoop(string line, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid loop command
 int validLoop(string line, SymTable *symTable);
+
+#endif

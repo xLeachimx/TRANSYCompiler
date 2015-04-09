@@ -5,6 +5,9 @@
  *Notes:
 */
 
+#ifndef TIFA_HPP
+#define TIFA_HPP
+
 #include <string>
 using std::string;
 #include "table.hpp"
@@ -24,3 +27,5 @@ string parseIfa(string line, Table *lineTable, SymTable *symTable);
 //Postcond:
 //returns true iff line represents a valid ifa command
 int validIfa(string line, Table *lineTable, SymTable *symTable);
+
+#endif
