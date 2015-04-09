@@ -464,10 +464,14 @@ void populateLabelTable(string filename, Table *lineLabels){
   while(!fin.eof()){
     int colonLoc = line.find(':'); //internal to human body
     string label = line.substr(0,colonLoc);
-    if(validSymbol(label)){
+    if(colonLoc != -1){
       lineLabels->insert(label,lineCount);
     }
+    temp = 0;
+    fin >> temp;//remove line relation
+    line = "";
     getline(fin,line);
+    line.erase(0,1);//remove artifact space
     lineCount++;
   }
   fin.close();
@@ -476,7 +480,7 @@ void populateLabelTable(string filename, Table *lineLabels){
 string removeLineLabel(string str){
   int colonLoc = str.find(':'); //internal to human body
   string label = str.substr(0,colonLoc);
-  if(colonLoc == -1 || !validSymbol(label)){
+  if(colonLoc == -1){
     return str;
   }
   str.erase(0,colonLoc+1);

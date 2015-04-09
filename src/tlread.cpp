@@ -14,7 +14,7 @@ using std::sprintf;
 //implementation of parseLread function
 string parseLread(string line, LitTable *litTable){
   line.erase(0,5);//get rid of LREAD
-  string result = "17 ";
+  string result = "16 ";
   int litLoc = litTable->retrieve(line);
   if(litLoc == -1){
     litLoc = litTable->insert(line);

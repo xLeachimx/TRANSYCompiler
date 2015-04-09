@@ -12,7 +12,7 @@
 using std::getline;
 using std::cin;
 
-#define LWRITE_OP_CODE 17
+#define LWRITE_OP_CODE 16
 
 bool isLwrite(int opCode){
 	return (LWRITE_OP_CODE==opCode);

@@ -68,7 +68,7 @@ bool validCharsAssignment(string str){
   int equalCount = 0;
   for(int i = 0;i < str.length();i++){
     if(str[i] == '=')equalCount++;
-    if(!isNumber(str[i]) && !isLetter(str[i]) && !isOperator(str[i])) return false;
+    if(!isNumber(str[i]) && !isLetter(str[i]) && !isOperator(str[i]) && !(str[i] == '.')) return false;
   }
   return (equalCount == 1);
 }
