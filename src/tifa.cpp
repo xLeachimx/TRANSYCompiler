@@ -41,8 +41,7 @@ int validIfa(string line, Table *lineTable, SymTable *symTable){
   if(line.find(')') == -1)return BAD_ARGS;
   string internal = line.substr(0,line.find(')'));
   if(symTable->retrieve(internal) == -1){
-    if(!validNumber(internal))return INVALID_SYMBOLS;
-    internal = standardizeNumber(internal);
+    if(validNumber(internal))internal = standardizeNumber(internal);
     if(symTable->retrieve(internal) == -1)symTable->insert(internal,1);
   }
   line.erase(0,line.find(')')+1); //get rid of already used bits

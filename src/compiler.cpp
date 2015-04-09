@@ -5,9 +5,15 @@
  *Notes:
  *   Line labels are a little liberal.
  *   For example: label one == labelone
+ *   Allows for line labels alone on lines
+ *   For example:
+ *   label:
+ *   is a valid line in TRANSY(for this compiler)
+ *   Allows for multifile manipulation
  */
 
 #include "compiler.hpp"
+#include "executor.hpp"
 #include "preprocess.hpp"
 #include "validity.hpp"
 #include "symtable.hpp"
@@ -168,7 +174,7 @@ int main(int argc, char **argv){
        objFiles.push_back(postScan.name);
       if(!keepNoSpace)remove(files[i].c_str());
       if(execute){
-        // executorMain(2,{"",objFiles[objFiles.last()].c_str()});
+        // executorMain(2,{argv[0],objFiles[objFiles.last()].c_str()});
       }
     }
     else{
@@ -210,8 +216,11 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
 		
 		line.erase(0,1);//removes the beginning space artifact left by the line tracking system
     line = removeLineLabel(line);
+    if(line == ""){
+      line = "NOP";
+    }
     int assignmentError = 0;
-    if(assignmentError = validAssignment(line, symTable)) == 0){
+    if((assignmentError = validAssignment(line, symTable)) == 0){
       fout << parseAssignment(line, symTable) <<endl;
     }
     else{
@@ -353,7 +362,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
           errorFound = true;
         }
         break;
-        case IF:
+      case IF:
         if((error=validIf(line,lineLabels,symTable)) == 0){
           fout << parseIf(line,lineLabels,symTable) <<endl;
         }
@@ -362,7 +371,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
           errorFound = true;
         }
         break;
-        case LOOP:
+      case LOOP:
         if((error=validLoop(line,symTable)) == 0){
           fout << parseLoop(line,symTable) <<endl;
         }
@@ -371,7 +380,7 @@ objFile scan(string filename, SymTable *symTable, Table *lineLabels){
           errorFound = true;
         }
         break;
-        case SUBP:
+      case SUBP:
         if((error=validSubp(line,symTable)) == 0){
           fout << parseSubp(line,symTable) <<endl;
         }

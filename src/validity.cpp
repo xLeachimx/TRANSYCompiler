@@ -190,33 +190,55 @@ int numberOf(string str, char c){
 
 string errorString(int error){
   switch(error){
-  case BAD_ARGS:
-    return "Bad arguments ";
-  case BAD_SYMBOLS:
-    return "Bad symbols ";
-  case INVALID_SYMBOLS:
-    return "Invalid symbols ";
-  case EXCESS_CHARS:
-    return "Excessive characters in line ";
-  case UNDECLARED_ARRAY:
-    return "Uninitialized array used ";
-  case INVALID_NUMBER:
-    return "Invalid number ";
-  case BAD_NUMBER:
-    return "Such a number or numbers cannot be used ";
-  case DUPLICATE_DECLARATION:
-    return "A duplicate declaration occured ";
-  case BAD_LINE_LABEL:
-    return "Incorrect line label ";
-  case BAD_LITERAL:
-    return "Incorrect literal ";
-  case BAD_FORM:
-    return "Incorrect form ";
-  default:
-    return "Unknown Error ";
+    case BAD_ARGS:
+      return "Bad arguments ";
+    case BAD_SYMBOLS:
+      return "Bad symbols ";
+    case INVALID_SYMBOLS:
+      return "Invalid symbols ";
+    case EXCESS_CHARS:
+      return "Excessive characters in line ";
+    case UNDECLARED_ARRAY:
+      return "Uninitialized array used ";
+    case INVALID_NUMBER:
+      return "Invalid number ";
+    case BAD_NUMBER:
+      return "Such a number or numbers cannot be used ";
+    case DUPLICATE_DECLARATION:
+      return "A duplicate declaration occured ";
+    case BAD_LINE_LABEL:
+      return "Incorrect line label ";
+    case BAD_LITERAL:
+      return "Incorrect literal ";
+    case BAD_FORM:
+      return "Incorrect form ";
+    default:
+      return "Unknown Error ";
   }
 }
-  //implementation of standardizeNumber
+
+//implementation of errorStringExecutor
+string errorStringExecutor(int error){
+  switch(error){
+    case SEG_FAULT:
+      return "Segmentation Fault ";
+    case INVALID_RANGE:
+      return "Invalid Range ";
+    case UNINITIALIZED_VAR:
+      return "Variable is uninitialized ";
+    case BAD_CALL:
+      return "Bad function call ";
+    case BAD_COMPARISON:
+      return "Invalid comparison ";
+    case BAD_ASSIGNMENT:
+      return "Assignment with errors";
+    default:
+      return "Unknown Error ";
+  }
+}
+
+
+//implementation of standardizeNumber
 string standardizeNumber(string str){
   char buffer[30];
   sprintf(buffer,"%f",atof(str.c_str()));

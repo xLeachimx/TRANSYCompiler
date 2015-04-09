@@ -1,11 +1,21 @@
-label: read a,b,c
+label: read a,b,c,d,g,h,i
+write i,h,g,d,c,b,a
 goto label
 ifa(a)label,label,label
 if(a < b) then label
 loop i=10,b,c
 loop-end
+goto 30
+ifa(v)30,30,20
+ifa(a)20,20,30
+if(a=b) then 30
 cdump 30, 40
+goto 30
+10: subp sin(v,b)
 20:		dim e[5]
+30:
+v = 20
+go to 10
 dim f[10]
 aread e,3,4
 awrite e,a,5
@@ -13,7 +23,7 @@ loop = 4/5
 hi = 3 + (4/5) - e[4+5]
 hello = -d
 howdy = +d
-f[2] = -4.0
+f[2] = -4.0 + 6.7 / -3.2
 lwrite "Hello, World!"
 lwrite "Worry!"
 subp sin(c,b)

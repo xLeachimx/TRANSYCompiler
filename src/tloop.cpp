@@ -58,15 +58,14 @@ int validLoop(string line, SymTable *symTable){
   if(!validSymbol(symbol))return INVALID_SYMBOLS;
 
   for(int i = 0;i < 3;i++){
-    if(validSymbol(args[i])){
-      if(symTable->retrieve(args[i]) == -1)return BAD_ARGS;
-    }
-    else{
-      if(!validNumber(args[i]))return BAD_ARGS;
-      args[i] = standardizeNumber(args[i]);
+    if(validSymbol(args[i]) || validNumber(args[i])){
+      if(validNumber(args[i]))args[i] = standardizeNumber(args[i]);
       if(symTable->retrieve(args[i]) == -1){
         symTable->insert(args[i],1);
       }
+    }
+    else{
+      return INVALID_SYMBOLS;
     }
   }
   return NO_ERROR;

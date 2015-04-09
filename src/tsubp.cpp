@@ -82,7 +82,9 @@ int validSubp(string line, SymTable *symTable){
 
   if(validSymbol(args[0])){
     int symLoc = symTable->retrieve(args[0]);
-    if(symLoc == -1)return BAD_ARGS;
+    if(symLoc == -1){
+      symTable->insert(args[0],1);
+    }
   }
   else if(validNumber(args[0])){
     args[0] = standardizeNumber(args[0]);

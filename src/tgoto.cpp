@@ -25,7 +25,6 @@ string parseGoto(string line, Table *lineTable){
 //implementation of validGoto function
 int validGoto(string line, Table *lineTable){
   line.erase(0,4);//get rid of GOTO
-  if(!validSymbol(line))return INVALID_SYMBOLS;
   int lineReferred = lineTable->retrieve(line);
   if(lineReferred == -1)return BAD_LINE_LABEL;
   return NO_ERROR;

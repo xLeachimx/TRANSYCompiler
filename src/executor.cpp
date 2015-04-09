@@ -3,6 +3,7 @@
 *Description:
 *  Implementation of executor.hpp
 *  Implementation fo base executor functions
+*  Tag of s suppresses warnings
 */
 #include <iostream>
 #include <fstream>
@@ -104,14 +105,14 @@ void execute(string filename, Core *core, string *lits){
 	int pc = 0;
 	while(pc < length){
 		if(isRead(objCode[pc][0])){
-			int error = executeRead(&objCode[pc][1], lineSizes[pc], core);
+			int error = executeRead(&objCode[pc][1], lineSizes[pc]-1, core);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isWrite(objCode[pc][0])){
-			int error = executeWrite(&objCode[pc][1], lineSizes[pc], core);
+			int error = executeWrite(&objCode[pc][1], lineSizes[pc]-1, core);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -122,7 +123,7 @@ void execute(string filename, Core *core, string *lits){
 			return;
 		}
 		else if(isCdump(objCode[pc][0])){
-			int error = executeCdump(&objCode[pc][1], lineSizes[pc], core);
+			int error = executeCdump(&objCode[pc][1], lineSizes[pc]-1, core);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -139,35 +140,35 @@ void execute(string filename, Core *core, string *lits){
 			continue;
 		}
 		else if(isGoto(objCode[pc][0])){
-			int error = executeGoto(&objCode[pc][1], lineSizes[pc], &pc);
+			int error = executeGoto(&objCode[pc][1], lineSizes[pc]-1, &pc);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isIfa(objCode[pc][0])){
-			int error = executeIfa(&objCode[pc][1], lineSizes[pc], core, &pc);
+			int error = executeIfa(&objCode[pc][1], lineSizes[pc]-1, core, &pc);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isAread(objCode[pc][0])){
-			int error = executeAread(&objCode[pc][1], lineSizes[pc], core);
+			int error = executeAread(&objCode[pc][1], lineSizes[pc]-1, core);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isAwrite(objCode[pc][0])){
-			int error = executeAwrite(&objCode[pc][1], lineSizes[pc], core);
+			int error = executeAwrite(&objCode[pc][1], lineSizes[pc]-1, core);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isSubp(objCode[pc][0])){
-			int error = executeSubp(&objCode[pc][1], lineSizes[pc], core);
+			int error = executeSubp(&objCode[pc][1], lineSizes[pc]-1, core);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -180,7 +181,7 @@ void execute(string filename, Core *core, string *lits){
 				cout << "ERROR: Too many nested loops" <<endl;
 				return;
 			}
-			int error = executeLoop((&objCode[pc])++,lineSizes[pc],core,seen,&end);
+			int error = executeLoop(&objCode[pc][1],lineSizes[pc]-1,core,seen,&end);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -204,21 +205,21 @@ void execute(string filename, Core *core, string *lits){
 			}
 		}
 		else if(isLread(objCode[pc][0])){
-			int error = executeLread(&objCode[pc][1], lineSizes[pc], lits);
+			int error = executeLread(&objCode[pc][1], lineSizes[pc]-1, lits);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isLwrite(objCode[pc][0])){
-			int error = executeLWrite(&objCode[pc][1], lineSizes[pc], lits);
+			int error = executeLWrite(&objCode[pc][1], lineSizes[pc]-1, lits);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
 			}
 		}
 		else if(isIf(objCode[pc][0])){
-			int error = executeIf(&objCode[pc][1], lineSizes[pc], core, &pc);
+			int error = executeIf(&objCode[pc][1], lineSizes[pc]-1, core, &pc);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -232,6 +233,11 @@ void execute(string filename, Core *core, string *lits){
 			}
 		}
 		else if(isAssignment(objCode[pc][0])){
+			int error = executeAssignment(&objCode[pc][1], lineSizes[pc]-1, core);
+			if(error != NO_ERROR){
+				cout << "ERROR: " << errorStringExecutor(error) <<endl;
+				return;
+			}
 		}
 	}
 }
