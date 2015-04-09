@@ -32,6 +32,13 @@ int executeAssignment(int line[], int lineSize, Core *c){
 			switch(line[1]){
 				case -1:
 					// =
+					if(val2.realVal)return BAD_ASSIGNMENT;
+					if(val1.realVal){
+						c->changeAddr(val2.value,val1.value);
+					}
+					else{
+						c->changeAddr(val2.value,c->getAddrContent(val1.value));
+					}
 					break;
 				case -2:
 					// [
