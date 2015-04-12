@@ -97,6 +97,8 @@ string litName(string filename);
 string coreName(string filename);
 //grabs the extension of the filename
 string extName(string filename);
+//removes the last extension on a filename
+string stripExt(string filename);
 //scans file and removes line label
 void populateLabelTable(string filename, Table *lineLabels);
 //removes the line label from the str(if one is there)
@@ -154,7 +156,7 @@ int main(int argc, char **argv){
         if(execute){
           char temp[100];
           char temp2[100];
-          strcpy(temp, postScan.name.c_str());
+          strcpy(temp, stripExt(postScan.name).c_str());
           strcpy(temp2, string("-b").c_str());
           char *fakeArgs[3] = {argv[0], temp2 ,temp};
           executorMain(3,fakeArgs);
@@ -196,7 +198,7 @@ int main(int argc, char **argv){
         if(!keepNoSpace)remove(files[i].c_str());
         if(execute){
           char temp[100];
-          strcpy(temp, objFiles.back().c_str());
+          strcpy(temp, stripExt(objFiles.back()).c_str());
           char *fakeArgs[2] = {argv[0], temp};
           executorMain(2,fakeArgs);
         }
@@ -486,6 +488,14 @@ string extName(string filename){
   if(extLoc == 0)return "";
   return filename.substr(extLoc);
 }
+
+//removes the last extension on a filename
+string stripExt(string filename){
+  string newName = filename;
+  newName.erase(newName.rfind('.'));
+  return newName;
+}
+
 
 void populateLabelTable(string filename, Table *lineLabels){
   ifstream fin;

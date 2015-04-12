@@ -18,6 +18,13 @@ bool isLoop(int opCode){
 }
 
 int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end){
+	cout << "Values:" <<endl;
+	cout << line[1] <<endl;
+	cout << c->getAddrContent(line[1]) <<endl;
+	cout << line[2] <<endl;
+	cout << c->getAddrContent(line[2]) <<endl;
+	cout << line[3] <<endl;
+	cout << c->getAddrContent(line[3]) <<endl;
 	if(c->getAddrContent(line[1]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
 	if(c->getAddrContent(line[2]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
 	if(c->getAddrContent(line[3]) == DEFAULT_VAL)return UNINITIALIZED_VAR;

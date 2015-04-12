@@ -89,13 +89,13 @@ int executorMain(int argc, char **argv){
 	//preprocess the files
 	for(int i = 0;i < argc;i++){
 		if(brainfuck){
-			executeBf(argv[i]);
+			executeBf(string(argv[i]) + ".obj");
 		}
 		else{
 			string filename = argv[i];
 			Core coreMem;
 			string literals[MAX_TABLE_ENTRIES];
-			if(!parseCoreFile(translateToCore(filename),&coreMem)){
+			if(!parseCoreFile(filename+".core",&coreMem)){
 				cout << "ERROR: Problem accessing core file" <<endl;
 				return 0;
 			}
@@ -103,7 +103,7 @@ int executorMain(int argc, char **argv){
 				cout << "ERROR: Compilation Failed" <<endl;
 				return 0;
 			}
-			if(!parseLiteralFile(translateToLiteral(filename),literals) && !supressWarnings){
+			if(!parseLiteralFile(filename+".literal",literals) && !supressWarnings){
 				cout << "WARNING: No Literals being drawn in" <<endl;
 			}
 			if(zeroInit){
@@ -111,7 +111,7 @@ int executorMain(int argc, char **argv){
 					if(coreMem.getAddrContent(i) == DEFAULT_VAL)coreMem.changeAddr(i,0.0);
 				}
 			}
-			execute(filename,&coreMem,literals);
+			execute(filename+".obj",&coreMem,literals);
 		}
 	}
 	return 0;
@@ -345,8 +345,9 @@ bool parseCoreFile(string filename, Core *c){
 			fin.close();
 			return false;
 		}
-		if(temp != DEFAULT_VAL)c->changeAddr(counter++,temp);
+		if(temp != DEFAULT_VAL)c->changeAddr(counter,temp);
 		fin >> temp;
+		counter++;
 	}
 	fin.close();
 	return true;
@@ -401,9 +402,10 @@ void executeBf(string filename){
 	}
 	int location = 0;
 	GeneralStack<int> loopStack;
+	int itemp;
 	for(int i = 0;i < temp.length();i++){
 		if(location >= CORE_SIZE || location < 0){
-			cout << "Execution error" <<endl;
+			cout << "Execution error location" <<endl;
 			return;
 		}
 		switch(temp[i]){
@@ -420,17 +422,19 @@ void executeBf(string filename){
 				location--;
 				break;
 			case '4':
-				if(!loopStack.push(location)){
-					cout << "Execution error" <<endl;
+				if(!loopStack.push(i)){
+					cout << "Execution error on [" <<endl;
 					return;
 				}
 				break;
 			case '5':
-				if(tape[location] != 0){
-					if(!loopStack.pop(location)){
-						cout << "Execution error" <<endl;
-						return;
-					}
+				itemp = 0;
+				if(!loopStack.pop(itemp)){
+					cout << "Execution error on ]" <<endl;
+					return;
+				}
+				if(tape[location]){
+					i = itemp-1;
 				}
 				break;
 			case '6':

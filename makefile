@@ -3,7 +3,7 @@ SOURCEDIR = src/
 PROGNAME = compiler
 
 all: compiler executor
-compiler: $(COMPILED_FILES) 
+compiler: $(COMPILED_FILES) $(SOURCEDIR)compiler.o
 	g++ $(COMPILED_FILES) $(SOURCEDIR)compiler.o -o $(PROGNAME)
 
 executor: $(COMPILED_FILES) src/mainExecutor.o
