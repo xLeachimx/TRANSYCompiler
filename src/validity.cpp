@@ -20,6 +20,7 @@ bool isLetter(char c);
 bool isNumber(char c);
 bool isGoodSpecChar(char c);
 bool isBadSpecChar(char c);
+bool isZero(string str);
 
 
 //implementation of validSymbol interface
@@ -44,7 +45,7 @@ bool validLiteralSymbol(string str){
 
 //implementation of validNumber interface
 bool validNumber(string str){
-  if(str.size() == 1 && str == "0")return true;
+  if(isZero(str)) return true;
   int pointCount = 0;
   bool negative = false;
   if(str[0] == '-')negative = true;
@@ -91,6 +92,15 @@ bool isLetter(char c){
 bool isNumber(char c){
 	return (c >= '0' && c <= '9');
 }
+
+bool isZero(string str){
+  for(int i = 0;i < str.length();i++){
+    if(str[i] != '0' && str[i] != '.')return false;
+  }
+  if(numberOf(str,'.') > 1)return false;
+  return true;
+}
+
 
 bool isGoodSpecChar(char c){
 	return (c == '_');

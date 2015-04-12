@@ -7,7 +7,11 @@
 #include "eloop.hpp"
 #include "validity.hpp"
 
-#define LOOP_OP_CODE 15
+#include <iostream>
+using std::cout;
+using std::endl;
+
+#define LOOP_OP_CODE 14
 
 bool isLoop(int opCode){
 	return (LOOP_OP_CODE==opCode);
@@ -20,10 +24,12 @@ int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end){
 
 	if(!seen){
 		double temp = c->getAddrContent(line[1]);
-		c->changeAddr(line[0],temp)
+		// cout << "Inside loop" <<endl;
+		// cout << line[1] <<endl;
+		c->changeAddr(line[0],temp);
 	}
 	if(c->getAddrContent(line[0]) == c->getAddrContent(line[2])){
-		*end == true;
+		*end = true;
 	}
 	if(seen){
 		double temp = c->getAddrContent(line[0]) + c->getAddrContent(line[3]);

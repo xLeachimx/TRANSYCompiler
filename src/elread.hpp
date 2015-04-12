@@ -7,6 +7,9 @@
 #ifndef ELREAD_HPP
 #define ELREAD_HPP
 
+#include <string>
+using std::string;
+
 
 //Precond:
 //  opCode is a valid integer

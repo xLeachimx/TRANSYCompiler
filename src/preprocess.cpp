@@ -11,6 +11,10 @@ using std::ofstream;
 using std::endl;
 using std::getline;
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 string removal(string filename);//handles all the removal and capitalization tasks
 string newFilename(string filename);
 char capitalize(char c);
@@ -85,4 +89,41 @@ char capitalize(char c){
 
 bool isWhiteSpace(char c){
   return (c == ' ' || c == '\t');
+}
+
+//Precondition:
+//   filename is a string which contains a valid file to perform
+//      Brainfuck preprocessing on.
+//Postcondition:
+//   The return value is the filename of a file where all newlines have been removed
+string processFileBf(string filename){
+  ifstream origin;
+  ofstream nospace;
+
+  origin.open(filename.c_str());
+  nospace.open(newFilename(filename).c_str());
+
+  if(!origin.is_open())return "";
+  if(!nospace.is_open())return "";
+
+  string line;
+
+  do{
+    getline(origin, line);
+    if(origin.eof())break;
+    for(int i = 0;i < line.length();i++){
+      //remove whitespace
+      if(isWhiteSpace(line[i]) || line[i] == '\n'){
+        line.erase(i,1);
+        i--;
+        continue;
+      }
+    }
+    if(line.length() > 0)nospace << line;
+
+  }while(!origin.eof());
+
+  origin.close();
+  nospace.close();
+  return newFilename(filename);
 }

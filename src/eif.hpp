@@ -7,7 +7,7 @@
 #ifndef EIF_HPP
 #define EIF_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

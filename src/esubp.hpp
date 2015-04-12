@@ -7,7 +7,7 @@
 #ifndef ESUBP_HPP
 #define ESUBP_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

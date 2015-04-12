@@ -1,14 +1,101 @@
-COMPILED_FILES = src/core.o src/littable.o src/preprocess.o src/symtable.o src/table.o src/taread.o src/tassignment.o src/tawrite.o src/tcdump.o src/tcls.o src/tdim.o src/tgoto.o src/tif.o src/tifa.o src/tlisto.o src/tloop.o src/tloopend.o src/tlread.o src/tlwrite.o src/tnop.o src/token.o src/tokenStack.o src/transducer.o src/tread.o src/tstop.o src/tsubp.o src/twrite.o src/validity.o
+COMPILED_FILES = src/core.o src/earead.o src/eassignment.o src/eawrite.o src/ecdump.o src/ecls.o src/egoto.o src/eif.o src/eifa.o src/elisto.o src/eloop.o src/eloopend.o src/elread.o src/elwrite.o src/enop.o src/eread.o src/estop.o src/esubp.o src/ewrite.o src/executor.o src/littable.o src/preprocess.o src/symtable.o src/table.o src/taread.o src/tassignment.o src/tawrite.o src/tcdump.o src/tcls.o src/tdim.o src/tgoto.o src/tif.o src/tifa.o src/tlisto.o src/tloop.o src/tloopend.o src/tlread.o src/tlwrite.o src/tnop.o src/token.o src/tokenStack.o src/transducer.o src/tread.o src/tstop.o src/tsubp.o src/twrite.o src/validity.o
 SOURCEDIR = src/
 PROGNAME = compiler
 
-all: main
-main: $(COMPILED_FILES) 
-	g++ src/compiler.cpp $(COMPILED_FILES) -o $(PROGNAME)
+all: compiler executor
+compiler: $(COMPILED_FILES) 
+	g++ $(COMPILED_FILES) $(SOURCEDIR)compiler.o -o $(PROGNAME)
+
+executor: $(COMPILED_FILES) src/mainExecutor.o
+	g++ $(COMPILED_FILES) $(SOURCEDIR)mainExecutor.o -o executor
+
+src/mainExecutor.o: src/mainExecutor.cpp src/executor.hpp src/executor.o
+	cd $(SOURCEDIR) && \
+	g++ mainExecutor.cpp -c
+
+src/compiler.o: src/compiler.cpp src/compiler.hpp src/executor.hpp src/preprocess.hpp src/validity.hpp src/symtable.hpp src/tread.hpp src/twrite.hpp src/tstop.hpp src/tcdump.hpp src/tcls.hpp src/tnop.hpp src/tlisto.hpp src/taread.hpp src/tawrite.hpp src/tdim.hpp src/core.hpp src/table.hpp src/tgoto.hpp src/littable.hpp src/tloopend.hpp src/tlwrite.hpp src/tlread.hpp src/tifa.hpp src/tif.hpp src/tloop.hpp src/tsubp.hpp src/tassignment.hpp src/executor.o src/preprocess.o src/validity.o src/symtable.o src/tread.o src/twrite.o src/tstop.o src/tcdump.o src/tcls.o src/tnop.o src/tlisto.o src/taread.o src/tawrite.o src/tdim.o src/core.o src/table.o src/tgoto.o src/littable.o src/tloopend.o src/tlwrite.o src/tlread.o src/tifa.o src/tif.o src/tloop.o src/tsubp.o src/tassignment.o
+	cd $(SOURCEDIR) && \
+	g++ compiler.cpp -c
 
 src/core.o: src/core.cpp src/core.hpp 
 	cd $(SOURCEDIR) && \
 	g++ core.cpp -c
+
+src/earead.o: src/earead.cpp src/earead.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ earead.cpp -c
+
+src/eassignment.o: src/eassignment.cpp src/eassignment.hpp src/validity.hpp src/generalstack.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ eassignment.cpp -c
+
+src/eawrite.o: src/eawrite.cpp src/eawrite.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ eawrite.cpp -c
+
+src/ecdump.o: src/ecdump.cpp src/ecdump.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ ecdump.cpp -c
+
+src/ecls.o: src/ecls.cpp src/ecls.hpp src/validity.hpp src/validity.o
+	cd $(SOURCEDIR) && \
+	g++ ecls.cpp -c
+
+src/egoto.o: src/egoto.cpp src/egoto.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ egoto.cpp -c
+
+src/eif.o: src/eif.cpp src/eif.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ eif.cpp -c
+
+src/eifa.o: src/eifa.cpp src/eifa.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ eifa.cpp -c
+
+src/elisto.o: src/elisto.cpp src/elisto.hpp src/validity.hpp src/executor.hpp src/validity.o src/executor.o
+	cd $(SOURCEDIR) && \
+	g++ elisto.cpp -c
+
+src/eloop.o: src/eloop.cpp src/eloop.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ eloop.cpp -c
+
+src/eloopend.o: src/eloopend.cpp src/eloopend.hpp src/validity.hpp src/validity.o
+	cd $(SOURCEDIR) && \
+	g++ eloopend.cpp -c
+
+src/elread.o: src/elread.cpp src/elread.hpp src/validity.hpp src/validity.o
+	cd $(SOURCEDIR) && \
+	g++ elread.cpp -c
+
+src/elwrite.o: src/elwrite.cpp src/elwrite.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ elwrite.cpp -c
+
+src/enop.o: src/enop.cpp src/enop.hpp src/validity.hpp src/validity.o
+	cd $(SOURCEDIR) && \
+	g++ enop.cpp -c
+
+src/eread.o: src/eread.cpp src/eread.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ eread.cpp -c
+
+src/estop.o: src/estop.cpp src/estop.hpp src/validity.hpp src/validity.o
+	cd $(SOURCEDIR) && \
+	g++ estop.cpp -c
+
+src/esubp.o: src/esubp.cpp src/esubp.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ esubp.cpp -c
+
+src/ewrite.o: src/ewrite.cpp src/ewrite.hpp src/validity.hpp src/core.hpp src/validity.o src/core.o
+	cd $(SOURCEDIR) && \
+	g++ ewrite.cpp -c
+
+src/executor.o: src/executor.cpp src/validity.hpp src/generalstack.hpp src/table.hpp src/eread.hpp src/ewrite.hpp src/estop.hpp src/ecdump.hpp src/elisto.hpp src/enop.hpp src/egoto.hpp src/eifa.hpp src/earead.hpp src/eawrite.hpp src/eloop.hpp src/eloopend.hpp src/elread.hpp src/elwrite.hpp src/eif.hpp src/ecls.hpp src/esubp.hpp src/eassignment.hpp src/validity.o src/table.o src/eread.o src/ewrite.o src/estop.o src/ecdump.o src/elisto.o src/enop.o src/egoto.o src/eifa.o src/earead.o src/eawrite.o src/eloop.o src/eloopend.o src/elread.o src/elwrite.o src/eif.o src/ecls.o src/esubp.o src/eassignment.o
+	cd $(SOURCEDIR) && \
+	g++ executor.cpp -c
 
 src/littable.o: src/littable.cpp src/littable.hpp src/table.hpp src/table.o
 	cd $(SOURCEDIR) && \

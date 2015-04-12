@@ -7,7 +7,7 @@
 #ifndef EAWRITE_HPP
 #define EAWRITE_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

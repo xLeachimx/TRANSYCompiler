@@ -1,0 +1,24 @@
+Initialize:
+C* general registers
+r1 = 0
+r2 = 0
+r3 = 0.0
+r4 = 0
+r5 = 0.0
+C* argument value
+a1 = 0
+C* return value
+v1 = 0.000
+C* The stack
+dim s[100]
+sInsert = 0
+goto Begin
+
+SaveRegToStack:
+s[sInsert] = r1
+s[sInsert] = r2
+s[sInsert] = r3
+s[sInsert] = r4
+s[sInsert] = r5
+
+Begin:

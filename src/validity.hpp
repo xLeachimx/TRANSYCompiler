@@ -16,7 +16,7 @@
 using std::vector;
 using std::string;
 
-#define ITEMS_WRITTEN_BEFORE_NEWLINE 5
+#define ITEMS_WRITTEN_BEFORE_NEWLINE 3
 
 //This enum holds values for error codes such that errors can be properly diagnosed
 enum COMPILER_ERROR_CODE{
@@ -35,7 +35,7 @@ enum COMPILER_ERROR_CODE{
 };
 
 enum EXECUTOR_ERROR_CODE{
-	SEG_FAULT,
+	SEG_FAULT = 1,
 	INVALID_RANGE,
 	UNINITIALIZED_VAR,
 	BAD_CALL,

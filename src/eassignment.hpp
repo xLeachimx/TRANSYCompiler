@@ -7,7 +7,7 @@
 #ifndef EASSIGNMENT_HPP
 #define EASSIGNMENT_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

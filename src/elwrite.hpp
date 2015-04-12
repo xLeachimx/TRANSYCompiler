@@ -7,7 +7,9 @@
 #ifndef ELWRITE_HPP
 #define ELWRITE_HPP
 
-#include "core.cpp"
+#include "core.hpp"
+#include <string>
+using std::string;
 
 
 //Precond:

@@ -6,9 +6,14 @@
 
 #include "eassignment.hpp"
 #include "validity.hpp"
+#include "generalstack.hpp"
 
 #include <cmath>
- using std::pow;
+using std::pow;
+
+#include <iostream>
+using std::cout;
+using std::endl;
 
 struct assignElement{
 	float value;
@@ -24,15 +29,18 @@ int executeAssignment(int line[], int lineSize, Core *c){
 	GeneralStack<assignElement> execStack;
 	assignElement temp;
 	for(int i = 0;i < lineSize;i++){
+		// cout << line[i] <<endl;
 		if(line[i] < 0){
 			assignElement val1;
 			assignElement val2;
 			if(!execStack.pop(val1))return BAD_ASSIGNMENT;
 			if(!execStack.pop(val2))return BAD_ASSIGNMENT;
-			switch(line[1]){
+			switch(line[i]){
 				case -1:
 					// =
 					if(val2.realVal)return BAD_ASSIGNMENT;
+					// cout << val1.value <<endl;
+					// cout << val1.value <<endl;
 					if(val1.realVal){
 						c->changeAddr(val2.value,val1.value);
 					}
@@ -171,6 +179,7 @@ int executeAssignment(int line[], int lineSize, Core *c){
 							temp.realVal = true;
 						}
 					}
+					// cout << "here" <<endl;
 					if(!execStack.push(temp))return BAD_ASSIGNMENT;
 					break;
 				default:
@@ -178,7 +187,7 @@ int executeAssignment(int line[], int lineSize, Core *c){
 			}
 		}
 		else{
-			temp.value = c->getAddrContent(line[i]);
+			temp.value = line[i];
 			temp.realVal = false;
 			execStack.push(temp);
 		}

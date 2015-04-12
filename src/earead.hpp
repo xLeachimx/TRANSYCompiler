@@ -7,7 +7,7 @@
 #ifndef EAREAD_HPP
 #define EAREAD_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

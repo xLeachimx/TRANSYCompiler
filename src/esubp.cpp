@@ -12,7 +12,7 @@ using std::sin;
 using std::cos;
 using std::abs;
 using std::exp;
-using std::sqr;
+using std::sqrt;
 using std::log;
 
 
@@ -33,39 +33,40 @@ bool isSubp(int opCode){
 }
 
 int executeSubp(int line[], int lineSize, Core *c){
-	if(line[1] == DEFAULT_VAL)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[1]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
+	double temp = 0;
 	switch(line[0]){
 		case SIN:
-			double temp = c->getAddrContent(line[1]);
+			temp = c->getAddrContent(line[1]);
 			temp = sin(temp);
 			c->changeAddr(line[2],temp);
 			break;
 		case COS:
-			double temp = c->getAddrContent(line[1]);
+			temp = c->getAddrContent(line[1]);
 			temp = cos(temp);
 			c->changeAddr(line[2],temp);
 			break;
 		case EXP:
-			double temp = c->getAddrContent(line[1]);
+			temp = c->getAddrContent(line[1]);
 			temp = exp(temp);
 			c->changeAddr(line[2],temp);
 			break;
 		case ABS:
-			double temp = c->getAddrContent(line[1]);
+			temp = c->getAddrContent(line[1]);
 			temp = abs(temp);
 			c->changeAddr(line[2],temp);
-			break:
+			break;
 		case SQR:
-			double temp = c->getAddrContent(line[1]);
-			temp = sqr(temp);
+			temp = c->getAddrContent(line[1]);
+			temp = sqrt(temp);
 			c->changeAddr(line[2],temp);
 			break;
 		case ALG:
-			double temp = c->getAddrContent(line[1]);
+			temp = c->getAddrContent(line[1]);
 			temp = log(temp);
 			c->changeAddr(line[2],temp);
 			break;
-		case default:
+		default:
 			return BAD_CALL;
 			break;
 	}

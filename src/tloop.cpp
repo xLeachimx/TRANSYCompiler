@@ -14,6 +14,11 @@
 using std::printf;
 using std::sprintf;
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
+
 //implementation of parseLoop func
 string parseLoop(string line, SymTable *symTable){
   line.erase(0,4);//get rid of LOOP
@@ -59,8 +64,11 @@ int validLoop(string line, SymTable *symTable){
 
   for(int i = 0;i < 3;i++){
     if(validSymbol(args[i]) || validNumber(args[i])){
+      // cout << args[i] <<endl;
       if(validNumber(args[i]))args[i] = standardizeNumber(args[i]);
+      // cout << args[i] <<endl;
       if(symTable->retrieve(args[i]) == -1){
+        // cout << args[i] <<endl;
         symTable->insert(args[i],1);
       }
     }

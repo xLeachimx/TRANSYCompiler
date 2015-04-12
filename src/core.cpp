@@ -10,6 +10,7 @@
 #include <fstream>
 using std::endl;
 using std::ofstream;
+// using std::precision;
 
 Core::Core(){
   for(int i = 0;i <= MAX_CORE_LOC;i++){
@@ -43,6 +44,7 @@ void Core::toFile(string filename){
   ofstream fout;
   fout.open(filename.c_str());
   for(int i = 0;i < CORE_SIZE;i++){
+    fout.precision(10);
     fout << data[i] <<endl;
   }
   fout.close();

@@ -1,6 +1,6 @@
 label: read a,b,c,d,g,h,i
 write i,h,g,d,c,b,a
-goto label
+C* goto label
 ifa(a)label,label,label
 if(a < b) then label
 loop i=10,b,c

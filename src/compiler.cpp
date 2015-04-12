@@ -45,6 +45,7 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <cstring>
 using std::string;
 using std::vector;
 using std::cout;
@@ -52,6 +53,7 @@ using std::endl;
 using std::remove;
 using std::ifstream;
 using std::ofstream;
+using std::strcpy;
 
 //an enum used to assist commandType
 enum CommandType{
@@ -99,19 +101,17 @@ string extName(string filename);
 void populateLabelTable(string filename, Table *lineLabels);
 //removes the line label from the str(if one is there)
 string removeLineLabel(string str);
+//compiler brainfuck into transy objcode
+objFile bfCompiler(string filename);
 
 int main(int argc, char **argv){
   //flags
-  bool keepNoSpace;
-  bool keepObj;
-  bool skipPreproc;
-  bool globalSymTable;
-  bool execute;
-  keepNoSpace = false;
-  keepObj = false;
-  skipPreproc = false;
-  globalSymTable = false;
-  execute = false;
+  bool keepNoSpace = false;
+  bool keepObj = false;
+  bool skipPreproc = false;
+  bool globalSymTable = false;
+  bool execute = false;
+  bool brainfuck = false;
   char c;
   while(--argc > 0 && (*++argv)[0] == '-'){
     while((c = *++argv[0])){
@@ -131,6 +131,9 @@ int main(int argc, char **argv){
       case 'x':
         execute = true;
         break;
+      case 'b':
+        brainfuck = true;
+        break;
       default:
         cout << "Bad flag:" << c <<endl;
         break;
@@ -141,45 +144,67 @@ int main(int argc, char **argv){
   vector<string> objFiles;//holds the filenames for all the .obj files
   //preprocess the files
   for(int i = 0;i < argc;i++){
-    if(!skipPreproc){
-      string file = argv[i];
-      if(extName(file) != ""){
-        files.push_back(processFile(file));
+    if(brainfuck){
+      objFile postScan = bfCompiler(processFileBf(argv[i]));
+      if(!postScan.valid && !keepObj){
+        remove(postScan.name.c_str());
+        continue;
       }
-      else{
-        files.push_back(processFile(file+".transy"));
-      }
-    }
-    else{
-      if(extName(argv[i]) != ""){
-        files.push_back(argv[i]);
-      }
-      else{
-        files.push_back(string(argv[i])+".noblanks");
-      }
-    }
-  }
-  if(argc == 0)files.push_back("test.transy");
-  //turn preproecessed files into obj in first pass
-  SymTable symTable = SymTable();
-  for(int i = 0;i < files.size();i++){
-    //prep for first pass
-    if(!globalSymTable)symTable = SymTable();
-    Table lineLabel = Table();
-    populateLabelTable(files[i],&lineLabel);
-    objFile postScan = scan(files[i],&symTable,&lineLabel);
-    
-    //should an error occur remove all obj and nospaces files
-    if(postScan.valid){
-       objFiles.push_back(postScan.name);
-      if(!keepNoSpace)remove(files[i].c_str());
-      if(execute){
-        // executorMain(2,{argv[0],objFiles[objFiles.last()].c_str()});
+      if(postScan.valid){
+        if(execute){
+          char temp[100];
+          char temp2[100];
+          strcpy(temp, postScan.name.c_str());
+          strcpy(temp2, string("-b").c_str());
+          char *fakeArgs[3] = {argv[0], temp2 ,temp};
+          executorMain(3,fakeArgs);
+        }
       }
     }
     else{
-      if(!keepObj)remove(postScan.name.c_str());
-      if(!keepNoSpace)remove(files[i].c_str());
+      if(!skipPreproc){
+        string file = argv[i];
+        if(extName(file) != ""){
+          files.push_back(processFile(file));
+        }
+        else{
+          files.push_back(processFile(file+".transy"));
+        }
+      }
+      else{
+        if(extName(argv[i]) != ""){
+          files.push_back(argv[i]);
+        }
+        else{
+          files.push_back(string(argv[i])+".noblanks");
+        }
+      }
+    }
+    if(argc == 0)files.push_back("test.transy");
+    //turn preproecessed files into obj in first pass
+    SymTable symTable = SymTable();
+    for(int i = 0;i < files.size();i++){
+      //prep for first pass
+      if(!globalSymTable)symTable = SymTable();
+      Table lineLabel = Table();
+      populateLabelTable(files[i],&lineLabel);
+      objFile postScan = scan(files[i],&symTable,&lineLabel);
+      
+      //should an error occur remove all obj and nospaces files
+      if(postScan.valid){
+         objFiles.push_back(postScan.name);
+        if(!keepNoSpace)remove(files[i].c_str());
+        if(execute){
+          char temp[100];
+          strcpy(temp, objFiles.back().c_str());
+          char *fakeArgs[2] = {argv[0], temp};
+          executorMain(2,fakeArgs);
+        }
+      }
+      else{
+        if(!keepObj)remove(postScan.name.c_str());
+        if(!keepNoSpace)remove(files[i].c_str());
+      }
     }
   }
   return 0;
@@ -482,7 +507,7 @@ void populateLabelTable(string filename, Table *lineLabels){
 	while(!fin.eof()){
 		int colonLoc = line.find(':'); //internal to human body
 		string label = line.substr(0,colonLoc);
-		if(colonLoc != -1){
+		if(colonLoc != -1 && (validNumber(label) || validSymbol(label))){
 			lineLabels->insert(label,lineCount);
 		}
     temp = 0;
@@ -497,10 +522,83 @@ void populateLabelTable(string filename, Table *lineLabels){
 
 string removeLineLabel(string str){
   int colonLoc = str.find(':'); //internal to human body
+  // if(str.find("\"") != -1 || str.find("\"") < colonLoc)return "";
   string label = str.substr(0,colonLoc);
-  if(colonLoc == -1){
+  if(colonLoc == -1 || (!validNumber(label) && !validSymbol(label))){
     return str;
   }
   str.erase(0,colonLoc+1);
   return str;
+}
+
+
+/*-------------------------------------------\
+|   This is the special part of the compiler |
+|   This part compiler brainfuck code        |
+|                                            |
+|   http://en.wikipedia.org/wiki/Brainfuck   |
+|                                            |
+|                                            |
+\-------------------------------------------*/
+
+objFile bfCompiler(string filename){
+  //setup the file io for the obj file
+  ifstream fin;
+  ofstream fout;
+  string objFilename = objName(filename);
+  fin.open(filename.c_str());
+  fout.open(objFilename.c_str());
+  
+  if(!fin.is_open()){
+    cout << "Could not open file:" << filename <<endl;
+    objFile blank;
+    blank.valid = false;
+    return blank;
+  }
+
+  string temp;
+  getline(fin,temp);
+
+  bool error = false;
+
+  for(int i = 0;i < temp.length();i++){
+    switch(temp[i]){
+      case '+':
+        fout << '0';
+        break;
+      case '-':
+        fout << '1';
+        break;
+      case '>':
+        fout << '2';
+        break;
+      case '<':
+        fout << '3';
+        break;
+      case '[':
+        fout << '4';
+        break;
+      case ']':
+        fout << '5';
+        break;
+      case ',':
+        fout << '6';
+        break;
+      case '.':
+        fout << '7';
+        break;  
+      default:
+        cout << "Brainfuck compilation error" <<endl;
+        error = true;
+        break;
+    }
+  }
+
+  fin.close();
+  fout.close();
+
+  objFile result;
+  result.name = objName(filename);
+  result.valid = !error;
+  return result;
 }

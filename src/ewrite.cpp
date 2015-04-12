@@ -22,5 +22,6 @@ int executeWrite(int line[], int lineSize, Core *c){
 		if(i%ITEMS_WRITTEN_BEFORE_NEWLINE == 0 && i != 0)cout << endl;
 		cout << c->getAddrContent(line[i]);
 	}
+	cout << endl;
 	return NO_ERROR;
 }

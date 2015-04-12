@@ -20,26 +20,32 @@ int executeIf(int line[], int lineSize, Core *c, int *pc){
 		case 0:
 			//=
 			if(val1 == val2)*pc = line[3];
+			else (*pc)++;
 			break;
 		case 1:
 			//<=
 			if(val1 <= val2)*pc = line[3];
+			else (*pc)++;
 			break;
 		case 2:
 			//<
 			if(val1 < val2)*pc = line[3];
+			else (*pc)++;
 			break;
 		case 3:
 			//>
 			if(val1 > val2)*pc = line[3];
+			else (*pc)++;
 			break;
 		case 4:
 			//>=
 			if(val1 >= val2)*pc = line[3];
+			else (*pc)++;
 			break;
 		case 5:
 			//!=
 			if(val1 != val2)*pc = line[3];
+			else (*pc)++;
 			break;
 		default:
 			return BAD_COMPARISON;

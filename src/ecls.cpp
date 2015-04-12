@@ -4,7 +4,8 @@
  *   Implemenation of the interface in estop.hpp
  */
 
-#include "cls.hpp"
+#include "ecls.hpp"
+#include "validity.hpp"
 #include <iostream>
 using std::cout;
 using std::endl;

@@ -18,4 +18,11 @@ using std::string;
 //      have been removed along with all letters being capitalized 
 string processFile(string filename);
 
+//Precondition:
+//   filename is a string which contains a valid file to perform
+//      Brainfuck preprocessing on.
+//Postcondition:
+//   The return value is the filename of a file where all newlines have been removed
+string processFileBf(string filename);
+
 #endif

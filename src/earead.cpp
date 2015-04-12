@@ -17,7 +17,7 @@ bool isAread(int opCode){
 }
 
 int executeAread(int line[], int lineSize, Core *c){
-	for(int i = line[1];i < line[2];i++){
+	for(int i = c->getAddrContent(line[1]);i <= c->getAddrContent(line[2]);i++){
 		double temp = 0.0;
 		cin >> temp;
 		c->changeAddr(line[0]+i,temp);

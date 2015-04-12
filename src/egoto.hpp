@@ -7,7 +7,7 @@
 #ifndef EGOTO_HPP
 #define EGOTO_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

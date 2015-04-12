@@ -7,6 +7,8 @@
 #ifndef ELISTO_HPP
 #define ELISTO_HPP
 
+#include "executor.hpp"
+
 //Precond:
 //  opCode is a valid integer
 //Postcond:
@@ -20,6 +22,6 @@ bool isListo(int opCode);
 //Postcond:
 //  returns an executor error code(as specified in validity.hpp)
 //
-int executeListo(int objCode[][], int sizes[],int numLines);
+int executeListo(int objCode[MAX_OBJ_LINES][MAX_OBJ_LINE_SIZE], int sizes[],int numLines);
 
 #endif

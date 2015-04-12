@@ -27,16 +27,18 @@ def dependencies file, srcdir
 end
 
 def createMakefileFromList docs, main, name, srcdir
-	docs.delete_if{|d| !isProperFile?(d) || d==main}
-	makefile = "COMPILED_FILES = " + docs.map{|d| srcdir + convertToObj(d)}.join(' ') +
+	docs.delete_if{|d| !isProperFile?(d)}
+	compiled = docs.map{|d| srcdir + convertToObj(d)}
+	makefile = "COMPILED_FILES = " + compiled.join(' ') +
 				"\nSOURCEDIR = #{srcdir}\nPROGNAME = #{name}\n\nall: main\n"
 	makefile += "main: $(COMPILED_FILES) \n"
-	makefile += "\tg++ " + srcdir+main + " $(COMPILED_FILES) -o $(PROGNAME)\n\n"
+	makefile += "\tg++ $(COMPILED_FILES) -o $(PROGNAME)\n\n"
 	docs.each do |d|
 		extension = File.extname(d)
 		if(extension == '.cpp' || extension == '.c')
 			dep = dependencies(srcdir+d,srcdir) + dependencies(srcdir+convertToHeader(d),srcdir)
 			objdep = dep.map{|de| srcdir+convertToObj(de)}.delete_if{|de| de == (srcdir + convertToObj(d))}
+			objdep.delete_if{|d| !compiled.include?(d)}
 			makefile += srcdir + convertToObj(d) + ': ' + srcdir + d + ' ' + dep.join(' ') + ' ' + objdep.join(' ') +"\n"
 			makefile += "\tcd $(SOURCEDIR) && \\\n"
 			makefile += "\tg++ " + d + " -c\n\n"

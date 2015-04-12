@@ -7,7 +7,7 @@
 #ifndef EREAD_HPP
 #define EREAD_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

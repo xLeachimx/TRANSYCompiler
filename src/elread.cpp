@@ -11,14 +11,20 @@
 #include <string>
 using std::getline;
 using std::cin;
+using std::cout;
+using std::endl;
+using std::flush;
 
-#define LWRITE_OP_CODE 16
+#define LREAD_OP_CODE 16
 
-bool isLwrite(int opCode){
-	return (LWRITE_OP_CODE==opCode);
+bool isLread(int opCode){
+	return (LREAD_OP_CODE==opCode);
 }
 
-int executeLwrite(int line[], int lineSize, string lits[]){
-	getline(cin,lits[line[1]]);
+int executeLread(int line[], int lineSize, string lits[]){
+	char temp[100];
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //solution from http://stackoverflow.com/questions/257091/how-do-i-flush-the-cin-buffer
+	cin.getline(temp,100);
+	lits[line[0]] = temp;
 	return NO_ERROR;
 }

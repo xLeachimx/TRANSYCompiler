@@ -14,6 +14,6 @@ bool isGoto(int opCode){
 }
 
 int executeGoto(int line[], int lineSize, int *pc){
-	*pc = line[0]
+	*pc = line[0];
 	return NO_ERROR;
 }

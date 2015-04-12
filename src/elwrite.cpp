@@ -18,6 +18,6 @@ bool isLwrite(int opCode){
 }
 
 int executeLwrite(int line[], int lineSize, string lits[]){
-	cout << c->getAddrContent(lits[line[0]]) << endl;
+	cout << lits[line[0]] << endl;
 	return NO_ERROR;
 }

@@ -5,6 +5,7 @@
  */
 
 #include "eloopend.hpp"
+#include "validity.hpp"
 
 #define LOOP_END_OP_CODE 15
 

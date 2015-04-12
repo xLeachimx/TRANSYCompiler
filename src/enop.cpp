@@ -5,6 +5,7 @@
  */
 
 #include "enop.hpp"
+#include "validity.hpp"
 
 #define NOP_OP_CODE 7
 

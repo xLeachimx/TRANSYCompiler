@@ -5,6 +5,7 @@
  */
 
 #include "estop.hpp"
+#include "validity.hpp"
 
 #define STOP_OP_CODE 3
 

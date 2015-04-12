@@ -22,16 +22,23 @@ string parseIf(string line, Table *lineTable, SymTable *symTable){
   int comp = -1;
   string symOne = "";
   string symTwo = "";
-  if((opLoc=internal.find("=")) != -1){
+  if((opLoc=internal.find("!=")) != -1){
     symOne = internal.substr(0,opLoc);
-    comp = 0;
-    internal.erase(0,opLoc+1);
+    comp = 5;
+    internal.erase(0,opLoc+2);
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
   else if((opLoc=internal.find("<=")) != -1){
     symOne = internal.substr(0,opLoc);
     comp = 1;
+    internal.erase(0,opLoc+2);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
+  }
+  else if((opLoc=internal.find(">=")) != -1){
+    symOne = internal.substr(0,opLoc);
+    comp = 3;
     internal.erase(0,opLoc+2);
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
@@ -43,13 +50,6 @@ string parseIf(string line, Table *lineTable, SymTable *symTable){
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=internal.find(">=")) != -1){
-    symOne = internal.substr(0,opLoc);
-    comp = 3;
-    internal.erase(0,opLoc+2);
-    symTwo = internal.substr(0,internal.find(')'));
-    internal.erase(0,internal.find(')')+1);
-  }
   else if((opLoc=internal.find(">")) != -1){
     symOne = internal.substr(0,opLoc);
     comp = 4;
@@ -57,10 +57,10 @@ string parseIf(string line, Table *lineTable, SymTable *symTable){
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=internal.find("!=")) != -1){
+  else if((opLoc=internal.find("=")) != -1){
     symOne = internal.substr(0,opLoc);
-    comp = 5;
-    internal.erase(0,opLoc+2);
+    comp = 0;
+    internal.erase(0,opLoc+1);
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
@@ -95,21 +95,15 @@ int validIf(string line, Table *lineTable, SymTable *symTable){
   int opLoc = -1;
   string symOne = "";
   string symTwo = "";
-  if((opLoc=internal.find("=")) != -1){
+  if((opLoc=internal.find("!=")) != -1){
     symOne = internal.substr(0,opLoc);
-    internal.erase(0,opLoc+1);
+    internal.erase(0,opLoc+2);
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
   else if((opLoc=internal.find("<=")) != -1){
     symOne = internal.substr(0,opLoc);
     internal.erase(0,opLoc+2);
-    symTwo = internal.substr(0,internal.find(')'));
-    internal.erase(0,internal.find(')')+1);
-  }
-  else if((opLoc=internal.find("<")) != -1){
-    symOne = internal.substr(0,opLoc);
-    internal.erase(0,opLoc+1);
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
@@ -125,9 +119,15 @@ int validIf(string line, Table *lineTable, SymTable *symTable){
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }
-  else if((opLoc=internal.find("!=")) != -1){
+  else if((opLoc=internal.find("<")) != -1){
     symOne = internal.substr(0,opLoc);
-    internal.erase(0,opLoc+2);
+    internal.erase(0,opLoc+1);
+    symTwo = internal.substr(0,internal.find(')'));
+    internal.erase(0,internal.find(')')+1);
+  }
+  else if((opLoc=internal.find("=")) != -1){
+    symOne = internal.substr(0,opLoc);
+    internal.erase(0,opLoc+1);
     symTwo = internal.substr(0,internal.find(')'));
     internal.erase(0,internal.find(')')+1);
   }

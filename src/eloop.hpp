@@ -7,7 +7,7 @@
 #ifndef ELOOP_HPP
 #define ELOOP_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:

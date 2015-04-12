@@ -7,7 +7,7 @@
 #ifndef ECDUMP_HPP
 #define ECDUMP_HPP
 
-#include "core.cpp"
+#include "core.hpp"
 
 
 //Precond:
