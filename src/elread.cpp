@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <climits>
 using std::getline;
 using std::cin;
 using std::cout;
@@ -23,7 +24,8 @@ bool isLread(int opCode){
 
 int executeLread(int line[], int lineSize, string lits[]){
 	char temp[100];
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //solution from http://stackoverflow.com/questions/257091/how-do-i-flush-the-cin-buffer
+	cin.ignore(INT_MAX,'\n');
+	//cin.ignore(INT_MAX, '\n'); //solution from http://stackoverflow.com/questions/257091/how-do-i-flush-the-cin-buffer
 	cin.getline(temp,100);
 	lits[line[0]] = temp;
 	return NO_ERROR;
