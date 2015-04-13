@@ -277,7 +277,7 @@ void execute(string filename, Core *core, string *lits, bool zero){
 		}
 		pc++;
 	}
-	core->toFile(coreName(filename));
+	core->toFile(translateToCore(filename));
 }
 
 
