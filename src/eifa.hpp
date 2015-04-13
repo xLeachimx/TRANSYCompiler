@@ -24,6 +24,6 @@ bool isIfa(int opCode);
 //Postcond:
 //  returns an executor error code(as specified in validity.hpp)
 //
-int executeIfa(int line[], int lineSize, Core *c, int *pc);
+int executeIfa(int line[], int lineSize, Core *c, int *pc, bool zero);
 
 #endif

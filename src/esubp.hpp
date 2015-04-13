@@ -24,6 +24,6 @@ bool isSubp(int opCode);
 //Postcond:
 //  returns an executor error code(as specified in validity.hpp)
 //
-int executeSubp(int line[], int lineSize, Core *c);
+int executeSubp(int line[], int lineSize, Core *c, bool zero);
 
 #endif

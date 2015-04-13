@@ -24,6 +24,6 @@ bool isLoop(int opCode);
 //Postcond:
 //  returns an executor error code(as specified in validity.hpp)
 //
-int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end);
+int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end, bool zero);
 
 #endif

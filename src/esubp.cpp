@@ -32,8 +32,9 @@ bool isSubp(int opCode){
 	return (SUBP_OP_CODE==opCode);
 }
 
-int executeSubp(int line[], int lineSize, Core *c){
-	if(c->getAddrContent(line[1]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
+int executeSubp(int line[], int lineSize, Core *c, bool zero){
+	if(c->getAddrContent(line[1]) == DEFAULT_VAL && !zero)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[1]) == DEFAULT_VAL && zero)c->changeAddr(line[1],0.0);
 	double temp = 0;
 	switch(line[0]){
 		case SIN:

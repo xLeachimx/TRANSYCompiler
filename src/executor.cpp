@@ -57,7 +57,7 @@ string translateToLiteral(string filename);
 bool parseLiteralFile(string filename, string lits[]);
 
 //actual main execution function
-void execute(string filename, Core *core, string *lits);
+void execute(string filename, Core *core, string *lits, bool zero);
 
 //actual main execution function for brainfuck
 void executeBf(string filename);
@@ -106,18 +106,13 @@ int executorMain(int argc, char **argv){
 			if(!parseLiteralFile(filename+".literal",literals) && !supressWarnings){
 				cout << "WARNING: No Literals being drawn in" <<endl;
 			}
-			if(zeroInit){
-				for(int i =0;i < CORE_SIZE;i++){
-					if(coreMem.getAddrContent(i) == DEFAULT_VAL)coreMem.changeAddr(i,0.0);
-				}
-			}
-			execute(filename+".obj",&coreMem,literals);
+			execute(filename+".obj",&coreMem,literals,zeroInit);
 		}
 	}
 	return 0;
 }
 
-void execute(string filename, Core *core, string *lits){
+void execute(string filename, Core *core, string *lits, bool zero){
 	int objCode[MAX_OBJ_LINES][MAX_OBJ_LINE_SIZE];
 	int length = 0;
 	int lineSizes[MAX_OBJ_LINES];
@@ -179,7 +174,7 @@ void execute(string filename, Core *core, string *lits){
 			continue;
 		}
 		else if(isIfa(objCode[pc][0])){
-			int error = executeIfa(&objCode[pc][1], lineSizes[pc]-1, core, &pc);
+			int error = executeIfa(&objCode[pc][1], lineSizes[pc]-1, core, &pc, zero);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -201,7 +196,7 @@ void execute(string filename, Core *core, string *lits){
 			}
 		}
 		else if(isSubp(objCode[pc][0])){
-			int error = executeSubp(&objCode[pc][1], lineSizes[pc]-1, core);
+			int error = executeSubp(&objCode[pc][1], lineSizes[pc]-1, core, zero);
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
 				return;
@@ -214,7 +209,7 @@ void execute(string filename, Core *core, string *lits){
 				cout << "ERROR: Too many nested loops" <<endl;
 				return;
 			}
-			int error = executeLoop(&objCode[pc][1],lineSizes[pc]-1,core,seen,&end);
+			int error = executeLoop(&objCode[pc][1],lineSizes[pc]-1,core,seen,&end, zero);
 			loopsSeen[pc] = true;
 			if(error != NO_ERROR){
 				cout << "ERROR: " << errorStringExecutor(error) <<endl;
@@ -282,6 +277,7 @@ void execute(string filename, Core *core, string *lits){
 		}
 		pc++;
 	}
+	core->toFile(coreName(filename));
 }
 
 

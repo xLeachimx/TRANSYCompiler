@@ -17,7 +17,7 @@ bool isLoop(int opCode){
 	return (LOOP_OP_CODE==opCode);
 }
 
-int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end){
+int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end, bool zero){
 	cout << "Values:" <<endl;
 	cout << line[1] <<endl;
 	cout << c->getAddrContent(line[1]) <<endl;
@@ -25,9 +25,12 @@ int executeLoop(int line[], int lineSize, Core *c, bool seen, bool *end){
 	cout << c->getAddrContent(line[2]) <<endl;
 	cout << line[3] <<endl;
 	cout << c->getAddrContent(line[3]) <<endl;
-	if(c->getAddrContent(line[1]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
-	if(c->getAddrContent(line[2]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
-	if(c->getAddrContent(line[3]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[1]) == DEFAULT_VAL && !zero)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[1]) == DEFAULT_VAL && zero)c->changeAddr(line[1],0.0);
+	if(c->getAddrContent(line[2]) == DEFAULT_VAL && !zero)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[2]) == DEFAULT_VAL && zero)c->changeAddr(line[2],0.0);
+	if(c->getAddrContent(line[3]) == DEFAULT_VAL && !zero)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[3]) == DEFAULT_VAL && zero)c->changeAddr(line[3],0.0);
 
 	if(!seen){
 		double temp = c->getAddrContent(line[1]);

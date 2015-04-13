@@ -17,8 +17,9 @@ bool isIfa(int opCode){
 	return (IFA_OP_CODE==opCode);
 }
 
-int executeIfa(int line[], int lineSize, Core *c, int *pc){
-	if(c->getAddrContent(line[0]) == DEFAULT_VAL)return UNINITIALIZED_VAR;
+int executeIfa(int line[], int lineSize, Core *c, int *pc, bool zero){
+	if(c->getAddrContent(line[0]) == DEFAULT_VAL && !zero)return UNINITIALIZED_VAR;
+	if(c->getAddrContent(line[0]) == DEFAULT_VAL && zero)c->changeAddr(line[0],0.0);
 	if(c->getAddrContent(line[0]) < 0){
 		*pc = line[1];
 	}
